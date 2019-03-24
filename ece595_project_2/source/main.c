@@ -12,10 +12,12 @@
  ******************************************************************************/
 #include "board.h"
 
+#include "tcpip_app_iface.h"
 #include "fsl_device_registers.h"
+#include "peripherals.h"
 #include "pin_mux.h"
 #include "clock_config.h"
-#include "tcpip_app_iface.h"
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -37,6 +39,7 @@ int main(void)
 
     SYSMPU_Type *base = SYSMPU;
     BOARD_InitPins();
+    BOARD_InitBootPeripherals();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     /* Disable SYSMPU. */
