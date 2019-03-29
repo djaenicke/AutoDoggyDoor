@@ -12,23 +12,57 @@
  ******************************************************************************/
 #include "board.h"
 
+/* FreeRTOS kernel includes. */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "timers.h"
+
 #include "tcpip_app_iface.h"
 #include "fsl_device_registers.h"
 #include "peripherals.h"
 #include "pin_mux.h"
 #include "clock_config.h"
+#include "io_abstraction.h"
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+/*! @brief Stack size of the thread which prints DHCP info. */
+#define PRINT_THREAD_STACKSIZE 512
+
+/*! @brief Priority of the thread which prints DHCP info. */
+#define PRINT_THREAD_PRIO DEFAULT_THREAD_PRIO
+
+typedef struct Task_Cfg_Tag
+{
+    TaskFunction_t func;
+    const char name[configMAX_TASK_NAME_LEN];
+    const configSTACK_DEPTH_TYPE stack_size;
+    UBaseType_t priority;
+} Task_Cfg_T;
 
 /*******************************************************************************
 * Prototypes
 ******************************************************************************/
+/* Task function declarations */
+static void Init_App_Task(void *pvParameters);
+static void Prox_Estimation_Task(void *pvParameters);
+
+/* Local functions */
+static void Init_OS_Tasks(void);
 
 /*******************************************************************************
 * Variables
 ******************************************************************************/
+/* Task Configurations */
+#define NUM_TASKS (2)
+const Task_Cfg_T Task_Cfg_Table[NUM_TASKS] =
+{
+    /* Function,           Name,       Stack Size,  Priority */
+    {Init_App_Task,        "Init_App", 100,         configMAX_PRIORITIES - 1},
+    {Prox_Estimation_Task, "Prox Est", 500,         configMAX_PRIORITIES - 2},
+};
 
 /*******************************************************************************
  * Function Definitions
@@ -51,8 +85,43 @@ int main(void)
         LWIP_ASSERT("stack_init(): Task creation failed.", 0);
     }
 
+    Init_OS_Tasks();
     vTaskStartScheduler();
 
     /* Will not get here unless a task calls vTaskEndScheduler ()*/
     return 0;
+}
+
+void Init_OS_Tasks(void)
+{
+    uint8_t i;
+
+    for (i=0; i<NUM_TASKS; i++)
+    {
+        if (xTaskCreate(Task_Cfg_Table[i].func, Task_Cfg_Table[i].name,
+                        Task_Cfg_Table[i].stack_size, NULL, Task_Cfg_Table[i].priority, NULL) != pdPASS)
+        {
+            printf("Task number %d creation failed!.\r\n", i);
+            assert(false);
+        }
+    }
+
+    Set_GPIO(BLUE_LED, LOW);
+}
+
+static void Init_App_Task(void *pvParameters)
+{
+    while(1)
+    {
+        printf("Initializing application...\r\n");
+        vTaskSuspend(NULL);
+    }
+}
+
+static void Prox_Estimation_Task(void *pvParameters)
+{
+    while(1)
+    {
+        vTaskDelay(pdMS_TO_TICKS(500));
+    }
 }

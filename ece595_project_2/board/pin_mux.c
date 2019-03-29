@@ -79,7 +79,7 @@ void BOARD_InitPins(void)
 
     for (i=0; i<NUM_IO; i++)
     {
-      //PORT_SetPinMux(Pin_Cfgs[i].pbase, Pin_Cfgs[i].pin, Pin_Cfgs[i].mux); TODO
+      PORT_SetPinMux(Pin_Cfgs[i].pbase, Pin_Cfgs[i].pin, Pin_Cfgs[i].mux);
     }
 
     PORT_SetPinMux(PORTA, PIN12_IDX, kPORT_MuxAlt4);           /* PORTA12 (pin 42) is configured as RMII0_RXD1 */

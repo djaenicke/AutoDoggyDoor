@@ -25,19 +25,11 @@ typedef struct
 
 typedef enum
 {
-    MOTOR_STEP_CTRL=0,
-    MOTOR_DIR_CTRL,
-    MOTOR_SLEEP,
-    MOTOR_DRV_EN,
-    MOTOR_DRV_RESET,
-    BLUE_LED,
+    BLUE_LED=0,
     SW_2,
     SW_3,
-    UART0_RX,
-    UART0_TX,
     UART4_RX,
     UART4_TX,
-    LIGHT_SENSOR,
     NUM_IO /* !!! Make sure this is last */
 } IO_Map_T;
 
