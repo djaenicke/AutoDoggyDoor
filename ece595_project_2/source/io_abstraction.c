@@ -13,8 +13,8 @@ const Pin_Cfg_T Pin_Cfgs[NUM_IO] =
     {PORTB, GPIOB, 21, kPORT_MuxAsGpio,           kGPIO_DigitalOutput, HIGH}, /* BLUE_LED        - Active Low       */
     {PORTC, GPIOC,  6, kPORT_MuxAsGpio,           kGPIO_DigitalInput,  NA},   /* SW_2            */
     {PORTA, GPIOA,  4, kPORT_MuxAsGpio,           kGPIO_DigitalInput,  NA},   /* SW_3            */
-    {PORTC, GPIOC, 14, kPORT_MuxAlt3,             kGPIO_DigitalInput,  NA},   /* UART4_RX        */
-    {PORTC, GPIOC, 15, kPORT_MuxAlt3,             kGPIO_DigitalOutput, NA},   /* UART4_TX        */
+    {PORTD, GPIOD,  2, kPORT_MuxAlt3,             kGPIO_DigitalInput,  NA},   /* UART2_RX        */
+    {PORTD, GPIOD,  3, kPORT_MuxAlt3,             kGPIO_DigitalOutput, NA},   /* UART2_TX        */
 };
 void Set_GPIO(IO_Map_T gpio, GPIO_State_T state)
 {

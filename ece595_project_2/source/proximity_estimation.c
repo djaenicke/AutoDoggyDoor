@@ -10,6 +10,10 @@
 #include "xbee\platform.h" /* Xbee library */
 #include "xbee\device.h"
 #include "xbee\atcmd.h"
+#include "xbee\serial.h"
+
+#define TEST_MSG "INIT COMPLETE!!!"
+#define STATUS_MSG "\r\nrunning..."
 
 const xbee_dispatch_table_entry_t xbee_frame_handlers[] =
 {
@@ -18,7 +22,7 @@ const xbee_dispatch_table_entry_t xbee_frame_handlers[] =
     XBEE_FRAME_TABLE_END
 };
 
-xbee_serial_t Xbee_Serial_Port = {UART4, 9600};
+xbee_serial_t Xbee_Serial_Port = {UART2, 9600};
 xbee_dev_t Xbee;
 
 static void Init_Xbee_Interface(void);
