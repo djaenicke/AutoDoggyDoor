@@ -39,11 +39,11 @@
 	// the "FAR" modifier is not used
 	#define FAR
 
-	struct xbee_cbuf_t;						// defined in xbee/cbuf.h
-	typedef struct xbee_serial_t {
-		uint32_t					baudrate;
-		uint8_t					port;
-		struct xbee_cbuf_t	*rxbuf;
+    #include "fsl_uart.h"
+	typedef struct xbee_serial_t
+	{
+	    UART_Type *base;
+		uint32_t baudrate;
 	} xbee_serial_t;
 
 	// We'll use 1/1/2000 as the epoch, to match ZigBee.
