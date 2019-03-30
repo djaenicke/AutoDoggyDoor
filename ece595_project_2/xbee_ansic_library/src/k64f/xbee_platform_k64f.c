@@ -14,6 +14,7 @@ uint32_t (xbee_seconds_timer)(void)
     uint32_t ret_val = 0;
 
     /* Need to disable interrupts to ensure data consistency */
+    /* TODO - Devin this will need to be protected from context switches */
     FTM_DisableInterrupts(FTM0, kFTM_TimeOverflowInterruptEnable);
     ret_val = Xbee_Seconds_Timer;
     FTM_EnableInterrupts(FTM0, kFTM_TimeOverflowInterruptEnable);
