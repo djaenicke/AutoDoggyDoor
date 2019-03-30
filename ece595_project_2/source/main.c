@@ -123,7 +123,7 @@ static void Prox_Estimation_Task(void *pvParameters)
 {
     while(1)
     {
-        run_proximity_estimation();
+        Run_Proximity_Estimation();
         vTaskDelay(pdMS_TO_TICKS(500));
     }
 }

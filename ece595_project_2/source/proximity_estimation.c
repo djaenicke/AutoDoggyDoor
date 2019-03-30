@@ -6,9 +6,24 @@
  */
 
 #include "proximity_estimation.h"
+#include "platform_k64f.h" /* Xbee library */
 
+#ifndef TRUE
+#define TRUE (1)
+#endif
 
-void run_proximity_estimation(void)
+#ifndef FALSE
+#define FALSE (0)
+#endif
+
+void Run_Proximity_Estimation(void)
 {
+    static uint8_t timer_initialized = FALSE;
 
+    if (!timer_initialized)
+    {
+        Init_Xbee_Timer();
+        timer_initialized = TRUE;
+    }
 }
+

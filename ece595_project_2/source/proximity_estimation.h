@@ -9,6 +9,7 @@
 #define PROXIMITY_ESTIMATION_H_
 
 
-extern void run_proximity_estimation(void);
+extern void Run_Proximity_Estimation(void);
+
 
 #endif /* PROXIMITY_ESTIMATION_H_ */

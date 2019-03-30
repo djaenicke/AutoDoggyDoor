@@ -51,5 +51,7 @@
 
 	#define XBEE_MS_TIMER_RESOLUTION 1
 
+	extern void Init_Xbee_Timer(void);
+
 #endif		// __XBEE_PLATFORM_K64F
 

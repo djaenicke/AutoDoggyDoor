@@ -91,19 +91,10 @@
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.undef.symbol.1139473283" name="Undefined symbols (-U)" superClass="gnu.c.compiler.option.preprocessor.undef.symbol" useByScannerDiscovery="false"/>
 								<option id="gnu.c.compiler.option.include.paths.1075405638" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="../lwip/port"/>
-									<listOptionValue builtIn="false" value="../xbee"/>
-									<listOptionValue builtIn="false" value="../zigbee"/>
-									<listOptionValue builtIn="false" value="../wpan"/>
-									<listOptionValue builtIn="false" value="../source"/>
-									<listOptionValue builtIn="false" value="../board"/>
+									<listOptionValue builtIn="false" value="../component/uart"/>
 									<listOptionValue builtIn="false" value="../drivers"/>
-									<listOptionValue builtIn="false" value="../CMSIS"/>
 									<listOptionValue builtIn="false" value="../component/serial_manager"/>
-									<listOptionValue builtIn="false" value="../amazon-freertos/include"/>
-									<listOptionValue builtIn="false" value="../amazon-freertos/FreeRTOS/portable"/>
-									<listOptionValue builtIn="false" value="../component/lists"/>
-									<listOptionValue builtIn="false" value="../utilities"/>
+									<listOptionValue builtIn="false" value="../device"/>
 									<listOptionValue builtIn="false" value="../lwip/port/arch"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/priv"/>
@@ -113,10 +104,19 @@
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif/ppp/polarssl"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/posix"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/posix/sys"/>
-									<listOptionValue builtIn="false" value="../component/uart"/>
-									<listOptionValue builtIn="false" value="../device"/>
+									<listOptionValue builtIn="false" value="../CMSIS"/>
+									<listOptionValue builtIn="false" value="../source"/>
+									<listOptionValue builtIn="false" value="../board"/>
+									<listOptionValue builtIn="false" value="../amazon-freertos/include"/>
+									<listOptionValue builtIn="false" value="../amazon-freertos/FreeRTOS/portable"/>
+									<listOptionValue builtIn="false" value="../lwip/port"/>
+									<listOptionValue builtIn="false" value="../utilities"/>
+									<listOptionValue builtIn="false" value="../component/lists"/>
 									<listOptionValue builtIn="false" value="../lwip/src"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include"/>
+									<listOptionValue builtIn="false" value="../xbee"/>
+									<listOptionValue builtIn="false" value="../zigbee"/>
+									<listOptionValue builtIn="false" value="../wpan"/>
 									<listOptionValue builtIn="false" value="../"/>
 								</option>
 								<option id="gnu.c.compiler.option.include.files.1814840178" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files" useByScannerDiscovery="false"/>
@@ -155,16 +155,10 @@
 								<option id="com.crt.advproject.gas.arch.1294275810" name="Architecture" superClass="com.crt.advproject.gas.arch" useByScannerDiscovery="false" value="com.crt.advproject.gas.target.cm4" valueType="enumerated"/>
 								<option id="gnu.both.asm.option.flags.crt.962766204" name="Assembler flags" superClass="gnu.both.asm.option.flags.crt" useByScannerDiscovery="false" value="-c -x assembler-with-cpp -D__REDLIB__" valueType="string"/>
 								<option id="gnu.both.asm.option.include.paths.668412738" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="../lwip/port"/>
-									<listOptionValue builtIn="false" value="../source"/>
-									<listOptionValue builtIn="false" value="../board"/>
+									<listOptionValue builtIn="false" value="../component/uart"/>
 									<listOptionValue builtIn="false" value="../drivers"/>
-									<listOptionValue builtIn="false" value="../CMSIS"/>
 									<listOptionValue builtIn="false" value="../component/serial_manager"/>
-									<listOptionValue builtIn="false" value="../amazon-freertos/include"/>
-									<listOptionValue builtIn="false" value="../amazon-freertos/FreeRTOS/portable"/>
-									<listOptionValue builtIn="false" value="../component/lists"/>
-									<listOptionValue builtIn="false" value="../utilities"/>
+									<listOptionValue builtIn="false" value="../device"/>
 									<listOptionValue builtIn="false" value="../lwip/port/arch"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/priv"/>
@@ -174,10 +168,19 @@
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif/ppp/polarssl"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/posix"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/posix/sys"/>
-									<listOptionValue builtIn="false" value="../component/uart"/>
-									<listOptionValue builtIn="false" value="../device"/>
+									<listOptionValue builtIn="false" value="../CMSIS"/>
+									<listOptionValue builtIn="false" value="../source"/>
+									<listOptionValue builtIn="false" value="../board"/>
+									<listOptionValue builtIn="false" value="../amazon-freertos/include"/>
+									<listOptionValue builtIn="false" value="../amazon-freertos/FreeRTOS/portable"/>
+									<listOptionValue builtIn="false" value="../lwip/port"/>
+									<listOptionValue builtIn="false" value="../utilities"/>
+									<listOptionValue builtIn="false" value="../component/lists"/>
 									<listOptionValue builtIn="false" value="../lwip/src"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include"/>
+									<listOptionValue builtIn="false" value="../xbee"/>
+									<listOptionValue builtIn="false" value="../zigbee"/>
+									<listOptionValue builtIn="false" value="../wpan"/>
 									<listOptionValue builtIn="false" value="../"/>
 									<listOptionValue builtIn="false" value="c:/nxp/mcuxpressoide_10.3.0_2200/ide/plugins/com.nxp.mcuxpresso.tools.win32_10.3.0.201811011841/tools/redlib/include"/>
 									<listOptionValue builtIn="false" value="c:/nxp/mcuxpressoide_10.3.0_2200/ide/plugins/com.nxp.mcuxpresso.tools.win32_10.3.0.201811011841/tools/features/include"/>
@@ -305,10 +308,16 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="com.crt.advproject.config.exe.debug.467231279.920841294" name="xbee_tx_status.c" rcbsApplicability="disable" resourcePath="xbee_ansic_library/src/xbee/xbee_tx_status.c" toolsToInvoke="com.crt.advproject.gcc.exe.debug.137281947.1507109556">
-						<tool id="com.crt.advproject.gcc.exe.debug.137281947.1507109556" name="MCU C Compiler" superClass="com.crt.advproject.gcc.exe.debug.137281947"/>
-					</fileInfo>
 					<sourceEntries>
+						<entry excluding="src/netif/ethernetif.c|src/netif/ppp/polarssl/arc4.c|src/netif/ppp/polarssl/md4.c|src/netif/ppp/polarssl/des.c|src/netif/ppp/polarssl/md5.c|src/netif/ppp/polarssl/sha1.c" flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="lwip"/>
+						<entry flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="component"/>
+						<entry flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="CMSIS"/>
+						<entry excluding="FreeRTOS/portable/heap_1.c|FreeRTOS/portable/heap_2.c|FreeRTOS/portable/heap_3.c|FreeRTOS/portable/heap_5.c" flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="amazon-freertos"/>
+						<entry flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="source"/>
+						<entry flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="utilities"/>
+						<entry flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="drivers"/>
+						<entry flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="device"/>
+						<entry flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="board"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CMSIS"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="amazon-freertos"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="board"/>
@@ -414,16 +423,10 @@
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.undef.symbol.1086765582" name="Undefined symbols (-U)" superClass="gnu.c.compiler.option.preprocessor.undef.symbol"/>
 								<option id="gnu.c.compiler.option.include.paths.1807891896" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../lwip/port"/>
-									<listOptionValue builtIn="false" value="../source"/>
-									<listOptionValue builtIn="false" value="../board"/>
+									<listOptionValue builtIn="false" value="../component/uart"/>
 									<listOptionValue builtIn="false" value="../drivers"/>
-									<listOptionValue builtIn="false" value="../CMSIS"/>
 									<listOptionValue builtIn="false" value="../component/serial_manager"/>
-									<listOptionValue builtIn="false" value="../amazon-freertos/include"/>
-									<listOptionValue builtIn="false" value="../amazon-freertos/FreeRTOS/portable"/>
-									<listOptionValue builtIn="false" value="../component/lists"/>
-									<listOptionValue builtIn="false" value="../utilities"/>
+									<listOptionValue builtIn="false" value="../device"/>
 									<listOptionValue builtIn="false" value="../lwip/port/arch"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/priv"/>
@@ -433,11 +436,22 @@
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif/ppp/polarssl"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/posix"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/posix/sys"/>
-									<listOptionValue builtIn="false" value="../component/uart"/>
-									<listOptionValue builtIn="false" value="../device"/>
+									<listOptionValue builtIn="false" value="../CMSIS"/>
+									<listOptionValue builtIn="false" value="../source"/>
+									<listOptionValue builtIn="false" value="../board"/>
+									<listOptionValue builtIn="false" value="../amazon-freertos/include"/>
+									<listOptionValue builtIn="false" value="../amazon-freertos/FreeRTOS/portable"/>
+									<listOptionValue builtIn="false" value="../lwip/port"/>
+									<listOptionValue builtIn="false" value="../utilities"/>
+									<listOptionValue builtIn="false" value="../component/lists"/>
 									<listOptionValue builtIn="false" value="../lwip/src"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include"/>
+									<listOptionValue builtIn="false" value="../xbee"/>
+									<listOptionValue builtIn="false" value="../zigbee"/>
+									<listOptionValue builtIn="false" value="../wpan"/>
 									<listOptionValue builtIn="false" value="../"/>
+									<listOptionValue builtIn="false" value="c:/nxp/mcuxpressoide_10.3.0_2200/ide/plugins/com.nxp.mcuxpresso.tools.win32_10.3.0.201811011841/tools/redlib/include"/>
+									<listOptionValue builtIn="false" value="c:/nxp/mcuxpressoide_10.3.0_2200/ide/plugins/com.nxp.mcuxpresso.tools.win32_10.3.0.201811011841/tools/features/include"/>
 								</option>
 								<option id="gnu.c.compiler.option.include.files.474355756" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files"/>
 								<option id="gnu.c.compiler.option.optimization.flags.5943017" name="Other optimization flags" superClass="gnu.c.compiler.option.optimization.flags" value="-fno-common" valueType="string"/>
@@ -473,16 +487,10 @@
 								<option id="com.crt.advproject.gas.arch.1143611907" name="Architecture" superClass="com.crt.advproject.gas.arch" value="com.crt.advproject.gas.target.cm4" valueType="enumerated"/>
 								<option id="gnu.both.asm.option.flags.crt.310954655" name="Assembler flags" superClass="gnu.both.asm.option.flags.crt" value="-c -x assembler-with-cpp -D__REDLIB__" valueType="string"/>
 								<option id="gnu.both.asm.option.include.paths.1797912749" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../lwip/port"/>
-									<listOptionValue builtIn="false" value="../source"/>
-									<listOptionValue builtIn="false" value="../board"/>
+									<listOptionValue builtIn="false" value="../component/uart"/>
 									<listOptionValue builtIn="false" value="../drivers"/>
-									<listOptionValue builtIn="false" value="../CMSIS"/>
 									<listOptionValue builtIn="false" value="../component/serial_manager"/>
-									<listOptionValue builtIn="false" value="../amazon-freertos/include"/>
-									<listOptionValue builtIn="false" value="../amazon-freertos/FreeRTOS/portable"/>
-									<listOptionValue builtIn="false" value="../component/lists"/>
-									<listOptionValue builtIn="false" value="../utilities"/>
+									<listOptionValue builtIn="false" value="../device"/>
 									<listOptionValue builtIn="false" value="../lwip/port/arch"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/priv"/>
@@ -492,10 +500,19 @@
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif/ppp/polarssl"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/posix"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/posix/sys"/>
-									<listOptionValue builtIn="false" value="../component/uart"/>
-									<listOptionValue builtIn="false" value="../device"/>
+									<listOptionValue builtIn="false" value="../CMSIS"/>
+									<listOptionValue builtIn="false" value="../source"/>
+									<listOptionValue builtIn="false" value="../board"/>
+									<listOptionValue builtIn="false" value="../amazon-freertos/include"/>
+									<listOptionValue builtIn="false" value="../amazon-freertos/FreeRTOS/portable"/>
+									<listOptionValue builtIn="false" value="../lwip/port"/>
+									<listOptionValue builtIn="false" value="../utilities"/>
+									<listOptionValue builtIn="false" value="../component/lists"/>
 									<listOptionValue builtIn="false" value="../lwip/src"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include"/>
+									<listOptionValue builtIn="false" value="../xbee"/>
+									<listOptionValue builtIn="false" value="../zigbee"/>
+									<listOptionValue builtIn="false" value="../wpan"/>
 									<listOptionValue builtIn="false" value="../"/>
 									<listOptionValue builtIn="false" value="c:/nxp/mcuxpressoide_10.3.0_2200/ide/plugins/com.nxp.mcuxpresso.tools.win32_10.3.0.201811011841/tools/redlib/include"/>
 									<listOptionValue builtIn="false" value="c:/nxp/mcuxpressoide_10.3.0_2200/ide/plugins/com.nxp.mcuxpresso.tools.win32_10.3.0.201811011841/tools/features/include"/>
@@ -620,10 +637,16 @@
 							<tool id="com.crt.advproject.tool.debug.release.478263228" name="MCU Debugger" superClass="com.crt.advproject.tool.debug.release"/>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="com.crt.advproject.config.exe.release.1012036319.1129192582" name="xbee_tx_status.c" rcbsApplicability="disable" resourcePath="xbee_ansic_library/src/xbee/xbee_tx_status.c" toolsToInvoke="com.crt.advproject.gcc.exe.release.1724078267.1411818754">
-						<tool id="com.crt.advproject.gcc.exe.release.1724078267.1411818754" name="MCU C Compiler" superClass="com.crt.advproject.gcc.exe.release.1724078267"/>
-					</fileInfo>
 					<sourceEntries>
+						<entry excluding="src/netif/ethernetif.c|src/netif/ppp/polarssl/arc4.c|src/netif/ppp/polarssl/md4.c|src/netif/ppp/polarssl/des.c|src/netif/ppp/polarssl/md5.c|src/netif/ppp/polarssl/sha1.c" flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="lwip"/>
+						<entry flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="component"/>
+						<entry flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="CMSIS"/>
+						<entry excluding="FreeRTOS/portable/heap_1.c|FreeRTOS/portable/heap_2.c|FreeRTOS/portable/heap_3.c|FreeRTOS/portable/heap_5.c" flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="amazon-freertos"/>
+						<entry flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="source"/>
+						<entry flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="utilities"/>
+						<entry flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="drivers"/>
+						<entry flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="device"/>
+						<entry flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="board"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CMSIS"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="amazon-freertos"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="board"/>
@@ -635,8 +658,10 @@
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="startup"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="utilities"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="wpan"/>
-						<entry excluding="src/xbee/xbee_tx_status.c|src/xbee/xbee_time.c|src/xbee/xbee_sms.c|src/xbee/xbee_ipv4.c|src/wpan" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="xbee_ansic_library"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="xbee"/>
+						<entry excluding="src/xbee/xbee_tx_status.c|src/xbee/xbee_wifi.c|src/xbee/xbee_time.c|src/xbee/xbee_sms.c|src/xbee/xbee_ipv4.c|src/wpan|src/zigbee" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="xbee_ansic_library"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="zigbee"/>
+						<entry excluding="src/xbee/xbee_tx_status.c|src/xbee/xbee_time.c|src/xbee/xbee_sms.c|src/xbee/xbee_ipv4.c|src/wpan" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="xbee_ansic_library"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -765,7 +790,7 @@
 		<sdkName>SDK_2.x_FRDM-K64F</sdkName>
 		<sdkExample>frdmk64f_lwip_dhcp_freertos</sdkExample>
 		<sdkVersion>2.5.0</sdkVersion>
-		<sdkComponents>driver.phyksz8081.MK64F12;middleware.tcpip.lwip.ethernetif.MK64F12;middleware.tcpip.lwip.MK64F12;platform.drivers.port.MK64F12;device.MK64F12_CMSIS.MK64F12;platform.Include_common.MK64F12;platform.Include_core_cm4.MK64F12;platform.drivers.clock.MK64F12;platform.drivers.common.MK64F12;platform.drivers.sim.MK64F12;platform.drivers.enet.MK64F12;middleware.freertos.heap.heap_3.MK64F12;middleware.freertos.MK64F12;platform.utilities.misc_utilities.MK64F12;platform.drivers.flash.MK64F12;platform.drivers.gpio.MK64F12;utility.debug_console.MK64F12;component.serial_manager.MK64F12;platform.drivers.uart.MK64F12;platform.drivers.smc.MK64F12;component.uart_adapter.MK64F12;component.serial_manager_uart.MK64F12;component.lists.MK64F12;device.MK64F12_startup.MK64F12;platform.utilities.assert.MK64F12;frdmk64f_lwip_dhcp_freertos;middleware.template_application.tcpip.lwip.MK64F12;middleware.template_application.freertos.MK64F12;platform.drivers.adc16.MK64F12;platform.drivers.rtc.MK64F12;</sdkComponents>
+		<sdkComponents>driver.phyksz8081.MK64F12;middleware.tcpip.lwip.ethernetif.MK64F12;middleware.tcpip.lwip.MK64F12;platform.drivers.port.MK64F12;device.MK64F12_CMSIS.MK64F12;platform.Include_common.MK64F12;platform.Include_core_cm4.MK64F12;platform.drivers.clock.MK64F12;platform.drivers.common.MK64F12;platform.drivers.sim.MK64F12;platform.drivers.enet.MK64F12;middleware.freertos.heap.heap_3.MK64F12;middleware.freertos.MK64F12;platform.utilities.misc_utilities.MK64F12;platform.drivers.flash.MK64F12;platform.drivers.gpio.MK64F12;utility.debug_console.MK64F12;component.serial_manager.MK64F12;platform.drivers.uart.MK64F12;platform.drivers.smc.MK64F12;component.uart_adapter.MK64F12;component.serial_manager_uart.MK64F12;component.lists.MK64F12;device.MK64F12_startup.MK64F12;platform.utilities.assert.MK64F12;frdmk64f_lwip_dhcp_freertos;middleware.template_application.tcpip.lwip.MK64F12;middleware.template_application.freertos.MK64F12;platform.drivers.adc16.MK64F12;platform.drivers.rtc.MK64F12;platform.drivers.ftm.MK64F12;</sdkComponents>
 		<boardId>frdmk64f</boardId>
 		<package>MK64FN1M0VLL12</package>
 		<core>cm4</core>
