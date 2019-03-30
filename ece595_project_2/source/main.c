@@ -24,6 +24,7 @@
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "io_abstraction.h"
+#include "proximity_estimation.h"
 
 /*******************************************************************************
  * Definitions
@@ -122,6 +123,7 @@ static void Prox_Estimation_Task(void *pvParameters)
 {
     while(1)
     {
+        run_proximity_estimation();
         vTaskDelay(pdMS_TO_TICKS(500));
     }
 }
