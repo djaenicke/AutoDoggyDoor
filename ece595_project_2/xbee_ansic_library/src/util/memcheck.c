@@ -12,7 +12,7 @@
 
 /*** BeginHeader */
 #include <stddef.h>
-#include <xbee_ansic_library/include/xbee/platform.h>
+#include "xbee/platform.h"
 /*** EndHeader */
 
 /*** BeginHeader memcheck */

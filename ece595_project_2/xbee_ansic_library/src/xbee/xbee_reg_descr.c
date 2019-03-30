@@ -26,8 +26,8 @@
 */
 /*** BeginHeader _xbee_reg_table, _xbee_rci_types */
 
-#include <xbee_ansic_library/include/xbee/reg_descr.h>
-#include <xbee_ansic_library/include/xbee/sxa.h>
+#include "xbee/reg_descr.h"
+#include "xbee/sxa.h"
 
 /*** EndHeader */
 

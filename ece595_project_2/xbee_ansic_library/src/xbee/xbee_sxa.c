@@ -29,13 +29,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <xbee_ansic_library/include/xbee/atcmd.h>
-#include <xbee_ansic_library/include/xbee/byteorder.h>
-#include <xbee_ansic_library/include/xbee/device.h>
-#include <xbee_ansic_library/include/xbee/discovery.h>
-#include <xbee_ansic_library/include/xbee/io.h>
-#include <xbee_ansic_library/include/xbee/platform.h>
-#include <xbee_ansic_library/include/xbee/sxa.h>
+#include "xbee/platform.h"
+#include "xbee/atcmd.h"
+#include "xbee/byteorder.h"
+#include "xbee/device.h"
+#include "xbee/discovery.h"
+#include "xbee/io.h"
+#include "xbee/sxa.h"
 
 #ifndef __DC__
 	#define _xbee_sxa_debug

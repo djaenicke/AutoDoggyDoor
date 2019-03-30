@@ -27,8 +27,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <xbee_ansic_library/include/xbee/platform.h>
-#include <xbee_ansic_library/include/xbee/xmodem.h>
+#include "xbee/platform.h"
+#include "xbee/xmodem.h"
 
 #ifndef __DC__
 	#define _xmodem_debug
@@ -204,7 +204,7 @@ int xbee_xmodem_tx_init( xbee_xmodem_state_t *xbxm, uint16_t flags)
 // Dynamic C has crc16_calc() built in (part of crc16.lib).  On other
 // platforms bring it in via its header.
 #ifndef __DC__
-	#include <xbee_ansic_library/include/xbee/xmodem_crc16.h>
+	#include "xbee/xmodem_crc16.h"
 #endif
 // <0 for failure, 1 for file done, 0 for OK to send
 _xmodem_debug

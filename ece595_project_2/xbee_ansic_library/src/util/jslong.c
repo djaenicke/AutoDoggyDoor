@@ -51,7 +51,7 @@
 /*** BeginHeader */
 #include <stdio.h>
 #include <string.h>
-#include <xbee_ansic_library/include/xbee/platform.h>
+#include "xbee/platform.h"
 
 #ifndef JS_HAVE_LONG_LONG
 

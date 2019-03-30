@@ -20,7 +20,7 @@
 	of byte values.
 */
 
-#include <xbee_ansic_library/include/xbee/platform.h>
+#include "xbee/platform.h"
 
 // See xbee/platform.h for function documentation.
 int hexstrtobyte (const char *p)

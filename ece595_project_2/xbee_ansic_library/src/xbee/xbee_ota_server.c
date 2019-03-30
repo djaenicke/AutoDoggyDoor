@@ -22,7 +22,7 @@
 
 /*** BeginHeader */
 #include <stdio.h>
-#include <xbee_ansic_library/include/xbee/ota_server.h>
+#include "xbee/ota_server.h"
 /*** EndHeader */
 
 /*** BeginHeader xbee_ota_server_cmd */

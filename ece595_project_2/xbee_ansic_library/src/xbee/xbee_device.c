@@ -27,8 +27,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <xbee_ansic_library/include/xbee/device.h>
-#include <xbee_ansic_library/include/xbee/platform.h>
+#include "xbee/platform.h"
+#include "xbee/device.h"
 
 #ifndef __DC__
 	#define _xbee_device_debug
@@ -39,8 +39,8 @@
 #endif
 
 // Load library for sending and receiving frames over serial port.
-#include <xbee_ansic_library/include/xbee/serial.h>
-#include <xbee_ansic_library/include/wpan/aps.h>
+#include "xbee/serial.h"
+#include "wpan/aps.h"
 /*** EndHeader */
 
 
@@ -484,7 +484,7 @@ uint8_t (_xbee_checksum)( const void FAR *bytes, uint16_t length,
 
 	@sa xbee_dev_init(), xbee_serial_write(), xbee_dev_flowcontrol()
 */
-#include <xbee_ansic_library/include/xbee/byteorder.h>
+#include "xbee/byteorder.h"
 
 _xbee_device_debug
 int xbee_frame_write( xbee_dev_t *xbee, const void FAR *header,

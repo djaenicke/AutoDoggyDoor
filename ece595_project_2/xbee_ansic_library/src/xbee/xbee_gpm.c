@@ -15,8 +15,8 @@
 	868LP, Wi-Fi).
 */
 
-#include <xbee_ansic_library/include/xbee/byteorder.h>
-#include <xbee_ansic_library/include/xbee/gpm.h>
+#include "xbee/byteorder.h"
+#include "xbee/gpm.h"
 
 int xbee_gpm_envelope_create( wpan_envelope_t FAR *envelope, wpan_dev_t *dev,
 	const addr64 FAR *ieee)

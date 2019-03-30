@@ -24,10 +24,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <xbee_ansic_library/include/xbee/atcmd.h>
-#include <xbee_ansic_library/include/xbee/byteorder.h>
-#include <xbee_ansic_library/include/xbee/discovery.h>
-#include <xbee_ansic_library/include/xbee/platform.h>
+#include "xbee/platform.h"
+#include "xbee/atcmd.h"
+#include "xbee/byteorder.h"
+#include "xbee/discovery.h"
 /*** EndHeader */
 
 /*** BeginHeader xbee_disc_nd_parse */

@@ -20,7 +20,7 @@
 	@note Should be written in assembly for embedded targets.
 */
 
-#include <xbee_ansic_library/include/xbee/platform.h>
+#include "xbee/platform.h"
 
 #ifndef HAVE_SWAP_FUNCS
 

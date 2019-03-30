@@ -18,8 +18,8 @@
 	have an existing implementation.
 */
 
-#include <xbee_ansic_library/include/xbee/platform.h>
-#include <xbee_ansic_library/include/xbee/xmodem_crc16.h>
+#include "xbee/platform.h"
+#include "xbee/xmodem_crc16.h"
 
 /// Table for XMODEM and "False CCITT" CRC, calculated with standard
 /// 0x1021 polynomial.

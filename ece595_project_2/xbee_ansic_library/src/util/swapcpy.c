@@ -19,7 +19,7 @@
 
 /*** BeginHeader _swapcpy */
 /*** EndHeader */
-#include <xbee_ansic_library/include/xbee/byteorder.h>
+#include "xbee/byteorder.h"
 // documented in xbee/byteorder.h
 void _swapcpy( void FAR *dst, const void FAR *src, uint_fast8_t bytes)
 {

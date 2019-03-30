@@ -21,8 +21,8 @@
 #include <stdio.h>
 #include <time.h>
 
-#include <xbee_ansic_library/include/xbee/byteorder.h>		// for be16toh, etc.
-#include <xbee_ansic_library/include/xbee/ebl_file.h>
+#include "xbee/byteorder.h"		// for be16toh, etc.
+#include "xbee/ebl_file.h"
 /*** EndHeader */
 
 /*** BeginHeader platform_info */

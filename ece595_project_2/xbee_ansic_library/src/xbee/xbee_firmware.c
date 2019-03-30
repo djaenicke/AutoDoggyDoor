@@ -31,10 +31,10 @@
 #include <errno.h>
 #include <stdio.h>
 
-#include <xbee_ansic_library/include/xbee/atmode.h>
-#include <xbee_ansic_library/include/xbee/byteorder.h>
-#include <xbee_ansic_library/include/xbee/firmware.h>
-#include <xbee_ansic_library/include/xbee/platform.h>
+#include "xbee/platform.h"
+#include "xbee/atmode.h"
+#include "xbee/byteorder.h"
+#include "xbee/firmware.h"
 
 #ifndef __DC__
 	#define _xbee_firmware_debug

@@ -32,10 +32,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <xbee_ansic_library/include/xbee/atcmd.h>
-#include <xbee_ansic_library/include/xbee/byteorder.h>
-#include <xbee_ansic_library/include/xbee/io.h>
-#include <xbee_ansic_library/include/xbee/platform.h>
+#include "xbee/platform.h"
+#include "xbee/atcmd.h"
+#include "xbee/byteorder.h"
+#include "xbee/io.h"
 
 #ifndef __DC__
 	#define _xbee_io_debug

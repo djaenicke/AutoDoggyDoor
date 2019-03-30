@@ -22,8 +22,8 @@
 /*** BeginHeader */
 #include <string.h>
 
-#include <xbee_ansic_library/include/xbee/platform.h>
-#include <xbee_ansic_library/include/xbee/transparent_serial.h>
+#include "xbee/platform.h"
+#include "xbee/transparent_serial.h"
 /*** EndHeader */
 
 /*** BeginHeader xbee_transparent_serial */

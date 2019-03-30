@@ -19,11 +19,11 @@
 
 #include <stdio.h>
 
-#include <xbee_ansic_library/include/wpan/types.h>
-#include <xbee_ansic_library/include/xbee/atcmd.h>
-#include <xbee_ansic_library/include/xbee/byteorder.h>
-#include <xbee_ansic_library/include/xbee/platform.h>
-#include <xbee_ansic_library/include/xbee/scan.h>
+#include "xbee/platform.h"
+#include "xbee/atcmd.h"
+#include "xbee/byteorder.h"
+#include "xbee/scan.h"
+#include "wpan/types.h"
 #if XBEE_WIFI_ENABLED
 	#include "xbee/wifi.h"
 #endif

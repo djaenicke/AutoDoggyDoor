@@ -29,7 +29,7 @@
 */
 
 /*** BeginHeader */
-#include <xbee_ansic_library/include/xbee/platform.h>
+#include "xbee/platform.h"
 
 #ifdef XBEE_DEVICE_ENABLE_ATMODE
 

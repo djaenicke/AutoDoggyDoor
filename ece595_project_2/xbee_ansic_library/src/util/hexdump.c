@@ -19,10 +19,10 @@
 */
 /*** BeginHeader hex_dump */
 /*** EndHeader */
+#include "xbee/platform.h"
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-#include <xbee_ansic_library/include/xbee/platform.h>
 
 // See xbee/platform.h for function documentation.
 void hex_dump( const void FAR *address, uint16_t length, uint16_t flags)

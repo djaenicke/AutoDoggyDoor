@@ -19,8 +19,8 @@
 /*** BeginHeader */
 #include <stddef.h>
 #include <stdio.h>
-#include <xbee_ansic_library/include/xbee/byteorder.h>
-#include <xbee_ansic_library/include/xbee/route.h>
+#include "xbee/byteorder.h"
+#include "xbee/route.h"
 /*** EndHeader */
 
 /*** BeginHeader xbee_route_dump_record_indicator */

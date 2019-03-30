@@ -21,13 +21,13 @@
 #include <stddef.h>
 #include <stdio.h>
 
-#include <xbee_ansic_library/include/wpan/aps.h>
-#include <xbee_ansic_library/include/wpan/types.h>
-#include <xbee_ansic_library/include/xbee/device.h>
-#include <xbee_ansic_library/include/xbee/platform.h>
-#include <xbee_ansic_library/include/xbee/wpan.h>
-#include <xbee_ansic_library/include/zigbee/zcl.h>
-#include <xbee_ansic_library/include/zigbee/zdo.h>
+#include "xbee/platform.h"
+#include "xbee/device.h"
+#include "xbee/wpan.h"
+#include "wpan/types.h"
+#include "wpan/aps.h"
+#include "zigbee/zdo.h"
+#include "zigbee/zcl.h"
 
 #ifndef __DC__
 	#define xbee_wpan_debug
@@ -41,7 +41,7 @@
 /*** BeginHeader _xbee_handle_receive_explicit */
 /*** EndHeader */
 
-#include <xbee_ansic_library/include/xbee/byteorder.h>
+#include "xbee/byteorder.h"
 
 /**
 	Process XBee "Receive Explicit" frames (type 0x91) and hand

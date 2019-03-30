@@ -21,10 +21,10 @@
 /*** BeginHeader */
 #include <stdio.h>
 
-#include <xbee_ansic_library/include/xbee/atcmd.h>
-#include <xbee_ansic_library/include/xbee/commissioning.h>
-#include <xbee_ansic_library/include/xbee/platform.h>
-#include <xbee_ansic_library/include/zigbee/zcl_commissioning.h>
+#include "xbee/platform.h"
+#include "zigbee/zcl_commissioning.h"
+#include "xbee/atcmd.h"
+#include "xbee/commissioning.h"
 /*** EndHeader */
 
 /*** BeginHeader xbee_commissioning_get */

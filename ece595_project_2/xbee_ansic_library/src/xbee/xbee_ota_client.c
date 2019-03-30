@@ -23,9 +23,9 @@
 /*** BeginHeader */
 #include <string.h>
 
-#include <xbee_ansic_library/include/xbee/cbuf.h>
-#include <xbee_ansic_library/include/xbee/ota_client.h>
-#include <xbee_ansic_library/include/xbee/platform.h>
+#include "xbee/platform.h"
+#include "xbee/ota_client.h"
+#include "xbee/cbuf.h"
 /*** EndHeader */
 
 /*** BeginHeader _xbee_ota_transparent_rx */
