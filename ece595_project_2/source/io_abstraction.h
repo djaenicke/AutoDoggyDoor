@@ -28,8 +28,8 @@ typedef enum
     BLUE_LED=0,
     SW_2,
     SW_3,
-    UART4_RX,
-    UART4_TX,
+    UART3_RX,
+    UART3_TX,
     NUM_IO /* !!! Make sure this is last */
 } IO_Map_T;
 

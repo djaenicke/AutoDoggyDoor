@@ -21,6 +21,7 @@ typedef struct Xbee_Serial_Tag
 extern void Init_Xbee_Timer(void);
 extern uint32_t Get_Xbee_Seconds_Timer(void);
 extern uint32_t Get_Xbee_Milliseconds_Timer(void);
+extern uint32_t Get_Time_Since_Last_Tx(void);
 
 extern int Xbee_Serial_Open(Xbee_Serial_T *serial);
 extern void Xbee_Serial_Close(void);

@@ -7,6 +7,7 @@
 
 #include "proximity_estimation.h"
 #include "xbee_interface.h"
+#include "xbee_atcmd.h"
 #include "assert.h"
 
 
@@ -24,7 +25,8 @@ void Run_Proximity_Estimation(void)
         init_xbee_if = TRUE;
     }
 
-    Xbee_Serial_Write("\r\nTest!!!", sizeof("\r\nTest!!!"));
+
+    Process_Xbee_AT_Cmd();
 
 }
 
@@ -32,5 +34,6 @@ void Init_Xbee_Interface(void)
 {
     Init_Xbee_Timer();
     Xbee_Serial_Open(&Xbee_Serial_Port);
+    Enter_Xbee_AT_Cmd_Mode();
 }
 

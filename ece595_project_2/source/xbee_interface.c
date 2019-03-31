@@ -27,6 +27,8 @@ static uint8_t Working_Rx_Buffer[RX_BUFF_SIZE];
 static uint32_t Xbee_Milliseconds_Timer = 0;
 static uint32_t Xbee_Seconds_Timer = 0;
 
+static uint32_t Silence_Start = 0;
+
 void UART_User_Callback(UART_Type *base, uart_handle_t *handle, status_t status, void *userData);
 
 void Init_Xbee_Timer(void)
@@ -61,7 +63,6 @@ void FTM0_IRQHandler(void)
     if (Xbee_Milliseconds_Timer == 1000)
     {
         Xbee_Seconds_Timer++;
-        Xbee_Milliseconds_Timer=0;
     }
 
     __DSB();
@@ -131,7 +132,9 @@ int Xbee_Serial_Read(void *buffer, int bufsize)
     if (avail)
     {
         if (bufsize > avail)
+        {
             bufsize = avail;
+        }
 
         Read_Xfer.data = buffer;
         Read_Xfer.dataSize = bufsize;
@@ -204,12 +207,12 @@ int Xbee_Serial_Open(Xbee_Serial_T *serial)
     UART_Cfg.enableTx = true;
     UART_Cfg.enableRx = true;
 
+    Tx_Buffer = (xbee_cbuf_t *) Internal_Tx_Buffer;
+    xbee_cbuf_init(Tx_Buffer, TX_BUFF_SIZE);
+
     status = UART_Init(Xbee_Serial.base, &UART_Cfg, CLOCK_GetFreq(kCLOCK_BusClk));
     UART_TransferCreateHandle(Xbee_Serial.base, &UART_Handle, UART_User_Callback, NULL);
     UART_TransferStartRingBuffer(Xbee_Serial.base, &UART_Handle, Working_Rx_Buffer, RX_BUFF_SIZE);
-
-    Tx_Buffer = (xbee_cbuf_t *) Internal_Tx_Buffer;
-    xbee_cbuf_init(Tx_Buffer, TX_BUFF_SIZE);
 
     if (kStatus_Success == status)
     {
@@ -246,11 +249,20 @@ void UART_User_Callback(UART_Type *base, uart_handle_t *handle, status_t status,
             xbee_cbuf_get(Tx_Buffer, Working_Tx_Buffer, Write_Xfer.dataSize);
             UART_TransferSendNonBlocking(Xbee_Serial.base, &UART_Handle, &Write_Xfer);
         }
+        else
+        {
+            Silence_Start = Get_Xbee_Milliseconds_Timer();
+        }
     }
 
     if (kStatus_UART_RxIdle == status)
     {
 
     }
+}
+
+uint32_t Get_Time_Since_Last_Tx(void)
+{
+    return (Get_Xbee_Milliseconds_Timer() - Silence_Start);
 }
 
