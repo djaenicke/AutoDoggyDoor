@@ -9,6 +9,7 @@
 #define PROXIMITY_ESTIMATION_H_
 
 
+extern void Init_Xbee_Interface(void);
 extern void Run_Proximity_Estimation(void);
 
 

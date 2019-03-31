@@ -78,6 +78,9 @@ int main(void)
     BOARD_InitBootPeripherals();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+
+    Init_Xbee_Interface();
+
     /* Disable SYSMPU. */
     base->CESR &= ~SYSMPU_CESR_VLD_MASK;
 
@@ -88,6 +91,7 @@ int main(void)
     }
 
     Init_OS_Tasks();
+
     vTaskStartScheduler();
 
     /* Will not get here unless a task calls vTaskEndScheduler ()*/

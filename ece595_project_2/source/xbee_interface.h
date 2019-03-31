@@ -23,6 +23,9 @@ extern uint32_t Get_Xbee_Seconds_Timer(void);
 extern uint32_t Get_Xbee_Milliseconds_Timer(void);
 extern uint32_t Get_Time_Since_Last_Tx(void);
 
+extern void Start_Xbee_Reboot_Wait(void);
+extern uint32_t Get_Time_Since_Xbee_Reboot(void);
+
 extern int Xbee_Serial_Open(Xbee_Serial_T *serial);
 extern void Xbee_Serial_Close(void);
 

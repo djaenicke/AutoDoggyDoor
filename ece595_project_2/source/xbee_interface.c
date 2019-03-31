@@ -28,6 +28,7 @@ static uint32_t Xbee_Milliseconds_Timer = 0;
 static uint32_t Xbee_Seconds_Timer = 0;
 
 static uint32_t Silence_Start = 0;
+static uint32_t Xbee_Reboot_Start = 0;
 
 void UART_User_Callback(UART_Type *base, uart_handle_t *handle, status_t status, void *userData);
 
@@ -264,5 +265,15 @@ void UART_User_Callback(UART_Type *base, uart_handle_t *handle, status_t status,
 uint32_t Get_Time_Since_Last_Tx(void)
 {
     return (Get_Xbee_Milliseconds_Timer() - Silence_Start);
+}
+
+void Start_Xbee_Reboot_Wait(void)
+{
+    Xbee_Reboot_Start = Get_Xbee_Milliseconds_Timer();
+}
+
+uint32_t Get_Time_Since_Xbee_Reboot(void)
+{
+    return (Get_Xbee_Milliseconds_Timer() - Xbee_Reboot_Start);
 }
 

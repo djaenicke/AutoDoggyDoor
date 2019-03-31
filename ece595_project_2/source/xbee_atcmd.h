@@ -26,5 +26,6 @@ typedef enum {
 
 extern uint8_t Send_Xbee_AT_Cmd_Blocking(AT_CMD_T cmd, uint8_t* resp_buf, size_t resp_buf_size);
 extern void Change_Xbee_Power_Level_Blocking(Power_Level_T level);
+extern void Enter_Xbee_API_Mode(void);
 
 #endif /* XBEE_ATCMD_H_ */
