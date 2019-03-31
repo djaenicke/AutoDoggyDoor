@@ -13,11 +13,21 @@
 
 Xbee_Serial_T Xbee_Serial_Port = {UART2, 9600};
 static uint8_t Xbee_AT_Resp[RESP_BUF_SIZE];
-
+static uint8_t RSSI;
 
 void Run_Proximity_Estimation(void)
 {
-    Xbee_Send_Msg("PING!", sizeof("PING!")-1);
+    static Tx_Status_T last_tx_status = NO_ACK_RXED;
+
+    if (TX_SUCCESS == last_tx_status)
+    {
+        Xbee_Receive_Msg_Blocking((char *)Xbee_AT_Resp, sizeof(Xbee_AT_Resp), sizeof("ECHO"));
+        printf("\r\n%s", Xbee_AT_Resp);
+        RSSI = Get_Last_RSSI();
+        printf("\r\nRSSI = -%d", RSSI);
+    }
+
+    last_tx_status = Xbee_Send_Msg_Blocking("PING!", sizeof("PING!")-1);
 }
 
 void Init_Xbee_Interface(void)
