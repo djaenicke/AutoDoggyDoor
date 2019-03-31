@@ -72,6 +72,7 @@ int main(void)
 {
     static struct netif fsl_netif;
 
+
     SYSMPU_Type *base = SYSMPU;
     BOARD_InitPins();
     BOARD_InitBootPeripherals();

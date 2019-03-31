@@ -114,9 +114,6 @@
 									<listOptionValue builtIn="false" value="../component/lists"/>
 									<listOptionValue builtIn="false" value="../lwip/src"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include"/>
-									<listOptionValue builtIn="false" value="../xbee"/>
-									<listOptionValue builtIn="false" value="../zigbee"/>
-									<listOptionValue builtIn="false" value="../wpan"/>
 									<listOptionValue builtIn="false" value="../"/>
 								</option>
 								<option id="gnu.c.compiler.option.include.files.1814840178" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files" useByScannerDiscovery="false"/>
@@ -178,9 +175,6 @@
 									<listOptionValue builtIn="false" value="../component/lists"/>
 									<listOptionValue builtIn="false" value="../lwip/src"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include"/>
-									<listOptionValue builtIn="false" value="../xbee"/>
-									<listOptionValue builtIn="false" value="../zigbee"/>
-									<listOptionValue builtIn="false" value="../wpan"/>
 									<listOptionValue builtIn="false" value="../"/>
 									<listOptionValue builtIn="false" value="c:/nxp/mcuxpressoide_10.3.0_2200/ide/plugins/com.nxp.mcuxpresso.tools.win32_10.3.0.201811011841/tools/redlib/include"/>
 									<listOptionValue builtIn="false" value="c:/nxp/mcuxpressoide_10.3.0_2200/ide/plugins/com.nxp.mcuxpresso.tools.win32_10.3.0.201811011841/tools/features/include"/>
@@ -319,10 +313,6 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="startup"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="utilities"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="wpan"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="xbee"/>
-						<entry excluding="src/wpan/wpan_aps.c|src/xbee/xbee_tx_status.c|src/xbee/xbee_wifi.c|src/xbee/xbee_time.c|src/xbee/xbee_sms.c|src/xbee/xbee_ipv4.c|src/zigbee" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="xbee_ansic_library"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="zigbee"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -638,9 +628,6 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="startup"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="utilities"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="wpan"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="xbee"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="zigbee"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

@@ -21,8 +21,9 @@
 	Write to tail, read from head.
 */
 /*** BeginHeader */
-#include "xbee/cbuf.h"
 #include <string.h>
+
+#include "xbee_cbuf.h"
 /*** EndHeader */
 
 /*		Functions are documented in xbee/cbuf.h		*/

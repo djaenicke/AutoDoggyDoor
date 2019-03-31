@@ -21,8 +21,14 @@
 #ifndef XBEE_CBUF_H
 #define XBEE_CBUF_H
 
-#include "xbee/platform.h"
+#define FAR
+#define XBEE_BEGIN_DECLS
+#define XBEE_END_DECLS
+
 #include <stddef.h>
+#include <stdint.h>
+#include <errno.h>
+
 XBEE_BEGIN_DECLS
 
 /// Circular buffer used by transparent serial cluster handler.  Buffer is
