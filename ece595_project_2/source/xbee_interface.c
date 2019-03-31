@@ -27,8 +27,8 @@ static uint8_t Working_Rx_Buffer[RX_BUFF_SIZE];
 static uint32_t Xbee_Milliseconds_Timer = 0;
 static uint32_t Xbee_Seconds_Timer = 0;
 
-static uint32_t Silence_Start = 0;
-static uint32_t Xbee_Reboot_Start = 0;
+static uint32_t Silence_Start = SILENCE_REQ_MS;
+static uint32_t Xbee_Reboot_Start = XBEE_REBOOT_TIME;
 
 void UART_User_Callback(UART_Type *base, uart_handle_t *handle, status_t status, void *userData);
 

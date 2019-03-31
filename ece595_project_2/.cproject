@@ -302,6 +302,21 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="com.crt.advproject.config.exe.debug.467231279.366554670" name="/" resourcePath="source">
+						<toolChain id="com.crt.advproject.toolchain.exe.debug.748139065" name="NXP MCU Tools" superClass="com.crt.advproject.toolchain.exe.debug" unusedChildren="">
+							<tool id="com.crt.advproject.cpp.exe.debug.1253151405" name="MCU C++ Compiler" superClass="com.crt.advproject.cpp.exe.debug.1340704031"/>
+							<tool id="com.crt.advproject.gcc.exe.debug.1210113800" name="MCU C Compiler" superClass="com.crt.advproject.gcc.exe.debug.137281947">
+								<inputType id="com.crt.advproject.compiler.input.397316111" superClass="com.crt.advproject.compiler.input"/>
+							</tool>
+							<tool id="com.crt.advproject.gas.exe.debug.376800286" name="MCU Assembler" superClass="com.crt.advproject.gas.exe.debug.1654274965">
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1919529786" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+								<inputType id="com.crt.advproject.assembler.input.252530710" name="Additional Assembly Source Files" superClass="com.crt.advproject.assembler.input"/>
+							</tool>
+							<tool id="com.crt.advproject.link.cpp.exe.debug.839259863" name="MCU C++ Linker" superClass="com.crt.advproject.link.cpp.exe.debug.762521702"/>
+							<tool id="com.crt.advproject.link.exe.debug.1932314569" name="MCU Linker" superClass="com.crt.advproject.link.exe.debug.61258036"/>
+							<tool id="com.crt.advproject.tool.debug.debug.1365679549" name="MCU Debugger" superClass="com.crt.advproject.tool.debug.debug.1780439846"/>
+						</toolChain>
+					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CMSIS"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="amazon-freertos"/>
@@ -403,7 +418,7 @@
 									<listOptionValue builtIn="false" value="__REDLIB__"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.undef.symbol.1086765582" name="Undefined symbols (-U)" superClass="gnu.c.compiler.option.preprocessor.undef.symbol"/>
-								<option id="gnu.c.compiler.option.include.paths.1807891896" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+								<option id="gnu.c.compiler.option.include.paths.1807891896" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="../component/uart"/>
 									<listOptionValue builtIn="false" value="../drivers"/>
 									<listOptionValue builtIn="false" value="../component/serial_manager"/>
@@ -427,9 +442,6 @@
 									<listOptionValue builtIn="false" value="../component/lists"/>
 									<listOptionValue builtIn="false" value="../lwip/src"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include"/>
-									<listOptionValue builtIn="false" value="../xbee"/>
-									<listOptionValue builtIn="false" value="../zigbee"/>
-									<listOptionValue builtIn="false" value="../wpan"/>
 									<listOptionValue builtIn="false" value="../"/>
 									<listOptionValue builtIn="false" value="c:/nxp/mcuxpressoide_10.3.0_2200/ide/plugins/com.nxp.mcuxpresso.tools.win32_10.3.0.201811011841/tools/redlib/include"/>
 									<listOptionValue builtIn="false" value="c:/nxp/mcuxpressoide_10.3.0_2200/ide/plugins/com.nxp.mcuxpresso.tools.win32_10.3.0.201811011841/tools/features/include"/>
@@ -467,7 +479,7 @@
 								<option id="com.crt.advproject.gas.thumb.645937224" name="Thumb mode" superClass="com.crt.advproject.gas.thumb" value="true" valueType="boolean"/>
 								<option id="com.crt.advproject.gas.arch.1143611907" name="Architecture" superClass="com.crt.advproject.gas.arch" value="com.crt.advproject.gas.target.cm4" valueType="enumerated"/>
 								<option id="gnu.both.asm.option.flags.crt.310954655" name="Assembler flags" superClass="gnu.both.asm.option.flags.crt" value="-c -x assembler-with-cpp -D__REDLIB__" valueType="string"/>
-								<option id="gnu.both.asm.option.include.paths.1797912749" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+								<option id="gnu.both.asm.option.include.paths.1797912749" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="../component/uart"/>
 									<listOptionValue builtIn="false" value="../drivers"/>
 									<listOptionValue builtIn="false" value="../component/serial_manager"/>
@@ -491,9 +503,6 @@
 									<listOptionValue builtIn="false" value="../component/lists"/>
 									<listOptionValue builtIn="false" value="../lwip/src"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include"/>
-									<listOptionValue builtIn="false" value="../xbee"/>
-									<listOptionValue builtIn="false" value="../zigbee"/>
-									<listOptionValue builtIn="false" value="../wpan"/>
 									<listOptionValue builtIn="false" value="../"/>
 									<listOptionValue builtIn="false" value="c:/nxp/mcuxpressoide_10.3.0_2200/ide/plugins/com.nxp.mcuxpresso.tools.win32_10.3.0.201811011841/tools/redlib/include"/>
 									<listOptionValue builtIn="false" value="c:/nxp/mcuxpressoide_10.3.0_2200/ide/plugins/com.nxp.mcuxpresso.tools.win32_10.3.0.201811011841/tools/features/include"/>
@@ -561,11 +570,11 @@
 							</tool>
 							<tool id="com.crt.advproject.link.exe.release.2104354628" name="MCU Linker" superClass="com.crt.advproject.link.exe.release">
 								<option id="com.crt.advproject.link.thumb.2018464947" name="Thumb mode" superClass="com.crt.advproject.link.thumb" value="true" valueType="boolean"/>
-								<option id="com.crt.advproject.link.memory.load.image.1244487414" name="Plain load image" superClass="com.crt.advproject.link.memory.load.image" value="" valueType="string"/>
+								<option id="com.crt.advproject.link.memory.load.image.1244487414" name="Plain load image" superClass="com.crt.advproject.link.memory.load.image" useByScannerDiscovery="false" value="" valueType="string"/>
 								<option id="com.crt.advproject.link.memory.heapAndStack.1261837992" name="Heap and Stack options" superClass="com.crt.advproject.link.memory.heapAndStack" value="&amp;Heap:Default;Default;0x6400&amp;Stack:Default;Default;0x800" valueType="string"/>
-								<option id="com.crt.advproject.link.memory.data.1575857410" name="Global data placement" superClass="com.crt.advproject.link.memory.data" value="" valueType="string"/>
-								<option id="com.crt.advproject.link.memory.sections.1165563936" name="Extra linker script input sections" superClass="com.crt.advproject.link.memory.sections" valueType="stringList"/>
-								<option id="com.crt.advproject.link.gcc.multicore.master.userobjs.36362235" name="Slave Objects (not visible)" superClass="com.crt.advproject.link.gcc.multicore.master.userobjs" valueType="userObjs"/>
+								<option id="com.crt.advproject.link.memory.data.1575857410" name="Global data placement" superClass="com.crt.advproject.link.memory.data" useByScannerDiscovery="false" value="" valueType="string"/>
+								<option id="com.crt.advproject.link.memory.sections.1165563936" name="Extra linker script input sections" superClass="com.crt.advproject.link.memory.sections" useByScannerDiscovery="false" valueType="stringList"/>
+								<option id="com.crt.advproject.link.gcc.multicore.master.userobjs.36362235" name="Slave Objects (not visible)" superClass="com.crt.advproject.link.gcc.multicore.master.userobjs" useByScannerDiscovery="false" valueType="userObjs"/>
 								<option id="com.crt.advproject.link.arch.619957509" name="Architecture" superClass="com.crt.advproject.link.arch" value="com.crt.advproject.link.target.cm4" valueType="enumerated"/>
 								<option id="gnu.c.link.option.nostart.1443337923" name="Do not use standard start files (-nostartfiles)" superClass="gnu.c.link.option.nostart"/>
 								<option id="gnu.c.link.option.nodeflibs.1013385803" name="Do not use default libraries (-nodefaultlibs)" superClass="gnu.c.link.option.nodeflibs"/>
@@ -602,7 +611,7 @@
 								<option id="com.crt.advproject.link.gcc.nanofloat.553661136" name="Enable printf float " superClass="com.crt.advproject.link.gcc.nanofloat"/>
 								<option id="com.crt.advproject.link.gcc.nanofloat.scanf.894621871" name="Enable scanf float " superClass="com.crt.advproject.link.gcc.nanofloat.scanf"/>
 								<option id="com.crt.advproject.link.toram.649314007" name="Link application to RAM" superClass="com.crt.advproject.link.toram"/>
-								<option defaultValue="com.crt.advproject.heapAndStack.mcuXpressoStyle" id="com.crt.advproject.link.memory.heapAndStack.style.1613408578" name="Heap and Stack placement" superClass="com.crt.advproject.link.memory.heapAndStack.style" valueType="enumerated"/>
+								<option defaultValue="com.crt.advproject.heapAndStack.mcuXpressoStyle" id="com.crt.advproject.link.memory.heapAndStack.style.1613408578" name="Heap and Stack placement" superClass="com.crt.advproject.link.memory.heapAndStack.style" useByScannerDiscovery="false" valueType="enumerated"/>
 								<option id="com.crt.advproject.link.stackOffset.1017506777" name="Stack offset" superClass="com.crt.advproject.link.stackOffset"/>
 								<option id="com.crt.advproject.link.gcc.multicore.slave.1301958360" name="Multicore configuration" superClass="com.crt.advproject.link.gcc.multicore.slave"/>
 								<option id="com.crt.advproject.link.gcc.multicore.master.1434675758" name="Multicore master" superClass="com.crt.advproject.link.gcc.multicore.master"/>
@@ -618,6 +627,21 @@
 							<tool id="com.crt.advproject.tool.debug.release.478263228" name="MCU Debugger" superClass="com.crt.advproject.tool.debug.release"/>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="com.crt.advproject.config.exe.release.1012036319.893676883" name="/" resourcePath="source">
+						<toolChain id="com.crt.advproject.toolchain.exe.release.2023224382" name="NXP MCU Tools" superClass="com.crt.advproject.toolchain.exe.release" unusedChildren="">
+							<tool id="com.crt.advproject.cpp.exe.release.1849616780" name="MCU C++ Compiler" superClass="com.crt.advproject.cpp.exe.release.1377578283"/>
+							<tool id="com.crt.advproject.gcc.exe.release.902046699" name="MCU C Compiler" superClass="com.crt.advproject.gcc.exe.release.1724078267">
+								<inputType id="com.crt.advproject.compiler.input.2091397636" superClass="com.crt.advproject.compiler.input"/>
+							</tool>
+							<tool id="com.crt.advproject.gas.exe.release.486355857" name="MCU Assembler" superClass="com.crt.advproject.gas.exe.release.900281193">
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1877915607" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+								<inputType id="com.crt.advproject.assembler.input.1168476626" name="Additional Assembly Source Files" superClass="com.crt.advproject.assembler.input"/>
+							</tool>
+							<tool id="com.crt.advproject.link.cpp.exe.release.1781191515" name="MCU C++ Linker" superClass="com.crt.advproject.link.cpp.exe.release.189188927"/>
+							<tool id="com.crt.advproject.link.exe.release.160736727" name="MCU Linker" superClass="com.crt.advproject.link.exe.release.2104354628"/>
+							<tool id="com.crt.advproject.tool.debug.release.1586289460" name="MCU Debugger" superClass="com.crt.advproject.tool.debug.release.478263228"/>
+						</toolChain>
+					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CMSIS"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="amazon-freertos"/>
@@ -626,6 +650,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="device"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="startup"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="utilities"/>
 					</sourceEntries>
@@ -638,21 +663,6 @@
 		<project id="ece595_project_2_lwip_dhcp_freertos.null.1265070390" name="ece595_project_2_lwip_dhcp_freertos" projectType="com.crt.advproject.projecttype.exe"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.debug.467231279;com.crt.advproject.config.exe.debug.467231279.;com.crt.advproject.gas.exe.debug.1654274965;com.crt.advproject.assembler.input.1946493655">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.crt.advproject.GCCManagedMakePerProjectProfile"/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.release.1012036319;com.crt.advproject.config.exe.release.1012036319.;com.crt.advproject.gas.exe.release.900281193;com.crt.advproject.assembler.input.1993252482">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.crt.advproject.GCCManagedMakePerProjectProfile"/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.debug.467231279;com.crt.advproject.config.exe.debug.467231279.;com.crt.advproject.gcc.exe.debug.137281947;com.crt.advproject.compiler.input.1555217749">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.crt.advproject.GCCManagedMakePerProjectProfile"/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.release.1012036319;com.crt.advproject.config.exe.release.1012036319.;com.crt.advproject.gcc.exe.release.1724078267;com.crt.advproject.compiler.input.828604645">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.crt.advproject.GCCManagedMakePerProjectProfile"/>
-		</scannerConfigBuildInfo>
-	</storageModule>
 	<storageModule moduleId="com.crt.config">
 		<projectStorage>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&#13;
 &lt;TargetConfig&gt;&#13;
@@ -772,4 +782,19 @@
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.debug.467231279;com.crt.advproject.config.exe.debug.467231279.;com.crt.advproject.gcc.exe.debug.137281947;com.crt.advproject.compiler.input.1555217749">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.crt.advproject.GCCManagedMakePerProjectProfile"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.debug.467231279;com.crt.advproject.config.exe.debug.467231279.;com.crt.advproject.gas.exe.debug.1654274965;com.crt.advproject.assembler.input.1946493655">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.crt.advproject.GCCManagedMakePerProjectProfile"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.release.1012036319;com.crt.advproject.config.exe.release.1012036319.;com.crt.advproject.gas.exe.release.900281193;com.crt.advproject.assembler.input.1993252482">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.crt.advproject.GCCManagedMakePerProjectProfile"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.release.1012036319;com.crt.advproject.config.exe.release.1012036319.;com.crt.advproject.gcc.exe.release.1724078267;com.crt.advproject.compiler.input.828604645">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.crt.advproject.GCCManagedMakePerProjectProfile"/>
+		</scannerConfigBuildInfo>
+	</storageModule>
 </cproject>

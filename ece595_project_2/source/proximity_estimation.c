@@ -8,6 +8,7 @@
 #include "proximity_estimation.h"
 #include "xbee_interface.h"
 #include "xbee_atcmd.h"
+#include "xbee_api.h"
 #include "assert.h"
 
 Xbee_Serial_T Xbee_Serial_Port = {UART2, 9600};
@@ -16,7 +17,7 @@ static uint8_t Xbee_AT_Resp[RESP_BUF_SIZE];
 
 void Run_Proximity_Estimation(void)
 {
-
+    Xbee_Send_Msg("PING!", sizeof("PING!")-1);
 }
 
 void Init_Xbee_Interface(void)
@@ -24,18 +25,24 @@ void Init_Xbee_Interface(void)
     Init_Xbee_Timer();
     Xbee_Serial_Open(&Xbee_Serial_Port);
 
+    printf("Checking if Xbee API mode = 2...");
     Send_Xbee_AT_Cmd_Blocking(GET_API_MODE, Xbee_AT_Resp, sizeof(Xbee_AT_Resp));
     if ('2' != Xbee_AT_Resp[0])
     {
+        printf("\r\nSetting Xbee API mode = 2...");
         /* Default to API mode */
         Enter_Xbee_API_Mode();
     }
+    printf("\r\nDone!");
 
+    printf("\r\nChecking if Xbee power level = lowest...");
     Send_Xbee_AT_Cmd_Blocking(GET_POWER_LEVEL, Xbee_AT_Resp, sizeof(Xbee_AT_Resp));
     if (LOWEST != Xbee_AT_Resp[0])
     {
+        printf("\r\nSetting Xbee power level = lowest...");
         /* Default to lowest power mode */
         Change_Xbee_Power_Level_Blocking(LOWEST);
     }
+    printf("\r\nDone!");
 }
 

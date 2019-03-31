@@ -9,9 +9,6 @@
 #include "xbee_interface.h"
 #include "xbee_atcmd.h"
 
-#define SILENCE_REQ_MS   (1000)
-#define XBEE_REBOOT_TIME (2000)
-
 static uint8_t Req_Buffer[6];
 static uint8_t Res_Buffer[RESP_BUF_SIZE];
 static uint8_t Exp_Res_Len;

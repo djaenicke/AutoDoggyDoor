@@ -12,6 +12,9 @@
 #define TRUE (1)
 #endif
 
+#define SILENCE_REQ_MS   (1200)
+#define XBEE_REBOOT_TIME (2000)
+
 typedef struct Xbee_Serial_Tag
 {
     UART_Type *base;

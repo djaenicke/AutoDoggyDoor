@@ -47,7 +47,6 @@ typedef struct Task_Cfg_Tag
 * Prototypes
 ******************************************************************************/
 /* Task function declarations */
-static void Init_App_Task(void *pvParameters);
 static void Prox_Estimation_Task(void *pvParameters);
 
 /* Local functions */
@@ -57,12 +56,11 @@ static void Init_OS_Tasks(void);
 * Variables
 ******************************************************************************/
 /* Task Configurations */
-#define NUM_TASKS (2)
+#define NUM_TASKS (1)
 const Task_Cfg_T Task_Cfg_Table[NUM_TASKS] =
 {
     /* Function,           Name,       Stack Size,  Priority */
-    {Init_App_Task,        "Init_App",  100,         configMAX_PRIORITIES - 2},
-    {Prox_Estimation_Task, "Prox Est", 1000,         configMAX_PRIORITIES - 3},
+    {Prox_Estimation_Task, "Prox Est", 1000,         configMAX_PRIORITIES - 2}
 };
 
 /*******************************************************************************
@@ -102,6 +100,8 @@ void Init_OS_Tasks(void)
 {
     uint8_t i;
 
+    printf("Initializing OS Tasks...\r\n");
+
     for (i=0; i<NUM_TASKS; i++)
     {
         if (xTaskCreate(Task_Cfg_Table[i].func, Task_Cfg_Table[i].name,
@@ -113,15 +113,6 @@ void Init_OS_Tasks(void)
     }
 
     Set_GPIO(BLUE_LED, LOW);
-}
-
-static void Init_App_Task(void *pvParameters)
-{
-    while(1)
-    {
-        printf("Initializing application...\r\n");
-        vTaskSuspend(NULL);
-    }
 }
 
 static void Prox_Estimation_Task(void *pvParameters)
