@@ -25,7 +25,14 @@ void Run_Proximity_Estimation(void)
         init_xbee_if = TRUE;
 
         Send_Xbee_AT_Cmd_Blocking(GET_API_MODE, Xbee_AT_Resp, sizeof(Xbee_AT_Resp));
-        printf("API Mode = %s", Xbee_AT_Resp);
+        printf("\n\rXbee API Mode = %s", Xbee_AT_Resp);
+
+        Send_Xbee_AT_Cmd_Blocking(GET_POWER_LEVEL, Xbee_AT_Resp, sizeof(Xbee_AT_Resp));
+        printf("\n\rXbee Power Level = %s", Xbee_AT_Resp);
+
+        Change_Xbee_Power_Level_Blocking(HIGHEST);
+        Send_Xbee_AT_Cmd_Blocking(GET_POWER_LEVEL, Xbee_AT_Resp, sizeof(Xbee_AT_Resp));
+        printf("\n\rXbee Power Level = %s", Xbee_AT_Resp);
     }
 }
 

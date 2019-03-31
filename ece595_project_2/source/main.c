@@ -33,7 +33,7 @@
 #define PRINT_THREAD_STACKSIZE 512
 
 /*! @brief Priority of the thread which prints DHCP info. */
-#define PRINT_THREAD_PRIO DEFAULT_THREAD_PRIO
+#define PRINT_THREAD_PRIO configMAX_PRIORITIES - 1
 
 typedef struct Task_Cfg_Tag
 {
@@ -61,8 +61,8 @@ static void Init_OS_Tasks(void);
 const Task_Cfg_T Task_Cfg_Table[NUM_TASKS] =
 {
     /* Function,           Name,       Stack Size,  Priority */
-    {Init_App_Task,        "Init_App",  100,         configMAX_PRIORITIES - 1},
-    {Prox_Estimation_Task, "Prox Est", 1000,         configMAX_PRIORITIES - 2},
+    {Init_App_Task,        "Init_App",  100,         configMAX_PRIORITIES - 2},
+    {Prox_Estimation_Task, "Prox Est", 1000,         configMAX_PRIORITIES - 3},
 };
 
 /*******************************************************************************
