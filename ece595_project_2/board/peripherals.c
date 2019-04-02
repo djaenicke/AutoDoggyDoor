@@ -57,7 +57,7 @@ void BOARD_InitBootPeripherals(void)
         {
             pin_config.pinDirection = Pin_Cfgs[i].dir;
             pin_config.outputLogic = Pin_Cfgs[i].init_state;
-            //GPIO_PinInit(Pin_Cfgs[i].gbase, Pin_Cfgs[i].pin, &pin_config);
+            GPIO_PinInit(Pin_Cfgs[i].gbase, Pin_Cfgs[i].pin, &pin_config);
         }
     }
 }

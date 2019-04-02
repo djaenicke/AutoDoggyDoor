@@ -49,7 +49,7 @@ void Init_Network_If(struct netif * net_if)
 
     netifapi_dhcp_start(net_if);
 
-    PRINTF("\r\n************************************************\r\n");
+    PRINTF("\r\n\r\n************************************************\r\n");
     PRINTF(" DHCP example\r\n");
     PRINTF("************************************************\r\n");
 }

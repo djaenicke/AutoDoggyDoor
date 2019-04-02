@@ -24,11 +24,7 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-/*! @brief Stack size of the thread which prints DHCP info. */
-#define PRINT_THREAD_STACKSIZE 512
 
-/*! @brief Priority of the thread which prints DHCP info. */
-#define PRINT_THREAD_PRIO DEFAULT_THREAD_PRIO
 
 /*******************************************************************************
 * Prototypes
