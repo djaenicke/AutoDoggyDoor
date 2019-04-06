@@ -13,7 +13,7 @@
 #include "xbee_api.h"
 #include "assert.h"
 
-#define EXPECTED_RESPONSE_SIZE (39)
+#define EXPECTED_RESPONSE_SIZE (22)
 
 Xbee_Serial_T Xbee_Serial_Port = {UART2, 9600};
 static uint8_t Xbee_AT_Resp[RESP_BUF_SIZE];
@@ -34,9 +34,9 @@ void Run_Proximity_Estimation(void)
         if (msg_rxed)
         {
             Remote_RSSI = Extract_Remote_RSSI();
-            printf("\r\n%s", Xbee_API_Resp);
             Local_RSSI = Get_Last_RSSI();
-            printf("\r\nRSSI = -%d", Local_RSSI);
+            printf("\r\nLocal  RSSI = -%d", Local_RSSI);
+            printf("\r\nRemote RSSI = -%d\n", Remote_RSSI);
         }
     }
 
@@ -72,8 +72,11 @@ void Init_Xbee_Interface(void)
 uint8_t Extract_Remote_RSSI(void)
 {
     char ascii_num[3];
+    int temp;
 
     (void) memcpy(ascii_num, (uint8_t *) &Xbee_API_Resp[EXPECTED_RESPONSE_SIZE-4], sizeof(ascii_num));
-    return(atoi(ascii_num));
+    temp = atoi(ascii_num);
+
+    return((uint8_t)temp);
 }
 
