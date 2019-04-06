@@ -25,6 +25,7 @@
 #include "clock_config.h"
 #include "io_abstraction.h"
 #include "proximity_estimation.h"
+#include "http_client_app.h"
 
 /*******************************************************************************
  * Definitions
@@ -48,6 +49,7 @@ typedef struct Task_Cfg_Tag
 ******************************************************************************/
 /* Task function declarations */
 static void Prox_Estimation_Task(void *pvParameters);
+static void HTTP_Client_Task(void *pvParameters);
 
 /* Local functions */
 static void Init_OS_Tasks(void);
@@ -56,11 +58,12 @@ static void Init_OS_Tasks(void);
 * Variables
 ******************************************************************************/
 /* Task Configurations */
-#define NUM_TASKS (1)
+#define NUM_TASKS (2)
 const Task_Cfg_T Task_Cfg_Table[NUM_TASKS] =
 {
-    /* Function,           Name,       Stack Size,  Priority */
-    {Prox_Estimation_Task, "Prox Est", 1000,         configMAX_PRIORITIES - 2}
+    /* Function,           Name,          Stack Size,  Priority */
+    {Prox_Estimation_Task, "Prox Est",    1000,        configMAX_PRIORITIES - 3},
+    {HTTP_Client_Task,     "HTTP_Client", 1000,        configMAX_PRIORITIES - 2}
 };
 
 /*******************************************************************************
@@ -121,5 +124,14 @@ static void Prox_Estimation_Task(void *pvParameters)
     {
         Run_Proximity_Estimation();
         vTaskDelay(pdMS_TO_TICKS(1000));
+    }
+}
+
+static void HTTP_Client_Task(void *pvParameters)
+{
+    while(1)
+    {
+        Query_Weather_API();
+        vTaskDelay(pdMS_TO_TICKS(2000));
     }
 }
