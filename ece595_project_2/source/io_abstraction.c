@@ -16,6 +16,7 @@ const Pin_Cfg_T Pin_Cfgs[NUM_IO] =
     {PORTD, GPIOD,  2, kPORT_MuxAlt3,             kGPIO_DigitalInput,  NA},   /* UART2_RX        */
     {PORTD, GPIOD,  3, kPORT_MuxAlt3,             kGPIO_DigitalOutput, NA},   /* UART2_TX        */
 };
+
 void Set_GPIO(IO_Map_T gpio, GPIO_State_T state)
 {
     if (gpio < NUM_IO)

@@ -97,11 +97,15 @@ uint8_t Xbee_Receive_Msg_Blocking(char *rf_data, uint8_t rf_data_len, uint8_t ex
 {
     uint8_t avail = 0;
     int16_t rf_data_size;
+    int bytes_read;
 
-    do
+    avail = Xbee_Serial_Rx_Used();
+
+    if ((avail - START_RF_DATA_INDEX - 1) != exp_size)
     {
-        avail = Xbee_Serial_Rx_Used();
-    } while((avail - START_RF_DATA_INDEX - 1) != exp_size);
+        bytes_read = Xbee_Serial_Read(Rx_Buffer, avail);
+        return (0);
+    }
 
     rf_data_size = (avail - START_RF_DATA_INDEX - 1);
 
@@ -118,7 +122,7 @@ uint8_t Xbee_Receive_Msg_Blocking(char *rf_data, uint8_t rf_data_len, uint8_t ex
     }
 
     memset(Rx_Buffer, 0, sizeof(Rx_Buffer));
-    Xbee_Serial_Read(Rx_Buffer, avail);
+    bytes_read = Xbee_Serial_Read(Rx_Buffer, avail);
     memcpy(rf_data, &(Rx_Buffer[START_RF_DATA_INDEX]), rf_data_size);
 
     return(rf_data_size);
