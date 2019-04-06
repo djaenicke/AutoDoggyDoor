@@ -5,26 +5,39 @@
  *      Author: Devin
  */
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "proximity_estimation.h"
 #include "xbee_interface.h"
 #include "xbee_atcmd.h"
 #include "xbee_api.h"
 #include "assert.h"
 
+#define EXPECTED_RESPONSE_SIZE (39)
+
 Xbee_Serial_T Xbee_Serial_Port = {UART2, 9600};
 static uint8_t Xbee_AT_Resp[RESP_BUF_SIZE];
-static uint8_t RSSI;
+static uint8_t Xbee_API_Resp[EXPECTED_RESPONSE_SIZE];
+static uint8_t Local_RSSI;
+static uint8_t Remote_RSSI;
+
+static uint8_t Extract_Remote_RSSI(void);
 
 void Run_Proximity_Estimation(void)
 {
     static Tx_Status_T last_tx_status = NO_ACK_RXED;
+    uint8_t msg_rxed;
 
     if (TX_SUCCESS == last_tx_status)
     {
-        Xbee_Receive_Msg_Blocking((char *)Xbee_AT_Resp, sizeof(Xbee_AT_Resp), sizeof("ECHO"));
-        printf("\r\n%s", Xbee_AT_Resp);
-        RSSI = Get_Last_RSSI();
-        printf("\r\nRSSI = -%d", RSSI);
+        msg_rxed = Xbee_Receive_Msg_Blocking((char *)Xbee_API_Resp, sizeof(Xbee_API_Resp), EXPECTED_RESPONSE_SIZE);
+        if (msg_rxed)
+        {
+            Remote_RSSI = Extract_Remote_RSSI();
+            printf("\r\n%s", Xbee_API_Resp);
+            Local_RSSI = Get_Last_RSSI();
+            printf("\r\nRSSI = -%d", Local_RSSI);
+        }
     }
 
     last_tx_status = Xbee_Send_Msg_Blocking("PING!", sizeof("PING!")-1);
@@ -54,5 +67,13 @@ void Init_Xbee_Interface(void)
         Change_Xbee_Power_Level_Blocking(LOWEST);
     }
     printf("\r\nDone!");
+}
+
+uint8_t Extract_Remote_RSSI(void)
+{
+    char ascii_num[3];
+
+    (void) memcpy(ascii_num, (uint8_t *) &Xbee_API_Resp[EXPECTED_RESPONSE_SIZE-4], sizeof(ascii_num));
+    return(atoi(ascii_num));
 }
 
