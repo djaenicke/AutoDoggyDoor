@@ -97,6 +97,7 @@
 									<listOptionValue builtIn="false" value="../device"/>
 									<listOptionValue builtIn="false" value="../lwip/port/arch"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip"/>
+									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/apps"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/priv"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/prot"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif"/>
@@ -160,6 +161,7 @@
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/priv"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/prot"/>
+									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/apps"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif/ppp"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif/ppp/polarssl"/>
