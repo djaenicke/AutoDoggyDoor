@@ -48,6 +48,7 @@ typedef struct Task_Cfg_Tag
 ******************************************************************************/
 /* Task function declarations */
 static void Prox_Estimation_Task(void *pvParameters);
+static void Lock_Control_Task(void *pvParameters);
 
 /* Local functions */
 static void Init_OS_Tasks(void);
@@ -56,11 +57,12 @@ static void Init_OS_Tasks(void);
 * Variables
 ******************************************************************************/
 /* Task Configurations */
-#define NUM_TASKS (1)
+#define NUM_TASKS (2)
 const Task_Cfg_T Task_Cfg_Table[NUM_TASKS] =
 {
     /* Function,           Name,       Stack Size,  Priority */
-    {Prox_Estimation_Task, "Prox Est", 1000,         configMAX_PRIORITIES - 2}
+    {Prox_Estimation_Task, "Prox Est", 1000,         configMAX_PRIORITIES - 2},
+    {Lock_Control_Task, "Lock Ctrl", 100,		 configMAX_PRIORITIES - 3}
 };
 
 /*******************************************************************************
@@ -76,6 +78,7 @@ int main(void)
     BOARD_InitBootPeripherals();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_Enable_SW_Interrupts();
 
     Init_Xbee_Interface();
 
@@ -123,3 +126,13 @@ static void Prox_Estimation_Task(void *pvParameters)
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
+
+static void Lock_Control_Task(void *pvParameters)
+{
+	while(1)
+	{
+		//Run_Lock_Control();
+		vTaskDelay(pdMS_TO_TICKS(1500));
+	}
+}
+

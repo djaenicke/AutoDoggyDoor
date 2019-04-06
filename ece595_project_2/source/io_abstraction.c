@@ -15,6 +15,9 @@ const Pin_Cfg_T Pin_Cfgs[NUM_IO] =
     {PORTA, GPIOA,  4, kPORT_MuxAsGpio,           kGPIO_DigitalInput,  NA},   /* SW_3            */
     {PORTD, GPIOD,  2, kPORT_MuxAlt3,             kGPIO_DigitalInput,  NA},   /* UART2_RX        */
     {PORTD, GPIOD,  3, kPORT_MuxAlt3,             kGPIO_DigitalOutput, NA},   /* UART2_TX        */
+	{PORTB, GPIOD,  9, kPORT_MuxAsGpio,			  kGPIO_DigitalOutput, LOW},  /* Pin for Actuator */
+	{PORTB, GPIOB, 22, kPORT_MuxAsGpio,			  kGPIO_DigitalOutput, HIGH}, /* RED_LED */
+	{PORTE, GPIOE, 26, kPORT_MuxAsGpio,			  kGPIO_DigitalOutput, HIGH}, /*GREEN LED*/
 };
 void Set_GPIO(IO_Map_T gpio, GPIO_State_T state)
 {

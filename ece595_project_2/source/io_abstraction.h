@@ -30,6 +30,9 @@ typedef enum
     SW_3,
     UART3_RX,
     UART3_TX,
+	ACTUATOR,
+	RED_LED=0,
+	GREEN_LED=0,
     NUM_IO /* !!! Make sure this is last */
 } IO_Map_T;
 
