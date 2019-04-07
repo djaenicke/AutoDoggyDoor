@@ -305,12 +305,10 @@ Some MCU allow computing and verifying the IP, UDP, TCP and ICMP checksums by ha
  */
 #define DEFAULT_ACCEPTMBOX_SIZE 12
 
-#if (LWIP_DNS || LWIP_IGMP || LWIP_IPV6) && !defined(LWIP_RAND)
 /* When using IGMP or IPv6, LWIP_RAND() needs to be defined to a random-function returning an u32_t random value*/
 #include "lwip/arch.h"
 u32_t lwip_rand(void);
 #define LWIP_RAND() lwip_rand()
-#endif
 
 #endif /* __LWIPOPTS_H__ */
 

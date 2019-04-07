@@ -66,14 +66,13 @@ const Task_Cfg_T Task_Cfg_Table[NUM_TASKS] =
     {HTTP_Client_Task,     "HTTP_Client", 1000,        configMAX_PRIORITIES - 2}
 };
 
+static struct netif fsl_netif;
+
 /*******************************************************************************
  * Function Definitions
  ******************************************************************************/
 int main(void)
 {
-    static struct netif fsl_netif;
-
-
     SYSMPU_Type *base = SYSMPU;
     BOARD_InitPins();
     BOARD_InitBootPeripherals();
@@ -129,9 +128,17 @@ static void Prox_Estimation_Task(void *pvParameters)
 
 static void HTTP_Client_Task(void *pvParameters)
 {
+    struct dhcp *dhcp;
+
     while(1)
     {
-        Query_Weather_API();
+        dhcp = netif_dhcp_data(&fsl_netif);
+
+        if (netif_is_up(&fsl_netif) && DHCP_STATE_BOUND == dhcp->state)
+        {
+            Query_Weather_API();
+        }
+
         vTaskDelay(pdMS_TO_TICKS(2000));
     }
 }
