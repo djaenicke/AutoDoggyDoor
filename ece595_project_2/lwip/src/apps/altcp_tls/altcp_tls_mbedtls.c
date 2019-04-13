@@ -663,7 +663,7 @@ dummy_rng(void *ctx, unsigned char *buffer, size_t len)
   }
   return 0;
 }
-#define ALTCP_MBEDTLS_RNG_FN dummy_rng
+#define ALTCP_MBEDTLS_RNG_FN mbedtls_entropy_func
 #endif /* ALTCP_MBEDTLS_RNG_FN */
 
 /** Create new TLS configuration
@@ -676,6 +676,7 @@ altcp_tls_create_config(int is_server, int have_cert, int have_pkey, int have_ca
   int ret;
   struct altcp_tls_config *conf;
   mbedtls_x509_crt *mem;
+  const char *pers = "ssl_client1_devin_jaenicke";
 
   if (TCP_WND < MBEDTLS_SSL_MAX_CONTENT_LEN) {
     LWIP_DEBUGF(ALTCP_MBEDTLS_DEBUG|LWIP_DBG_LEVEL_SERIOUS,
@@ -717,7 +718,7 @@ altcp_tls_create_config(int is_server, int have_cert, int have_pkey, int have_ca
   mbedtls_ctr_drbg_init(&conf->ctr_drbg);
 
   /* Seed the RNG */
-  ret = mbedtls_ctr_drbg_seed(&conf->ctr_drbg, ALTCP_MBEDTLS_RNG_FN, &conf->entropy, ALTCP_MBEDTLS_ENTROPY_PTR, ALTCP_MBEDTLS_ENTROPY_LEN);
+  ret = mbedtls_ctr_drbg_seed(&conf->ctr_drbg, ALTCP_MBEDTLS_RNG_FN, &conf->entropy, (const unsigned char *) pers, strlen(pers));
   if (ret != 0) {
     LWIP_DEBUGF(ALTCP_MBEDTLS_DEBUG, ("mbedtls_ctr_drbg_seed failed: %d\n", ret));
     altcp_mbedtls_free_config(conf);

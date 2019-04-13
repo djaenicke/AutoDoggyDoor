@@ -103,6 +103,7 @@
 									<listOptionValue builtIn="false" value="../mmcau"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/apps"/>
+									<listOptionValue builtIn="false" value="../lwip/src/apps/altcp_tls"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/priv"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/prot"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif"/>
@@ -157,6 +158,7 @@
 								<option id="gnu.both.asm.option.flags.crt.962766204" name="Assembler flags" superClass="gnu.both.asm.option.flags.crt" useByScannerDiscovery="false" value="-c -x assembler-with-cpp -D__REDLIB__" valueType="string"/>
 								<option id="gnu.both.asm.option.include.paths.668412738" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="../component/uart"/>
+									<listOptionValue builtIn="false" value="../lwip/src/apps/altcp_tls"/>
 									<listOptionValue builtIn="false" value="../drivers"/>
 									<listOptionValue builtIn="false" value="../component/serial_manager"/>
 									<listOptionValue builtIn="false" value="../device"/>
@@ -250,7 +252,7 @@
 							<tool command="arm-none-eabi-gcc" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GLDErrorParser" id="com.crt.advproject.link.exe.debug.61258036" name="MCU Linker" superClass="com.crt.advproject.link.exe.debug">
 								<option id="com.crt.advproject.link.thumb.918231622" name="Thumb mode" superClass="com.crt.advproject.link.thumb" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<option id="com.crt.advproject.link.memory.load.image.343718462" name="Plain load image" superClass="com.crt.advproject.link.memory.load.image" useByScannerDiscovery="false" value="false;" valueType="string"/>
-								<option id="com.crt.advproject.link.memory.heapAndStack.1940205345" name="Heap and Stack options" superClass="com.crt.advproject.link.memory.heapAndStack" useByScannerDiscovery="false" value="&amp;Heap:Default;Post Data;0x9600&amp;Stack:Default;End;0x800" valueType="string"/>
+								<option id="com.crt.advproject.link.memory.heapAndStack.1940205345" name="Heap and Stack options" superClass="com.crt.advproject.link.memory.heapAndStack" useByScannerDiscovery="false" value="&amp;Heap:Default;Post Data;0xc800&amp;Stack:Default;End;0x800" valueType="string"/>
 								<option id="com.crt.advproject.link.memory.data.943647695" name="Global data placement" superClass="com.crt.advproject.link.memory.data" useByScannerDiscovery="false" value="Default" valueType="string"/>
 								<option id="com.crt.advproject.link.memory.sections.1042122751" name="Extra linker script input sections" superClass="com.crt.advproject.link.memory.sections" useByScannerDiscovery="false" valueType="stringList"/>
 								<option id="com.crt.advproject.link.gcc.multicore.master.userobjs.100379551" name="Slave Objects (not visible)" superClass="com.crt.advproject.link.gcc.multicore.master.userobjs" useByScannerDiscovery="false" valueType="userObjs"/>

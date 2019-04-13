@@ -52,7 +52,7 @@
 
 /** Configure debug level of this file */
 #ifndef ALTCP_MBEDTLS_DEBUG
-#define ALTCP_MBEDTLS_DEBUG                           LWIP_DBG_OFF
+#define ALTCP_MBEDTLS_DEBUG                           LWIP_DBG_ON
 #endif
 
 /** Set a session timeout in seconds for the basic session cache

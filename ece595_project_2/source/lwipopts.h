@@ -72,7 +72,7 @@
  * a lot of data that needs to be copied, this should be set high.
  */
 #ifndef MEM_SIZE
-#define MEM_SIZE (22 * 1024)
+#define MEM_SIZE (50 * 1024)
 #endif
 
 /* MEMP_NUM_PBUF: the number of memp struct pbufs. If the application
@@ -110,7 +110,7 @@
 /* ---------- Pbuf options ---------- */
 /* PBUF_POOL_SIZE: the number of buffers in the pbuf pool. */
 #ifndef PBUF_POOL_SIZE
-#define PBUF_POOL_SIZE 9
+#define PBUF_POOL_SIZE 10
 #endif
 
 /* PBUF_POOL_BUFSIZE: the size of each pbuf in the pbuf pool. */
@@ -150,7 +150,7 @@
 
 /* TCP receive window. */
 #ifndef TCP_WND
-#define TCP_WND (2 * TCP_MSS)
+#define TCP_WND (10 * TCP_MSS)
 #endif
 
 /* Enable backlog*/

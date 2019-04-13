@@ -46,6 +46,8 @@
  */
 
 #include "lwip/apps/http_client.h"
+#include MBEDTLS_CONFIG_FILE
+#include "mbedtls/certs.h"
 
 #include "lwip/altcp_tcp.h"
 #include "lwip/dns.h"
@@ -69,7 +71,7 @@
 
 /** Set this to 1 to keep server name and uri in request state */
 #ifndef HTTPC_DEBUG_REQUEST
-#define HTTPC_DEBUG_REQUEST         0
+#define HTTPC_DEBUG_REQUEST         1
 #endif
 
 /** This string is passed in the HTTP header as "User-Agent: " */
@@ -151,6 +153,8 @@ typedef struct _httpc_state
   char* uri;
 #endif
 } httpc_state_t;
+
+static struct altcp_tls_config *http_client_tls_config;
 
 /** Free http client state and deallocate all resources within */
 static err_t
@@ -559,7 +563,8 @@ httpc_init_connection_common(httpc_state_t **connection, const httpc_connection_
   req->uri = req->server_name + server_name_len + 1;
   memcpy(req->uri, uri, uri_len + 1);
 #endif
-  req->pcb = altcp_new(settings->altcp_allocator);
+  http_client_tls_config = altcp_tls_create_config_client((const unsigned char *) mbedtls_test_cas_pem, mbedtls_test_cas_pem_len);
+  req->pcb = altcp_tls_new(http_client_tls_config, IPADDR_TYPE_V4);
   if(req->pcb == NULL) {
     httpc_free_state(req);
     return ERR_MEM;
