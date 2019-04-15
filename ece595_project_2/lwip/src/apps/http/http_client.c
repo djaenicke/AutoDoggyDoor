@@ -175,6 +175,9 @@ httpc_free_state(httpc_state_t* req)
   mem_free(req);
   req = NULL;
 
+  mem_free(http_client_tls_config);
+  http_client_tls_config = NULL;
+
   if (tpcb != NULL) {
     err_t r;
     altcp_arg(tpcb, NULL);

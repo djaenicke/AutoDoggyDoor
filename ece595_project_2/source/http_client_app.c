@@ -1,23 +1,34 @@
+#include <string.h>
+
 #include "lwip/apps/http_client.h"
 #include "lwip/altcp.h"
 #include "mbedtls/debug.h"
+#include "weather_api_key.h"
 
-static uint8_t queried = 0;
-static uint8_t callback_arg;
+#define WEATHER_ENDPOINT "api.openweathermap.org"
+#define URI_BASE         "/data/2.5/weather?zip="
+#define URI_END          ",us&appid="
+#define URI_BASE_SIZE    sizeof(URI_BASE)-1
+#define URI_END_SIZE     sizeof(URI_END)-1
+#define HTTPS_PORT       443
+#define ZIP_LENGTH       5
 
-httpc_state_t * http_state;
-httpc_connection_t settings;
+static uint8_t Callback_Arg;
+static uint32_t User_Zip = 46062;
+
+httpc_state_t * HTTP_State;
+httpc_connection_t Settings;
 
 static err_t Weather_API_Callback(void *arg, struct altcp_pcb *tpcb, struct pbuf *p, err_t err);
 
 void Query_Weather_API(void)
 {
-    if (0 == queried)
-    {
-        mbedtls_debug_set_threshold(0);
-        httpc_get_file_dns("api.openweathermap.org", 443, "/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22", &settings, &Weather_API_Callback, &callback_arg, &http_state);
-        queried = 1;
-    }
+    char uri[URI_BASE_SIZE+ZIP_LENGTH+URI_END_SIZE+API_KEY_SIZE+1];
+
+    mbedtls_debug_set_threshold(0);
+    sprintf(uri, "%s%d%s%s", URI_BASE, User_Zip, URI_END, API_KEY);
+    httpc_get_file_dns(WEATHER_ENDPOINT, HTTPS_PORT, uri, \
+                       &Settings, &Weather_API_Callback, &Callback_Arg, &HTTP_State);
 }
 
 err_t Weather_API_Callback(void *arg, struct altcp_pcb *tpcb, struct pbuf *p, err_t err)
