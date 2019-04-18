@@ -86,7 +86,7 @@ void Run_Lock_Control(void)
 	}
 }
 
-void PORTC_IRQHandler(void)
+uint8_t PORTC_IRQHandler(Lock_Method)
 {
     if (Lock_Method)
     {
@@ -98,6 +98,7 @@ void PORTC_IRQHandler(void)
         Lock_Method=MANUAL;
         printf("The lock is now being controlled manually.\n\r");
     }
+    return Lock_Method;
 
     PORT_ClearPinsInterruptFlags(PORTC, 0xFFFFFFFF);
 }

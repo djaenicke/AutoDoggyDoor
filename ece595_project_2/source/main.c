@@ -17,6 +17,8 @@
 #include "task.h"
 #include "queue.h"
 #include "timers.h"
+#include "server.h"
+#include "lock.h"
 
 #include "tcpip_app_iface.h"
 #include "fsl_device_registers.h"
@@ -49,6 +51,7 @@ typedef struct Task_Cfg_Tag
 /* Task function declarations */
 static void Prox_Estimation_Task(void *pvParameters);
 static void Lock_Control_Task(void *pvParameters);
+static void HTTPServer_Task(void *pvParameters);
 
 /* Local functions */
 static void Init_OS_Tasks(void);
@@ -56,13 +59,17 @@ static void Init_OS_Tasks(void);
 /*******************************************************************************
 * Variables
 ******************************************************************************/
+
+uint8_t controlFlag;
+
 /* Task Configurations */
-#define NUM_TASKS (2)
+#define NUM_TASKS (3)
 const Task_Cfg_T Task_Cfg_Table[NUM_TASKS] =
 {
     /* Function,           Name,       Stack Size,  Priority */
     {Prox_Estimation_Task, "Prox Est", 1000,         configMAX_PRIORITIES - 2},
-    {Lock_Control_Task, "Lock Ctrl", 100,		 configMAX_PRIORITIES - 3}
+    {Lock_Control_Task, "Lock Ctrl",   100,		     configMAX_PRIORITIES - 3},
+	{HTTPServer_Task, "HTTPServer",    100,			 configMAX_PRIORITIES - 4}
 };
 
 /*******************************************************************************
@@ -131,8 +138,20 @@ static void Lock_Control_Task(void *pvParameters)
 {
 	while(1)
 	{
-		//Run_Lock_Control();
+		Run_Lock_Control();
 		vTaskDelay(pdMS_TO_TICKS(1500));
+	}
+}
+
+static void HTTPServer_Task(void *pvParameters)
+{
+	while(1)
+	{	controlFlag = PORTC_IRQHandler();
+		if(controlFlag)
+		{
+		Run_HTTPServer();
+		}
+		vTaskDelay(pdMS_TO_TICKS(2000));
 	}
 }
 

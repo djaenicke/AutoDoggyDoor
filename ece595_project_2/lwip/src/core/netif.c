@@ -56,6 +56,8 @@
 #include "lwip/ip_addr.h"
 #include "lwip/ip6_addr.h"
 #include "lwip/netif.h"
+#include "netif.h"
+
 #include "lwip/priv/tcp_priv.h"
 #include "lwip/udp.h"
 #include "lwip/raw.h"
