@@ -71,7 +71,7 @@
 
 /** Set this to 1 to keep server name and uri in request state */
 #ifndef HTTPC_DEBUG_REQUEST
-#define HTTPC_DEBUG_REQUEST         1
+#define HTTPC_DEBUG_REQUEST         0
 #endif
 
 /** This string is passed in the HTTP header as "User-Agent: " */
@@ -175,7 +175,7 @@ httpc_free_state(httpc_state_t* req)
   mem_free(req);
   req = NULL;
 
-  mem_free(http_client_tls_config);
+  altcp_tls_free_config(http_client_tls_config);
   http_client_tls_config = NULL;
 
   if (tpcb != NULL) {
