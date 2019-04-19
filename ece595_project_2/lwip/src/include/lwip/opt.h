@@ -1492,7 +1492,7 @@
  * See @ref altcp_api
  */
 #if !defined LWIP_ALTCP || defined __DOXYGEN__
-#define LWIP_ALTCP                      1
+#define LWIP_ALTCP                      0
 #endif
 
 /** LWIP_ALTCP_TLS==1: enable TLS support for altcp API.
@@ -1501,7 +1501,7 @@
  * and LWIP_ALTCP_TLS_MBEDTLS option.
  */
 #if !defined LWIP_ALTCP_TLS || defined __DOXYGEN__
-#define LWIP_ALTCP_TLS                  1
+#define LWIP_ALTCP_TLS                  0
 #endif
 
 /**

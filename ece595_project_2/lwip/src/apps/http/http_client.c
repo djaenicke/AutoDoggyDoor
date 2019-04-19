@@ -154,7 +154,9 @@ typedef struct _httpc_state
 #endif
 } httpc_state_t;
 
+#if LWIP_ALTCP && LWIP_ALTCP_TLS
 static struct altcp_tls_config *http_client_tls_config;
+#endif
 
 /** Free http client state and deallocate all resources within */
 static err_t
@@ -175,8 +177,10 @@ httpc_free_state(httpc_state_t* req)
   mem_free(req);
   req = NULL;
 
+#if LWIP_ALTCP && LWIP_ALTCP_TLS
   altcp_tls_free_config(http_client_tls_config);
   http_client_tls_config = NULL;
+#endif
 
   if (tpcb != NULL) {
     err_t r;
@@ -566,8 +570,13 @@ httpc_init_connection_common(httpc_state_t **connection, const httpc_connection_
   req->uri = req->server_name + server_name_len + 1;
   memcpy(req->uri, uri, uri_len + 1);
 #endif
+
+#if LWIP_ALTCP && LWIP_ALTCP_TLS
   http_client_tls_config = altcp_tls_create_config_client((const unsigned char *) mbedtls_test_cas_pem, mbedtls_test_cas_pem_len);
   req->pcb = altcp_tls_new(http_client_tls_config, IPADDR_TYPE_V4);
+#else
+  req->pcb = altcp_new(settings->altcp_allocator);
+#endif
   if(req->pcb == NULL) {
     httpc_free_state(req);
     return ERR_MEM;

@@ -139,6 +139,6 @@ static void HTTP_Client_Task(void *pvParameters)
             Query_Weather_API();
         }
 
-        vTaskDelay(pdMS_TO_TICKS(60000));
+        vTaskDelay(pdMS_TO_TICKS(30000));
     }
 }
