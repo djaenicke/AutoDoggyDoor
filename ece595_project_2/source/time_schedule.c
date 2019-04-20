@@ -20,7 +20,7 @@ void Print_Datetime(void)
 
     RTC_GetDatetime(RTC, &datetime);
 
-    printf("Current time %d:%d:%d\n\r", datetime.hour, datetime.minute, datetime.second);
+    printf("Current time: %02d:%02d:%02d\n\r", datetime.hour, datetime.minute, datetime.second);
 }
 
 

@@ -1,5 +1,6 @@
 #include <string.h>
 
+#include "http_client_app.h"
 #include "lwip/apps/http_client.h"
 #include "lwip/altcp.h"
 #include "mbedtls/debug.h"
@@ -27,11 +28,23 @@
 #define FALSE 0
 #endif
 
+#define UNKNOWN_ID          (0)
+#define NO_RAIN_AMOUNT_DATA (-1.0)
+#define MAX_RAIN_AMOUNT     (5.0)  /* (mm) */
+#define CLEAR_WEATHER_ID    (800)
+#define MAX_CLOUDS_ID       (804)
+
 typedef enum {
     WEATHER=0,
     TIME
 } API_t;
 
+typedef struct {
+    uint16_t id;
+    double rain_1h_amount;
+} Weather_Info_T;
+
+static Weather_Info_T Weather_Info = {UNKNOWN_ID, NO_RAIN_AMOUNT_DATA};
 static uint8_t Callback_Arg;
 static uint32_t User_Zip = 46062;
 static uint8_t Waiting = 0;
@@ -72,11 +85,55 @@ void Run_HTTP_Client(void)
 
 err_t Weather_API_Callback(void *arg, struct altcp_pcb *tpcb, struct pbuf *p, err_t err)
 {
-    Print_Datetime();
+    const cJSON * weather_array = NULL;
+    const cJSON * weather = NULL;
+    const cJSON * weather_id = NULL;
+    const cJSON * weather_main = NULL;
 
-    printf(p->payload);
-    printf("\r\n");
+    const cJSON * rain = NULL;
+    const cJSON * rain_1h = NULL;
+
+    cJSON *json = cJSON_Parse(p->payload);
+
+    if (json == NULL)
+    {
+        const char *error_ptr = cJSON_GetErrorPtr();
+        if (error_ptr != NULL)
+        {
+            printf(error_ptr);
+        }
+    }
+
+    weather_array = cJSON_GetObjectItemCaseSensitive(json, "weather");
+
+    cJSON_ArrayForEach(weather, weather_array)
+    {
+        weather_id = cJSON_GetObjectItemCaseSensitive(weather, "id");
+        weather_main = cJSON_GetObjectItemCaseSensitive(weather, "main");
+    }
+
+    /* Get the current weather condition */
+    printf("weather id: %d\n\r", (int) weather_id->valuedouble);
+    Weather_Info.id = (uint16_t) weather_id->valuedouble;
+    printf("main weather: %s\n\r", weather_main->valuestring);
+
+    /* Get the amount of rain received in the last hour */
+    rain = cJSON_GetObjectItemCaseSensitive(json, "rain");
+
+    if (rain != NULL)
+    {
+        rain_1h = cJSON_GetObjectItemCaseSensitive(rain, "1h");
+        printf("1 hour rain amount: %.2f\n\r", (float) rain_1h->valuedouble);
+        Weather_Info.rain_1h_amount = rain_1h->valuedouble;
+    }
+    else
+    {
+        Weather_Info.rain_1h_amount = NO_RAIN_AMOUNT_DATA;
+    }
+
     Waiting = FALSE;
+
+    cJSON_Delete(json);
 
     return(ERR_OK);
 }
@@ -103,8 +160,6 @@ err_t Time_API_Callback(void *arg, struct altcp_pcb *tpcb, struct pbuf *p, err_t
 
     if (cJSON_IsString(datetime_str) && (datetime_str->valuestring != NULL))
     {
-        printf("datetime \"%s\"\n\r", datetime_str->valuestring);
-
         datetime.year = (uint16_t) strtoul(datetime_str->valuestring, &next_ptr, 10);
         current_ptr = next_ptr + 1;
 
@@ -124,6 +179,7 @@ err_t Time_API_Callback(void *arg, struct altcp_pcb *tpcb, struct pbuf *p, err_t
     }
 
     Start_RTC(&datetime);
+    Print_Datetime();
 
     Waiting = FALSE;
 
@@ -132,6 +188,18 @@ err_t Time_API_Callback(void *arg, struct altcp_pcb *tpcb, struct pbuf *p, err_t
     return(ERR_OK);
 }
 
+Weather_Status_T Get_Weather_Status(void)
+{
+    Weather_Status_T status = BAD_WEATHER;
+
+    if ((Weather_Info.id >= CLEAR_WEATHER_ID) && (Weather_Info.id <= MAX_CLOUDS_ID) && \
+        (Weather_Info.rain_1h_amount <= MAX_RAIN_AMOUNT))
+    {
+        status = GOOD_WEATHER;
+    }
+
+    return(status);
+}
 
 
 

@@ -36,6 +36,8 @@
 /*! @brief Priority of the thread which prints DHCP info. */
 #define PRINT_THREAD_PRIO configMAX_PRIORITIES - 1
 
+#define XBEE
+
 typedef struct Task_Cfg_Tag
 {
     TaskFunction_t func;
@@ -43,6 +45,7 @@ typedef struct Task_Cfg_Tag
     const configSTACK_DEPTH_TYPE stack_size;
     UBaseType_t priority;
 } Task_Cfg_T;
+
 
 /*******************************************************************************
 * Prototypes
@@ -79,7 +82,9 @@ int main(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
+#ifdef XBEE
     Init_Xbee_Interface();
+#endif
 
     /* Disable SYSMPU. */
     base->CESR &= ~SYSMPU_CESR_VLD_MASK;
@@ -113,15 +118,15 @@ void Init_OS_Tasks(void)
             assert(false);
         }
     }
-
-    Set_GPIO(BLUE_LED, LOW);
 }
 
 static void Prox_Estimation_Task(void *pvParameters)
 {
     while(1)
     {
+#ifdef XBEE
         Run_Proximity_Estimation();
+#endif
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
