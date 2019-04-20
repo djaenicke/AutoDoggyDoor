@@ -43,25 +43,6 @@
  * Definitions
  ******************************************************************************/
 
-/* IP address configuration. */
-
-#define configIP_ADDR0 192
-#define configIP_ADDR1 168
-#define configIP_ADDR2 1
-#define configIP_ADDR3 20
-
-// Netmask configuration.
-#define configNET_MASK0 255
-#define configNET_MASK1 255
-#define configNET_MASK2 255
-#define configNET_MASK3 0
-
-// Gateway address configuration.
-#define configGW_ADDR0 192
-#define configGW_ADDR1 168
-#define configGW_ADDR2 1
-#define configGW_ADDR3 1
-
 
 /* MAC address configuration. */
 #define configMAC_ADDR {0x02, 0x12, 0x13, 0x10, 0x15, 0x11}

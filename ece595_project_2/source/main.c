@@ -64,7 +64,7 @@ typedef struct Task_Cfg_Tag
 * Prototypes
 ******************************************************************************/
 /* Task function declarations */
-//static void Prox_Estimation_Task(void *pvParameters);
+static void Prox_Estimation_Task(void *pvParameters);
 static void Lock_Control_Task(void *pvParameters);
 static void HTTPServer_Task(void *pvParameters);
 
@@ -76,11 +76,11 @@ static void Init_OS_Tasks(void);
 ******************************************************************************/
 
 /* Task Configurations */
-#define NUM_TASKS (2)
+#define NUM_TASKS (3)
 const Task_Cfg_T Task_Cfg_Table[NUM_TASKS] =
 {
     /* Function,           Name,       Stack Size,  Priority */
-    //{Prox_Estimation_Task, "Prox Est", 1000,         configMAX_PRIORITIES - 2},
+    {Prox_Estimation_Task, "Prox Est", 1000,         configMAX_PRIORITIES - 2},
     {Lock_Control_Task, "Lock Ctrl",   100,		     configMAX_PRIORITIES - 3},
 	{HTTPServer_Task, "HTTPServer",    1000,			 configMAX_PRIORITIES - 4}
 };
@@ -136,7 +136,7 @@ void Init_OS_Tasks(void)
 
     Set_GPIO(BLUE_LED, LOW);
 }
-/*
+
 static void Prox_Estimation_Task(void *pvParameters)
 {
     while(1)
@@ -145,7 +145,7 @@ static void Prox_Estimation_Task(void *pvParameters)
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
-*/
+
 static void Lock_Control_Task(void *pvParameters)
 {
 	while(1)
