@@ -136,8 +136,7 @@ static void HTTP_Client_Task(void *pvParameters)
 
         if (netif_is_up(&fsl_netif) && DHCP_STATE_BOUND == dhcp->state)
         {
-            //Query_Weather_API();
-            Query_Time_API();
+            Run_HTTP_Client();
         }
 
         vTaskDelay(pdMS_TO_TICKS(60000));
