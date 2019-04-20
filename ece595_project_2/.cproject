@@ -73,6 +73,7 @@
 								<option id="gnu.c.compiler.option.preprocessor.preprocess.1582231644" name="Preprocess only (-E)" superClass="gnu.c.compiler.option.preprocessor.preprocess" useByScannerDiscovery="false"/>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1223536441" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="CPU_MK64FN1M0VDC12"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_CONFIG_FILE='&quot;ksdk_mbedtls_config.h&quot;'"/>
 									<listOptionValue builtIn="false" value="CPU_MK64FN1M0VDC12_cm4"/>
 									<listOptionValue builtIn="false" value="CPU_MK64FN1M0VLL12"/>
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
@@ -100,14 +101,18 @@
 									<listOptionValue builtIn="false" value="../component/serial_manager"/>
 									<listOptionValue builtIn="false" value="../device"/>
 									<listOptionValue builtIn="false" value="../lwip/port/arch"/>
+									<listOptionValue builtIn="false" value="../mbedtls/port/ksdk"/>
+									<listOptionValue builtIn="false" value="../mbedtls/include/mbedtls"/>
+									<listOptionValue builtIn="false" value="../mbedtls/include"/>
+									<listOptionValue builtIn="false" value="../mmcau"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip"/>
+									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/apps"/>
+									<listOptionValue builtIn="false" value="../lwip/src/apps/altcp_tls"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/priv"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/prot"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif/ppp"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif/ppp/polarssl"/>
-									<listOptionValue builtIn="false" value="../lwip/src/include/posix"/>
-									<listOptionValue builtIn="false" value="../lwip/src/include/posix/sys"/>
 									<listOptionValue builtIn="false" value="../CMSIS"/>
 									<listOptionValue builtIn="false" value="../source"/>
 									<listOptionValue builtIn="false" value="../board"/>
@@ -157,6 +162,7 @@
 								<option id="gnu.both.asm.option.flags.crt.962766204" name="Assembler flags" superClass="gnu.both.asm.option.flags.crt" useByScannerDiscovery="false" value="-c -x assembler-with-cpp -D__REDLIB__" valueType="string"/>
 								<option id="gnu.both.asm.option.include.paths.668412738" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="../component/uart"/>
+									<listOptionValue builtIn="false" value="../lwip/src/apps/altcp_tls"/>
 									<listOptionValue builtIn="false" value="../drivers"/>
 									<listOptionValue builtIn="false" value="../component/serial_manager"/>
 									<listOptionValue builtIn="false" value="../device"/>
@@ -164,11 +170,13 @@
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/priv"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/prot"/>
+									<listOptionValue builtIn="false" value="../mbedtls/include/mbedtls"/>
+									<listOptionValue builtIn="false" value="../mbedtls/port/ksdk"/>
+									<listOptionValue builtIn="false" value="../mbedtls/include"/>
+									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/apps"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif/ppp"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif/ppp/polarssl"/>
-									<listOptionValue builtIn="false" value="../lwip/src/include/posix"/>
-									<listOptionValue builtIn="false" value="../lwip/src/include/posix/sys"/>
 									<listOptionValue builtIn="false" value="../CMSIS"/>
 									<listOptionValue builtIn="false" value="../source"/>
 									<listOptionValue builtIn="false" value="../board"/>
@@ -247,9 +255,9 @@
 							</tool>
 							<tool command="arm-none-eabi-gcc" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GLDErrorParser" id="com.crt.advproject.link.exe.debug.61258036" name="MCU Linker" superClass="com.crt.advproject.link.exe.debug">
 								<option id="com.crt.advproject.link.thumb.918231622" name="Thumb mode" superClass="com.crt.advproject.link.thumb" useByScannerDiscovery="false" value="true" valueType="boolean"/>
-								<option id="com.crt.advproject.link.memory.load.image.343718462" name="Plain load image" superClass="com.crt.advproject.link.memory.load.image" useByScannerDiscovery="false" value="" valueType="string"/>
-								<option id="com.crt.advproject.link.memory.heapAndStack.1940205345" name="Heap and Stack options" superClass="com.crt.advproject.link.memory.heapAndStack" useByScannerDiscovery="false" value="&amp;Heap:Default;Default;0x6400&amp;Stack:Default;Default;0x800" valueType="string"/>
-								<option id="com.crt.advproject.link.memory.data.943647695" name="Global data placement" superClass="com.crt.advproject.link.memory.data" useByScannerDiscovery="false" value="" valueType="string"/>
+								<option id="com.crt.advproject.link.memory.load.image.343718462" name="Plain load image" superClass="com.crt.advproject.link.memory.load.image" useByScannerDiscovery="false" value="false;" valueType="string"/>
+								<option id="com.crt.advproject.link.memory.heapAndStack.1940205345" name="Heap and Stack options" superClass="com.crt.advproject.link.memory.heapAndStack" useByScannerDiscovery="false" value="&amp;Heap:Default;Post Data;0x6400&amp;Stack:Default;End;0x800" valueType="string"/>
+								<option id="com.crt.advproject.link.memory.data.943647695" name="Global data placement" superClass="com.crt.advproject.link.memory.data" useByScannerDiscovery="false" value="Default" valueType="string"/>
 								<option id="com.crt.advproject.link.memory.sections.1042122751" name="Extra linker script input sections" superClass="com.crt.advproject.link.memory.sections" useByScannerDiscovery="false" valueType="stringList"/>
 								<option id="com.crt.advproject.link.gcc.multicore.master.userobjs.100379551" name="Slave Objects (not visible)" superClass="com.crt.advproject.link.gcc.multicore.master.userobjs" useByScannerDiscovery="false" valueType="userObjs"/>
 								<option id="com.crt.advproject.link.arch.1934978532" name="Architecture" superClass="com.crt.advproject.link.arch" useByScannerDiscovery="false" value="com.crt.advproject.link.target.cm4" valueType="enumerated"/>
@@ -258,8 +266,12 @@
 								<option id="gnu.c.link.option.nostdlibs.1294424140" name="No startup or default libs (-nostdlib)" superClass="gnu.c.link.option.nostdlibs" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<option id="gnu.c.link.option.strip.1355375133" name="Omit all symbol information (-s)" superClass="gnu.c.link.option.strip" useByScannerDiscovery="false"/>
 								<option id="gnu.c.link.option.noshared.1605742403" name="No shared libraries (-static)" superClass="gnu.c.link.option.noshared" useByScannerDiscovery="false"/>
-								<option id="gnu.c.link.option.libs.916371142" name="Libraries (-l)" superClass="gnu.c.link.option.libs" useByScannerDiscovery="false"/>
-								<option id="gnu.c.link.option.paths.642028423" name="Library search path (-L)" superClass="gnu.c.link.option.paths" useByScannerDiscovery="false"/>
+								<option id="gnu.c.link.option.libs.916371142" name="Libraries (-l)" superClass="gnu.c.link.option.libs" useByScannerDiscovery="false" valueType="libs">
+									<listOptionValue builtIn="false" value="_mmcau"/>
+								</option>
+								<option id="gnu.c.link.option.paths.642028423" name="Library search path (-L)" superClass="gnu.c.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
+									<listOptionValue builtIn="false" value="../mmcau/asm-cm4-cm7"/>
+								</option>
 								<option id="gnu.c.link.option.ldflags.1998439357" name="Linker flags" superClass="gnu.c.link.option.ldflags" useByScannerDiscovery="false"/>
 								<option id="gnu.c.link.option.other.1281076535" name="Other options (-Xlinker [option])" superClass="gnu.c.link.option.other" useByScannerDiscovery="false" valueType="stringList">
 									<listOptionValue builtIn="false" value="-Map=&quot;${BuildArtifactFileBaseName}.map&quot;"/>
@@ -279,7 +291,7 @@
 								<option id="com.crt.advproject.link.gcc.lto.optmization.level.540273549" name="Link-time optimization level" superClass="com.crt.advproject.link.gcc.lto.optmization.level" useByScannerDiscovery="false"/>
 								<option id="com.crt.advproject.link.fpu.1269433913" name="Floating point" superClass="com.crt.advproject.link.fpu" useByScannerDiscovery="false" value="com.crt.advproject.link.fpu.fpv4.hard" valueType="enumerated"/>
 								<option id="com.crt.advproject.link.manage.36374910" name="Manage linker script" superClass="com.crt.advproject.link.manage" useByScannerDiscovery="false" value="true" valueType="boolean"/>
-								<option id="com.crt.advproject.link.script.20458817" name="Linker script" superClass="com.crt.advproject.link.script" useByScannerDiscovery="false" value="ece595_project_2_lwip_dhcp_freertos_Debug.ld" valueType="string"/>
+								<option id="com.crt.advproject.link.script.20458817" name="Linker script" superClass="com.crt.advproject.link.script" useByScannerDiscovery="false" value="ece595_project_2_Debug.ld" valueType="string"/>
 								<option id="com.crt.advproject.link.scriptdir.1896093911" name="Script path" superClass="com.crt.advproject.link.scriptdir" useByScannerDiscovery="false"/>
 								<option id="com.crt.advproject.link.crpenable.1565194386" name="Enable automatic placement of Code Read Protection field in image" superClass="com.crt.advproject.link.crpenable" useByScannerDiscovery="false"/>
 								<option id="com.crt.advproject.link.flashconfigenable.1700087419" name="Enable automatic placement of Flash Configuration field in image" superClass="com.crt.advproject.link.flashconfigenable" useByScannerDiscovery="false" value="true" valueType="boolean"/>
@@ -313,7 +325,9 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="component"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="device"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="drivers"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
+						<entry excluding="src/apps/http/httpd.c|src/apps/http/fsdata.c|src/apps/http/fs.c|src/apps/http/altcp_proxyconnect.c|src/apps/http/makefsdata|src/apps/http/fs|src/apps/tftp|src/apps/sntp|src/apps/smtp|src/apps/netbiosns|src/apps/mqtt|src/apps/mdns|src/apps/lwiperf|src/apps/snmp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
+						<entry excluding="programs" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="mbedtls"/>
+						<entry excluding="asm-cm4-cm7/src" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="mmcau"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="startup"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="utilities"/>
@@ -409,18 +423,18 @@
 								<option id="gnu.c.compiler.option.preprocessor.undef.symbol.1086765582" name="Undefined symbols (-U)" superClass="gnu.c.compiler.option.preprocessor.undef.symbol"/>
 								<option id="gnu.c.compiler.option.include.paths.1807891896" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="../component/uart"/>
+									<listOptionValue builtIn="false" value="../mbedtls/include/mbedtls"/>
 									<listOptionValue builtIn="false" value="../drivers"/>
 									<listOptionValue builtIn="false" value="../component/serial_manager"/>
 									<listOptionValue builtIn="false" value="../device"/>
 									<listOptionValue builtIn="false" value="../lwip/port/arch"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip"/>
+									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/apps"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/priv"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/prot"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif/ppp"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/netif/ppp/polarssl"/>
-									<listOptionValue builtIn="false" value="../lwip/src/include/posix"/>
-									<listOptionValue builtIn="false" value="../lwip/src/include/posix/sys"/>
 									<listOptionValue builtIn="false" value="../CMSIS"/>
 									<listOptionValue builtIn="false" value="../source"/>
 									<listOptionValue builtIn="false" value="../board"/>
@@ -432,8 +446,6 @@
 									<listOptionValue builtIn="false" value="../lwip/src"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include"/>
 									<listOptionValue builtIn="false" value="../"/>
-									<listOptionValue builtIn="false" value="c:/nxp/mcuxpressoide_10.3.0_2200/ide/plugins/com.nxp.mcuxpresso.tools.win32_10.3.0.201811011841/tools/redlib/include"/>
-									<listOptionValue builtIn="false" value="c:/nxp/mcuxpressoide_10.3.0_2200/ide/plugins/com.nxp.mcuxpresso.tools.win32_10.3.0.201811011841/tools/features/include"/>
 								</option>
 								<option id="gnu.c.compiler.option.include.files.474355756" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files"/>
 								<option id="gnu.c.compiler.option.optimization.flags.5943017" name="Other optimization flags" superClass="gnu.c.compiler.option.optimization.flags" value="-fno-common" valueType="string"/>
@@ -495,6 +507,7 @@
 									<listOptionValue builtIn="false" value="../"/>
 									<listOptionValue builtIn="false" value="c:/nxp/mcuxpressoide_10.3.0_2200/ide/plugins/com.nxp.mcuxpresso.tools.win32_10.3.0.201811011841/tools/redlib/include"/>
 									<listOptionValue builtIn="false" value="c:/nxp/mcuxpressoide_10.3.0_2200/ide/plugins/com.nxp.mcuxpresso.tools.win32_10.3.0.201811011841/tools/features/include"/>
+									<listOptionValue builtIn="false" value="/mbedtls/include/mbedtls"/>
 								</option>
 								<option id="gnu.both.asm.option.warnings.nowarn.453500001" name="Suppress warnings (-W)" superClass="gnu.both.asm.option.warnings.nowarn"/>
 								<option id="gnu.both.asm.option.version.171983549" name="Announce version (-v)" superClass="gnu.both.asm.option.version"/>
@@ -623,7 +636,8 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="component"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="device"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="drivers"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
+						<entry excluding="src/apps/http/httpd.c|src/apps/http/fsdata.c|src/apps/http/fs.c|src/apps/http/altcp_proxyconnect.c|src/apps/http/makefsdata|src/apps/http/fs|src/apps/tftp|src/apps/sntp|src/apps/smtp|src/apps/netbiosns|src/apps/mqtt|src/apps/mdns|src/apps/lwiperf" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
+						<entry excluding="asm-cm4-cm7/src" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="mmcau"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="startup"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="utilities"/>

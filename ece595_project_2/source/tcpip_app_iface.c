@@ -10,8 +10,10 @@
  ******************************************************************************/
 #include "board.h"
 #include "tcpip_app_iface.h"
+#include "ksdk_mbedtls.h"
 #include "server.h"
 #include "mdns.h"
+
 
 /*******************************************************************************
  * Definitions
@@ -38,6 +40,8 @@ void Init_Network_If(struct netif * net_if)
     ethernetif_config_t fsl_enet_config0 = {
         .phyAddress = EXAMPLE_PHY_ADDRESS, .clockName = EXAMPLE_CLOCK_NAME, .macAddress = configMAC_ADDR,
     };
+
+    CRYPTO_InitHardware();
 
     IP4_ADDR(&fsl_netif0_ipaddr, 0U, 0U, 0U, 0U);
     IP4_ADDR(&fsl_netif0_netmask, 0U, 0U, 0U, 0U);

@@ -79,7 +79,7 @@
    sends a lot of data out of ROM (or other static memory), this
    should be set high. */
 #ifndef MEMP_NUM_PBUF
-#define MEMP_NUM_PBUF 15
+#define MEMP_NUM_PBUF 16
 #endif
 /* MEMP_NUM_UDP_PCB: the number of UDP protocol control blocks. One
    per active UDP "connection". */
@@ -110,7 +110,7 @@
 /* ---------- Pbuf options ---------- */
 /* PBUF_POOL_SIZE: the number of buffers in the pbuf pool. */
 #ifndef PBUF_POOL_SIZE
-#define PBUF_POOL_SIZE 9
+#define PBUF_POOL_SIZE 16
 #endif
 
 /* PBUF_POOL_BUFSIZE: the size of each pbuf in the pbuf pool. */
@@ -150,7 +150,7 @@
 
 /* TCP receive window. */
 #ifndef TCP_WND
-#define TCP_WND (2 * TCP_MSS)
+#define TCP_WND (10 * TCP_MSS)
 #endif
 
 /* Enable backlog*/
@@ -309,12 +309,10 @@ Some MCU allow computing and verifying the IP, UDP, TCP and ICMP checksums by ha
  */
 #define DEFAULT_ACCEPTMBOX_SIZE 12
 
-#if (LWIP_DNS || LWIP_IGMP || LWIP_IPV6) && !defined(LWIP_RAND)
 /* When using IGMP or IPv6, LWIP_RAND() needs to be defined to a random-function returning an u32_t random value*/
 #include "lwip/arch.h"
 u32_t lwip_rand(void);
 #define LWIP_RAND() lwip_rand()
-#endif
 
 #endif /* __LWIPOPTS_H__ */
 

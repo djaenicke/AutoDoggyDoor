@@ -59,6 +59,10 @@
 #define MDNS_MAX_SERVICES               1
 #endif
 
+#ifndef MDNS_RESP_USENETIF_EXTCALLBACK
+#define MDNS_RESP_USENETIF_EXTCALLBACK  LWIP_NETIF_EXT_STATUS_CALLBACK
+#endif
+
 /**
  * MDNS_DEBUG: Enable debugging for multicast DNS.
  */
