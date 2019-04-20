@@ -93,20 +93,19 @@
 								<option id="gnu.c.compiler.option.preprocessor.undef.symbol.1139473283" name="Undefined symbols (-U)" superClass="gnu.c.compiler.option.preprocessor.undef.symbol" useByScannerDiscovery="false"/>
 								<option id="gnu.c.compiler.option.include.paths.1075405638" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="../component/uart"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lwip/src/apps/httpsrv}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lwip/src/apps/mdns}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lwip/src/apps}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lwip/src/include/lwip/apps}&quot;"/>
+									<listOptionValue builtIn="false" value="../mbedtls/port/ksdk"/>
+									<listOptionValue builtIn="false" value="../lwip/src/apps/httpsrv"/>
+									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/apps"/>
+									<listOptionValue builtIn="false" value="../lwip/src/apps/mdns"/>
+									<listOptionValue builtIn="false" value="../lwip/src/apps"/>
 									<listOptionValue builtIn="false" value="../drivers"/>
 									<listOptionValue builtIn="false" value="../component/serial_manager"/>
 									<listOptionValue builtIn="false" value="../device"/>
 									<listOptionValue builtIn="false" value="../lwip/port/arch"/>
-									<listOptionValue builtIn="false" value="../mbedtls/port/ksdk"/>
 									<listOptionValue builtIn="false" value="../mbedtls/include/mbedtls"/>
 									<listOptionValue builtIn="false" value="../mbedtls/include"/>
 									<listOptionValue builtIn="false" value="../mmcau"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip"/>
-									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/apps"/>
 									<listOptionValue builtIn="false" value="../lwip/src/apps/altcp_tls"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/priv"/>
 									<listOptionValue builtIn="false" value="../lwip/src/include/lwip/prot"/>
@@ -325,7 +324,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="component"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="device"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="drivers"/>
-						<entry excluding="src/apps/http/httpd.c|src/apps/http/fsdata.c|src/apps/http/fs.c|src/apps/http/altcp_proxyconnect.c|src/apps/http/makefsdata|src/apps/http/fs|src/apps/tftp|src/apps/sntp|src/apps/smtp|src/apps/netbiosns|src/apps/mqtt|src/apps/mdns|src/apps/lwiperf|src/apps/snmp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
+						<entry excluding="src/apps/http/httpd.c|src/apps/http/fsdata.c|src/apps/http/fs.c|src/apps/http/altcp_proxyconnect.c|src/apps/http/makefsdata|src/apps/http/fs|src/apps/tftp|src/apps/sntp|src/apps/smtp|src/apps/netbiosns|src/apps/mqtt|src/apps/lwiperf|src/apps/snmp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
 						<entry excluding="programs" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="mbedtls"/>
 						<entry excluding="asm-cm4-cm7/src" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="mmcau"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
@@ -636,7 +635,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="component"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="device"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="drivers"/>
-						<entry excluding="src/apps/http/httpd.c|src/apps/http/fsdata.c|src/apps/http/fs.c|src/apps/http/altcp_proxyconnect.c|src/apps/http/makefsdata|src/apps/http/fs|src/apps/tftp|src/apps/sntp|src/apps/smtp|src/apps/netbiosns|src/apps/mqtt|src/apps/mdns|src/apps/lwiperf" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
+						<entry excluding="src/apps/http/httpd.c|src/apps/http/fsdata.c|src/apps/http/fs.c|src/apps/http/altcp_proxyconnect.c|src/apps/http/makefsdata|src/apps/http/fs|src/apps/tftp|src/apps/sntp|src/apps/smtp|src/apps/netbiosns|src/apps/mqtt|src/apps/lwiperf" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
 						<entry excluding="asm-cm4-cm7/src" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="mmcau"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="startup"/>

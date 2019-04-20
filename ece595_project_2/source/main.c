@@ -88,8 +88,8 @@ const Task_Cfg_T Task_Cfg_Table[NUM_TASKS] =
 {
     /* Function,           Name,          Stack Size,  Priority */
     {Prox_Estimation_Task, "Prox Est",    1000,        configMAX_PRIORITIES - 2},
-    {Lock_Control_Task,    "Lock Ctrl",   100,		     configMAX_PRIORITIES - 3},
-	  {HTTPServer_Task,      "HTTPServer",  1000,			   configMAX_PRIORITIES - 4},
+    {Lock_Control_Task,    "Lock Ctrl",   100,		   configMAX_PRIORITIES - 3},
+	{HTTPServer_Task,      "HTTPServer",  1000,		   configMAX_PRIORITIES - 4},
     {HTTP_Client_Task,     "HTTP_Client", 1000,        configMAX_PRIORITIES - 5}
 };
 
