@@ -1,6 +1,10 @@
 #ifndef SERVER_H_
 #define SERVER_H_
 
-extern void Run_HTTPServer(void);
+#include "mdns.h"
 
-#endif /* LOCK_H_ */
+extern void Run_HTTPServer(void);
+extern void server_thread(void *arg);
+extern void http_srv_txt(struct mdns_service *service, void *txt_userdata);
+
+#endif /* SERVER_H_ */

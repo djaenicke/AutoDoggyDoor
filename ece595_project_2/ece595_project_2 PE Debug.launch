@@ -16,7 +16,7 @@
 <stringAttribute key="com.pemicro.debug.gdbjtag.pne.PE.DEVICE_NAME" value="NXP_K6x_K64FN1M0M12"/>
 <stringAttribute key="com.pemicro.debug.gdbjtag.pne.PE.GDB_OPTIONS" value=""/>
 <intAttribute key="com.pemicro.debug.gdbjtag.pne.PE.HARDWARE_INTERFACE" value="6"/>
-<stringAttribute key="com.pemicro.debug.gdbjtag.pne.PE.LAST_ATTRIBUTE_HEADER" value="com.pemicro.debug.gdbjtag.pne.ml."/>
+<stringAttribute key="com.pemicro.debug.gdbjtag.pne.PE.LAST_ATTRIBUTE_HEADER" value="com.pemicro.debug.gdbjtag.pne.sda."/>
 <booleanAttribute key="com.pemicro.debug.gdbjtag.pne.PE.STREAMING_ENABLE_PORT1" value="true"/>
 <stringAttribute key="com.pemicro.debug.gdbjtag.pne.PE.STREAMING_SERVER_PORT1" value="10224"/>
 <booleanAttribute key="com.pemicro.debug.gdbjtag.pne.PE.USE_EXTERNAL_SERVER" value="true"/>
@@ -80,7 +80,7 @@
 <booleanAttribute key="com.pemicro.debug.gdbjtag.pne.enableSemihostingIoclientTelnet" value="true"/>
 <intAttribute key="com.pemicro.debug.gdbjtag.pne.eraseOptionIndex" value="0"/>
 <booleanAttribute key="com.pemicro.debug.gdbjtag.pne.eraseOptionsenabled" value="false"/>
-<stringAttribute key="com.pemicro.debug.gdbjtag.pne.gdbClientOtherCommands" value="set mem inaccessible-by-default off&#10;set tcp auto-retry on&#10;set tcp connect-timeout 240&#10;set remotetimeout 60"/>
+<stringAttribute key="com.pemicro.debug.gdbjtag.pne.gdbClientOtherCommands" value="set mem inaccessible-by-default off&#13;&#10;set tcp auto-retry on&#13;&#10;set tcp connect-timeout 240&#13;&#10;set remotetimeout 60"/>
 <stringAttribute key="com.pemicro.debug.gdbjtag.pne.gdbClientOtherOptions" value=""/>
 <intAttribute key="com.pemicro.debug.gdbjtag.pne.gdbServerTelnetPortNumber" value="51794"/>
 <intAttribute key="com.pemicro.debug.gdbjtag.pne.gdbmiPortNumber" value="6224"/>

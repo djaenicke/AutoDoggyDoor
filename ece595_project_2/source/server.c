@@ -44,22 +44,24 @@
  ******************************************************************************/
 
 /* IP address configuration. */
+
 #define configIP_ADDR0 192
 #define configIP_ADDR1 168
-#define configIP_ADDR2 0
-#define configIP_ADDR3 102
+#define configIP_ADDR2 1
+#define configIP_ADDR3 20
 
-/* Netmask configuration. */
+// Netmask configuration.
 #define configNET_MASK0 255
 #define configNET_MASK1 255
 #define configNET_MASK2 255
 #define configNET_MASK3 0
 
-/* Gateway address configuration. */
+// Gateway address configuration.
 #define configGW_ADDR0 192
 #define configGW_ADDR1 168
-#define configGW_ADDR2 0
-#define configGW_ADDR3 100
+#define configGW_ADDR2 1
+#define configGW_ADDR3 1
+
 
 /* MAC address configuration. */
 #define configMAC_ADDR {0x02, 0x12, 0x13, 0x10, 0x15, 0x11}
@@ -70,23 +72,7 @@
 /* System clock name. */
 #define EXAMPLE_CLOCK_NAME kCLOCK_CoreSysClk
 
-
-#ifndef HTTPD_DEBUG
-#define HTTPD_DEBUG LWIP_DBG_ON
-#endif
-#ifndef HTTPD_STACKSIZE
-#define HTTPD_STACKSIZE DEFAULT_THREAD_STACKSIZE
-#endif
-#ifndef HTTPD_PRIORITY
-#define HTTPD_PRIORITY DEFAULT_THREAD_PRIO
-#endif
-#ifndef DEBUG_WS
-#define DEBUG_WS 0
-#endif
-
 #define CGI_DATA_LENGTH_MAX (96)
-
-#define MDNS_HOSTNAME "lwip-http"
 
 /*******************************************************************************
 * Prototypes
@@ -368,49 +354,9 @@ WS_PLUGIN_STRUCT ws_tbl[] = {{"/echo", ws_echo_connect, ws_echo_message, ws_echo
 /*!
  * @brief Callback function to generate TXT mDNS record for HTTP service.
  */
-static void http_srv_txt(struct mdns_service *service, void *txt_userdata)
+void http_srv_txt(struct mdns_service *service, void *txt_userdata)
 {
     mdns_resp_add_service_txtitem(service, "path=/", 6);
-}
-
-/*!
- * @brief Initializes lwIP stack.
- */
-static void stack_init(void)
-{
-    ip4_addr_t fsl_netif0_ipaddr, fsl_netif0_netmask, fsl_netif0_gw;
-    ethernetif_config_t fsl_enet_config0 = {
-        .phyAddress = EXAMPLE_PHY_ADDRESS, .clockName = EXAMPLE_CLOCK_NAME, .macAddress = configMAC_ADDR,
-    };
-
-    tcpip_init(NULL, NULL);
-
-    IP4_ADDR(&fsl_netif0_ipaddr, configIP_ADDR0, configIP_ADDR1, configIP_ADDR2, configIP_ADDR3);
-    IP4_ADDR(&fsl_netif0_netmask, configNET_MASK0, configNET_MASK1, configNET_MASK2, configNET_MASK3);
-    IP4_ADDR(&fsl_netif0_gw, configGW_ADDR0, configGW_ADDR1, configGW_ADDR2, configGW_ADDR3);
-
-    netifapi_netif_add(&fsl_netif0, &fsl_netif0_ipaddr, &fsl_netif0_netmask, &fsl_netif0_gw, &fsl_enet_config0,
-                       ethernetif0_init, tcpip_input);
-    netifapi_netif_set_default(&fsl_netif0);
-    netifapi_netif_set_up(&fsl_netif0);
-
-    mdns_resp_init();
-    mdns_resp_add_netif(&fsl_netif0, MDNS_HOSTNAME, 60);
-    mdns_resp_add_service(&fsl_netif0, MDNS_HOSTNAME, "_http", DNSSD_PROTO_TCP, 80, 300, http_srv_txt, NULL);
-
-    LWIP_PLATFORM_DIAG(("\r\n************************************************"));
-    LWIP_PLATFORM_DIAG((" HTTP Server example"));
-    LWIP_PLATFORM_DIAG(("************************************************"));
-    LWIP_PLATFORM_DIAG((" IPv4 Address     : %u.%u.%u.%u", ((u8_t *)&fsl_netif0_ipaddr)[0],
-                        ((u8_t *)&fsl_netif0_ipaddr)[1], ((u8_t *)&fsl_netif0_ipaddr)[2],
-                        ((u8_t *)&fsl_netif0_ipaddr)[3]));
-    LWIP_PLATFORM_DIAG((" IPv4 Subnet mask : %u.%u.%u.%u", ((u8_t *)&fsl_netif0_netmask)[0],
-                        ((u8_t *)&fsl_netif0_netmask)[1], ((u8_t *)&fsl_netif0_netmask)[2],
-                        ((u8_t *)&fsl_netif0_netmask)[3]));
-    LWIP_PLATFORM_DIAG((" IPv4 Gateway     : %u.%u.%u.%u", ((u8_t *)&fsl_netif0_gw)[0], ((u8_t *)&fsl_netif0_gw)[1],
-                        ((u8_t *)&fsl_netif0_gw)[2], ((u8_t *)&fsl_netif0_gw)[3]));
-    LWIP_PLATFORM_DIAG((" mDNS hostname    : %s", MDNS_HOSTNAME));
-    LWIP_PLATFORM_DIAG(("************************************************"));
 }
 
 /*!
@@ -444,26 +390,17 @@ static void http_server_socket_init(void)
 }
 
 /*!
- * @brief The main function containing server thread.
- */
-static void main_thread(void *arg)
-{
-    LWIP_UNUSED_ARG(arg);
-
-    stack_init();
-    http_server_socket_init();
-
-    vTaskDelete(NULL);
-}
-
-/*!
  * @brief Main function.
  */
 void Run_HTTPServer(void)
 {
-    /* create server thread in RTOS */
-    if (sys_thread_new("main", main_thread, NULL, HTTPD_STACKSIZE, HTTPD_PRIORITY) == NULL)
-        LWIP_ASSERT("main(): Task creation failed.", 0);
+	static uint8_t init = 0;
+
+	if (!init)
+	{
+		http_server_socket_init();
+		init = 1;
+	}
 }
 
 #endif // LWIP_SOCKET

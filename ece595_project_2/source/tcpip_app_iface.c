@@ -10,6 +10,8 @@
  ******************************************************************************/
 #include "board.h"
 #include "tcpip_app_iface.h"
+#include "server.h"
+#include "mdns.h"
 
 /*******************************************************************************
  * Definitions
@@ -17,11 +19,12 @@
 /* MAC address configuration. */
 #define configMAC_ADDR                     \
     {                                      \
-        0x02, 0x12, 0x13, 0x10, 0x15, 0x11 \
+        0x02, 0x12, 0x13, 0x10, 0x15, 0x12 \
     }
 
 /* Address of PHY interface. */
 #define EXAMPLE_PHY_ADDRESS BOARD_ENET0_PHY_ADDRESS
+#define MDNS_HOSTNAME "lwip-http"
 
 /* System clock name. */
 #define EXAMPLE_CLOCK_NAME kCLOCK_CoreSysClk
@@ -46,6 +49,10 @@ void Init_Network_If(struct netif * net_if)
                        ethernetif0_init, tcpip_input);
     netifapi_netif_set_default(net_if);
     netifapi_netif_set_up(net_if);
+
+    mdns_resp_init();
+    mdns_resp_add_netif(net_if, MDNS_HOSTNAME, 60);
+    mdns_resp_add_service(net_if, MDNS_HOSTNAME, "_http", DNSSD_PROTO_TCP, 80, 300, http_srv_txt, NULL);
 
     netifapi_dhcp_start(net_if);
 

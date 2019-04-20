@@ -29,8 +29,10 @@ static uint8_t Prox_Status; /*TODO WILL COME FROM XBEE*/
 static uint8_t Time_Status; /*TODO WILL COME FROM RTC*/
 static uint8_t Weather_Status; /*TODO WILL COME FROM WEATHER API*/
 static uint8_t Lock_Status = LOCKED;
-static uint8_t Lock_Method=MANUAL;
+static volatile uint8_t Lock_Method=MANUAL;
 static uint8_t Dog_Status=0; /*TODO WILL COME FROM ULTRASONIC TO KNOW IF DOG IS OUT*/
+static uint8_t Dog_Lock_Flag=0;
+static uint8_t Dog_Status_Flag=0;
 
 void Run_Lock_Control(void)
 {
@@ -38,55 +40,67 @@ void Run_Lock_Control(void)
 	{
 		if(Time_Status == OPEN||Dog_Status == OUTSIDE)
 		{
-			if(Weather_Status == GOOD||Dog_Status == OUTSIDE)
+			if((Weather_Status == GOOD||Dog_Status == OUTSIDE) && (Dog_Lock_Flag == 0))
 			{
 				printf("Door unlocking.\n\r");
 				Set_GPIO(ACTUATOR,HIGH);
 				Lock_Status = OPEN;
-
+				Dog_Lock_Flag = 1;
 			}
-			else
+			else if(Dog_Lock_Flag == 1)
 			{
 				printf("Weather Conflict.\n\r");
 				Set_GPIO(ACTUATOR,LOW);
 				Lock_Status = LOCKED;
+				Dog_Lock_Flag = 0;
 			}
 		}
+		else if (Dog_Lock_Flag == 1)
+		{
 		printf("Timing Conflict.\n\r");
 		Set_GPIO(ACTUATOR,LOW);
 		Lock_Status = LOCKED;
+		Dog_Lock_Flag = 0;
+		}
 	}
-	else
+	else if (Dog_Lock_Flag == 1)
 	{
 		printf("Proximity Conflict.\n\r");
 		Set_GPIO(ACTUATOR,LOW);
 		Lock_Status = LOCKED;
+		Dog_Lock_Flag = 0;
 	}
 
 	if(Time_Status == OPEN && Weather_Status == GOOD)
 	{
-		if (Dog_Status == OUTSIDE)
+		if (Dog_Status == OUTSIDE && Dog_Status_Flag != 0)
 		{
 			Set_GPIO(GREEN_LED,HIGH);
 			Set_GPIO(RED_LED, HIGH);
 			Set_GPIO(BLUE_LED, LOW);
+			printf("Dog is currently outside.\n\r");
+			Dog_Status_Flag = 0;
 		}
-		else
+		else if (Dog_Status_Flag != 1)
 		{
 			Set_GPIO(GREEN_LED,LOW);
 			Set_GPIO(RED_LED, HIGH);
 			Set_GPIO(BLUE_LED, HIGH);
+			printf("Dog is currently inside.\n\r");
+			Dog_Status_Flag = 1;
 		}
 	}
-	else
+	else if (Dog_Status_Flag != 2)
 	{
 		Set_GPIO(GREEN_LED,HIGH);
 		Set_GPIO(RED_LED, LOW);
 		Set_GPIO(BLUE_LED, HIGH);
+		printf("The dog is inside due to weather conditions or time schedule.\n\r");
+		Dog_Status_Flag = 2;
 	}
 }
 
-uint8_t PORTC_IRQHandler(Lock_Method)
+void PORTC_IRQHandler(void)
 {
     if (Lock_Method)
     {
@@ -98,8 +112,6 @@ uint8_t PORTC_IRQHandler(Lock_Method)
         Lock_Method=MANUAL;
         printf("The lock is now being controlled manually.\n\r");
     }
-    return Lock_Method;
-
     PORT_ClearPinsInterruptFlags(PORTC, 0xFFFFFFFF);
 }
 
@@ -111,11 +123,13 @@ void PORTA_IRQHandler(void)
     	{
     		Set_GPIO(ACTUATOR,HIGH);
     		Lock_Status = OPEN;
+    		printf("The lock method is now unlocked.\n\r");
     	}
     	else if (Lock_Status == OPEN)
     	{
     		Set_GPIO(ACTUATOR,LOW);
     		Lock_Status = LOCKED;
+    		printf("The lock method is now locked.\n\r");
     	}
     }
     PORT_ClearPinsInterruptFlags(PORTA, 0xFFFFFFFF);
