@@ -169,6 +169,10 @@
 #define LWIP_ICMP 1
 #endif
 
+#ifndef LWIP_IGMP
+#define LWIP_IGMP 1
+#endif
+
 /* ---------- DHCP options ---------- */
 /* Define LWIP_DHCP to 1 if you want DHCP configuration of
    interfaces. DHCP is not implemented in lwIP 0.5.1, however, so
