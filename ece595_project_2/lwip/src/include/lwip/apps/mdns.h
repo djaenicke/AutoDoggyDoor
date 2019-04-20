@@ -35,6 +35,7 @@
  *
  */
 
+
 #ifndef LWIP_HDR_APPS_MDNS_H
 #define LWIP_HDR_APPS_MDNS_H
 
@@ -54,7 +55,6 @@ enum mdns_sd_proto {
 
 #define MDNS_PROBING_CONFLICT   0
 #define MDNS_PROBING_SUCCESSFUL 1
-
 #define MDNS_LABEL_MAXLEN  63
 
 struct mdns_host;

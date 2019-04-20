@@ -17,6 +17,8 @@
 #include "task.h"
 #include "queue.h"
 #include "timers.h"
+#include "server.h"
+#include "lock.h"
 
 #include "tcpip_app_iface.h"
 #include "fsl_device_registers.h"
@@ -26,10 +28,26 @@
 #include "io_abstraction.h"
 #include "proximity_estimation.h"
 #include "http_client_app.h"
+#include "server.h"
+
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+
+#ifndef HTTPD_DEBUG
+#define HTTPD_DEBUG LWIP_DBG_ON
+#endif
+#ifndef HTTPD_STACKSIZE
+#define HTTPD_STACKSIZE DEFAULT_THREAD_STACKSIZE
+#endif
+#ifndef HTTPD_PRIORITY
+#define HTTPD_PRIORITY DEFAULT_THREAD_PRIO
+#endif
+#ifndef DEBUG_WS
+#define DEBUG_WS 0
+#endif
+
 /*! @brief Stack size of the thread which prints DHCP info. */
 #define PRINT_THREAD_STACKSIZE 512
 
@@ -53,6 +71,9 @@ typedef struct Task_Cfg_Tag
 /* Task function declarations */
 static void Prox_Estimation_Task(void *pvParameters);
 static void HTTP_Client_Task(void *pvParameters);
+static void Lock_Control_Task(void *pvParameters);
+static void HTTPServer_Task(void *pvParameters);
+
 
 /* Local functions */
 static void Init_OS_Tasks(void);
@@ -60,13 +81,16 @@ static void Init_OS_Tasks(void);
 /*******************************************************************************
 * Variables
 ******************************************************************************/
+
 /* Task Configurations */
-#define NUM_TASKS (2)
+#define NUM_TASKS (4)
 const Task_Cfg_T Task_Cfg_Table[NUM_TASKS] =
 {
     /* Function,           Name,          Stack Size,  Priority */
     {Prox_Estimation_Task, "Prox Est",    1000,        configMAX_PRIORITIES - 2},
-    {HTTP_Client_Task,     "HTTP_Client", 1000,        configMAX_PRIORITIES - 3}
+    {Lock_Control_Task,    "Lock Ctrl",   100,		     configMAX_PRIORITIES - 3},
+	  {HTTPServer_Task,      "HTTPServer",  1000,			   configMAX_PRIORITIES - 4},
+    {HTTP_Client_Task,     "HTTP_Client", 1000,        configMAX_PRIORITIES - 5}
 };
 
 static struct netif fsl_netif;
@@ -81,6 +105,7 @@ int main(void)
     BOARD_InitBootPeripherals();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_Enable_SW_Interrupts();
 
 #ifdef XBEE
     Init_Xbee_Interface();
@@ -127,6 +152,32 @@ static void Prox_Estimation_Task(void *pvParameters)
 #ifdef XBEE
         Run_Proximity_Estimation();
 #endif
+        vTaskDelay(pdMS_TO_TICKS(1000));
+    }
+}
+
+static void Lock_Control_Task(void *pvParameters)
+{
+	while(1)
+	{
+		Run_Lock_Control();
+		vTaskDelay(pdMS_TO_TICKS(1500));
+	}
+}
+
+static void HTTPServer_Task(void *pvParameters)
+{
+    struct dhcp *dhcp;
+
+    while(1)
+    {
+        dhcp = netif_dhcp_data(&fsl_netif);
+
+        if (netif_is_up(&fsl_netif) && DHCP_STATE_BOUND == dhcp->state)
+        {
+            Run_HTTPServer();
+        }
+
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }

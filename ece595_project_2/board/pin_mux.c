@@ -77,6 +77,7 @@ void BOARD_InitPins(void)
     CLOCK_EnableClock(kCLOCK_PortB);                           /* Port B Clock Gate Control: Clock enabled */
     CLOCK_EnableClock(kCLOCK_PortC);                           /* Port C Clock Gate Control: Clock enabled */
     CLOCK_EnableClock(kCLOCK_PortD);                           /* Port C Clock Gate Control: Clock enabled */
+    CLOCK_EnableClock(kCLOCK_PortE);                           /* Port C Clock Gate Control: Clock enabled */
 
     for (i=0; i<NUM_IO; i++)
     {
@@ -113,7 +114,7 @@ void BOARD_InitPins(void)
     PORT_SetPinMux(PORTB, PIN1_IDX, kPORT_MuxAlt4);            /* PORTB1 (pin 54) is configured as RMII0_MDC */
     PORT_SetPinMux(PORTB, PIN16_IDX, kPORT_MuxAlt3);           /* PORTB16 (pin 62) is configured as UART0_RX */
     PORT_SetPinMux(PORTB, PIN17_IDX, kPORT_MuxAlt3);           /* PORTB17 (pin 63) is configured as UART0_TX */
-    PORT_SetPinMux(PORTB, PIN22_IDX, kPORT_MuxAsGpio);         /* PORTB22 (pin 68) is configured as PTB22 */
+
     PORT_SetPinMux(PORTC, PIN16_IDX, kPORT_MuxAlt4);           /* PORTC16 (pin 90) is configured as ENET0_1588_TMR0 */
     PORT_SetPinMux(PORTC, PIN17_IDX, kPORT_MuxAlt4);           /* PORTC17 (pin 91) is configured as ENET0_1588_TMR1 */
     PORT_SetPinMux(PORTC, PIN18_IDX, kPORT_MuxAlt4);           /* PORTC18 (pin 92) is configured as ENET0_1588_TMR2 */
@@ -126,3 +127,13 @@ void BOARD_InitPins(void)
 /*******************************************************************************
  * EOF
  ******************************************************************************/
+
+void BOARD_Enable_SW_Interrupts(void)
+{
+    /* Enable switch interrupts */
+    PORT_ClearPinsInterruptFlags(PORTC, 0xFFFFFFFF);
+    NVIC_EnableIRQ(PORTC_IRQn);
+
+    PORT_ClearPinsInterruptFlags(PORTA, 0xFFFFFFFF);
+    NVIC_EnableIRQ(PORTA_IRQn);
+}
