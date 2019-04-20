@@ -1,11 +1,7 @@
-/* FreeRTOS */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
-
 /* Application Includes */
 #include <stdio.h>
 #include <string.h>
+#include "MK64F12.h"
 #include "lock.h"
 #include "assert.h"
 #include "io_abstraction.h"
@@ -15,8 +11,6 @@
 /* Macros */
 #define LOCKED (0)
 #define OPEN (1)
-#define AUTO (0)
-#define MANUAL (1)
 #define FAR (0)
 #define NEAR (1)
 #define INSIDE (0)
@@ -28,8 +22,8 @@
 static uint8_t Prox_Status; /*TODO WILL COME FROM XBEE*/
 static uint8_t Time_Status; /*TODO WILL COME FROM RTC*/
 static uint8_t Weather_Status; /*TODO WILL COME FROM WEATHER API*/
-static uint8_t Lock_Status = LOCKED;
-static volatile uint8_t Lock_Method=MANUAL;
+static volatile uint8_t Lock_Status = LOCKED;
+static volatile uint8_t Lock_Method = MANUAL;
 static uint8_t Dog_Status=0; /*TODO WILL COME FROM ULTRASONIC TO KNOW IF DOG IS OUT*/
 static uint8_t Dog_Lock_Flag=0;
 static uint8_t Dog_Status_Flag=0;
@@ -100,20 +94,21 @@ void Run_Lock_Control(void)
 	}
 }
 
+
 void PORTC_IRQHandler(void)
 {
     if (Lock_Method)
     {
         Lock_Method=AUTO;
-        printf("The lock is now being controlled automatically.\n\r");
     }
     else
     {
         Lock_Method=MANUAL;
-        printf("The lock is now being controlled manually.\n\r");
     }
+
     PORT_ClearPinsInterruptFlags(PORTC, 0xFFFFFFFF);
 }
+
 
 void PORTA_IRQHandler(void)
 {
@@ -133,4 +128,15 @@ void PORTA_IRQHandler(void)
     	}
     }
     PORT_ClearPinsInterruptFlags(PORTA, 0xFFFFFFFF);
+}
+
+uint8_t Get_Lock_Method(void)
+{
+    uint8_t ret_val;
+
+    NVIC_DisableIRQ(PORTC_IRQn);
+    ret_val = Lock_Method;
+    NVIC_EnableIRQ(PORTC_IRQn);
+
+    return(ret_val);
 }

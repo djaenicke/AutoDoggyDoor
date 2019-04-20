@@ -21,8 +21,6 @@ processor_version: 2.0.0
 #include "pin_mux.h"
 #include "io_abstraction.h"
 
-
-
 #define PIN0_IDX                         0u   /*!< Pin number for pin 0 in a port */
 #define PIN1_IDX                         1u   /*!< Pin number for pin 1 in a port */
 #define PIN4_IDX                         4u   /*!< Pin number for pin 4 in a port */
@@ -79,6 +77,9 @@ void BOARD_InitPins(void)
     CLOCK_EnableClock(kCLOCK_PortD);                           /* Port C Clock Gate Control: Clock enabled */
     CLOCK_EnableClock(kCLOCK_PortE);                           /* Port C Clock Gate Control: Clock enabled */
 
+    PORT_SetPinInterruptConfig(Pin_Cfgs[SW_2].pbase, Pin_Cfgs[SW_2].pin, kPORT_InterruptFallingEdge);
+    PORT_SetPinInterruptConfig(Pin_Cfgs[SW_3].pbase, Pin_Cfgs[SW_3].pin, kPORT_InterruptFallingEdge);
+
     for (i=0; i<NUM_IO; i++)
     {
       PORT_SetPinMux(Pin_Cfgs[i].pbase, Pin_Cfgs[i].pin, Pin_Cfgs[i].mux);
@@ -122,6 +123,7 @@ void BOARD_InitPins(void)
     (~(SIM_SOPT5_UART0TXSRC_MASK)))                          /* Mask bits to zero which are setting */
       | SIM_SOPT5_UART0TXSRC(SOPT5_UART0TXSRC_UART_TX)       /* UART 0 transmit data source select: UART0_TX pin */
     );
+
 }
 
 /*******************************************************************************

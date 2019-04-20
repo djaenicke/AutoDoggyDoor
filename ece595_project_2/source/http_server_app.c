@@ -28,7 +28,7 @@
 #include "lwip/netifapi.h"
 #include "lwip/sockets.h"
 #include "netif/etharp.h"
-#include "server.h"
+#include "http_server_app.h"
 
 #include "ethernetif.h"
 #include "board.h"
@@ -39,26 +39,15 @@
 #include "fsl_device_registers.h"
 #include "pin_mux.h"
 #include "clock_config.h"
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-
-
-/* MAC address configuration. */
-#define configMAC_ADDR {0x02, 0x12, 0x13, 0x10, 0x15, 0x11}
-
-/* Address of PHY interface. */
-#define EXAMPLE_PHY_ADDRESS BOARD_ENET0_PHY_ADDRESS
-
-/* System clock name. */
-#define EXAMPLE_CLOCK_NAME kCLOCK_CoreSysClk
-
 #define CGI_DATA_LENGTH_MAX (96)
 
 /*******************************************************************************
 * Prototypes
 ******************************************************************************/
-
 static void cgi_urldecode(char *url);
 static int cgi_rtc_data(HTTPSRV_CGI_REQ_STRUCT *param);
 static int cgi_example(HTTPSRV_CGI_REQ_STRUCT *param);
@@ -278,58 +267,6 @@ static void cgi_urldecode(char *url)
     *dst = '\0';
 }
 
-#if HTTPSRV_CFG_WEBSOCKET_ENABLED
-/*
- * Echo plugin code - simple plugin which echoes any message it receives back to
- * client.
- */
-uint32_t ws_echo_connect(void *param, WS_USER_CONTEXT_STRUCT context)
-{
-#if DEBUG_WS
-    PRINTF("WebSocket echo client connected.\r\n");
-#endif
-    return (0);
-}
-
-uint32_t ws_echo_disconnect(void *param, WS_USER_CONTEXT_STRUCT context)
-{
-#if DEBUG_WS
-    PRINTF("WebSocket echo client disconnected.\r\n");
-#endif
-    return (0);
-}
-
-uint32_t ws_echo_message(void *param, WS_USER_CONTEXT_STRUCT context)
-{
-    WS_send(&context); /* Send back what was received.*/
-#if DEBUG_WS
-    if (context.data.type == WS_DATA_TEXT)
-    {
-        /* Print received text message to console. */
-        context.data.data_ptr[context.data.length] = 0;
-        PRINTF("WebSocket message received:\r\n%s\r\n", context.data.data_ptr);
-    }
-    else
-    {
-        /* Inform user about binary message. */
-        PRINTF("WebSocket binary data with length of %d bytes received.", context.data.length);
-    }
-#endif
-
-    return (0);
-}
-
-uint32_t ws_echo_error(void *param, WS_USER_CONTEXT_STRUCT context)
-{
-#if DEBUG_WS
-    PRINTF("WebSocket error: 0x%X.\r\n", context.error);
-#endif
-    return (0);
-}
-
-WS_PLUGIN_STRUCT ws_tbl[] = {{"/echo", ws_echo_connect, ws_echo_message, ws_echo_error, ws_echo_disconnect, NULL},
-                             {0, 0, 0, 0, 0, 0}};
-#endif /* HTTPSRV_CFG_WEBSOCKET_ENABLED */
 
 /*!
  * @brief Callback function to generate TXT mDNS record for HTTP service.
@@ -342,7 +279,7 @@ void http_srv_txt(struct mdns_service *service, void *txt_userdata)
 /*!
  * @brief Initializes server.
  */
-static void http_server_socket_init(void)
+void HTTP_Server_Socket_Init(void)
 {
     HTTPSRV_PARAM_STRUCT params;
     uint32_t httpsrv_handle;
@@ -367,20 +304,11 @@ static void http_server_socket_init(void)
     {
         LWIP_PLATFORM_DIAG(("HTTPSRV_init() is Failed"));
     }
+    else
+    {
+        printf("HTTP server started successfully!\r\n");
+    }
 }
 
-/*!
- * @brief Main function.
- */
-void Run_HTTPServer(void)
-{
-	static uint8_t init = 0;
-
-	if (!init)
-	{
-		http_server_socket_init();
-		init = 1;
-	}
-}
 
 #endif // LWIP_SOCKET
