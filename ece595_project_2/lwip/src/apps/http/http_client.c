@@ -173,14 +173,12 @@ httpc_free_state(httpc_state_t* req)
     req->rx_hdrs = NULL;
   }
 
-  tpcb = req->pcb;
-  mem_free(req);
-  req = NULL;
-
 #if LWIP_ALTCP && LWIP_ALTCP_TLS
   altcp_tls_free_config(http_client_tls_config);
   http_client_tls_config = NULL;
 #endif
+
+  tpcb = req->pcb;
 
   if (tpcb != NULL) {
     err_t r;
@@ -195,6 +193,10 @@ httpc_free_state(httpc_state_t* req)
       return ERR_ABRT;
     }
   }
+
+  mem_free(req);
+  req = NULL;
+
   return ERR_OK;
 }
 
@@ -340,6 +342,7 @@ httpc_tcp_recv(void *arg, struct altcp_pcb *pcb, struct pbuf *p, err_t r)
         /* hide header bytes in pbuf */
         q = pbuf_free_header(req->rx_hdrs, total_header_len);
         p = q;
+        pbuf_free(req->rx_hdrs);
         req->rx_hdrs = NULL;
         /* go on with data */
         req->parse_state = HTTPC_PARSE_RX_DATA;

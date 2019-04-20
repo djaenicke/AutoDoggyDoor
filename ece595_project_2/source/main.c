@@ -62,8 +62,8 @@ static void Init_OS_Tasks(void);
 const Task_Cfg_T Task_Cfg_Table[NUM_TASKS] =
 {
     /* Function,           Name,          Stack Size,  Priority */
-    {Prox_Estimation_Task, "Prox Est",    1000,        configMAX_PRIORITIES - 3},
-    {HTTP_Client_Task,     "HTTP_Client", 1000,        configMAX_PRIORITIES - 2}
+    {Prox_Estimation_Task, "Prox Est",    1000,        configMAX_PRIORITIES - 2},
+    {HTTP_Client_Task,     "HTTP_Client", 1000,        configMAX_PRIORITIES - 3}
 };
 
 static struct netif fsl_netif;
@@ -136,9 +136,10 @@ static void HTTP_Client_Task(void *pvParameters)
 
         if (netif_is_up(&fsl_netif) && DHCP_STATE_BOUND == dhcp->state)
         {
-            Query_Weather_API();
+            //Query_Weather_API();
+            Query_Time_API();
         }
 
-        vTaskDelay(pdMS_TO_TICKS(30000));
+        vTaskDelay(pdMS_TO_TICKS(60000));
     }
 }

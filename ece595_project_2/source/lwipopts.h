@@ -72,14 +72,14 @@
  * a lot of data that needs to be copied, this should be set high.
  */
 #ifndef MEM_SIZE
-#define MEM_SIZE (64 * 1024)
+#define MEM_SIZE (22 * 1024)
 #endif
 
 /* MEMP_NUM_PBUF: the number of memp struct pbufs. If the application
    sends a lot of data out of ROM (or other static memory), this
    should be set high. */
 #ifndef MEMP_NUM_PBUF
-#define MEMP_NUM_PBUF 15
+#define MEMP_NUM_PBUF 16
 #endif
 /* MEMP_NUM_UDP_PCB: the number of UDP protocol control blocks. One
    per active UDP "connection". */
@@ -110,7 +110,7 @@
 /* ---------- Pbuf options ---------- */
 /* PBUF_POOL_SIZE: the number of buffers in the pbuf pool. */
 #ifndef PBUF_POOL_SIZE
-#define PBUF_POOL_SIZE 10
+#define PBUF_POOL_SIZE 16
 #endif
 
 /* PBUF_POOL_BUFSIZE: the size of each pbuf in the pbuf pool. */

@@ -9,5 +9,6 @@
 #define HTTP_CLIENT_APP_H_
 
 extern void Query_Weather_API(void);
+extern void Query_Time_API(void);
 
 #endif /* HTTP_CLIENT_APP_H_ */
