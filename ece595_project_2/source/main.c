@@ -58,6 +58,7 @@ typedef struct Task_Cfg_Tag
     const char name[configMAX_TASK_NAME_LEN];
     const configSTACK_DEPTH_TYPE stack_size;
     UBaseType_t priority;
+    TaskHandle_t Handle;
 } Task_Cfg_T;
 
 /*******************************************************************************
@@ -67,6 +68,7 @@ typedef struct Task_Cfg_Tag
 static void Prox_Estimation_Task(void *pvParameters);
 static void Lock_Control_Task(void *pvParameters);
 static void HTTPServer_Task(void *pvParameters);
+static void Mode_Manager_Task(void *pvParameters);
 
 /* Local functions */
 static void Init_OS_Tasks(void);
@@ -74,15 +76,20 @@ static void Init_OS_Tasks(void);
 /*******************************************************************************
 * Variables
 ******************************************************************************/
+uint8_t Mode_Manager_Handle;
+uint8_t Lock_Control_Handle;
+uint8_t HTTPServer_Handle;
+TaskHandle_t Prox_Estimation_Handle;
 
 /* Task Configurations */
-#define NUM_TASKS (3)
+#define NUM_TASKS (4)
 const Task_Cfg_T Task_Cfg_Table[NUM_TASKS] =
 {
-    /* Function,           Name,       Stack Size,  Priority */
-    {Prox_Estimation_Task, "Prox Est", 1000,         configMAX_PRIORITIES - 2},
-    {Lock_Control_Task, "Lock Ctrl",   100,		     configMAX_PRIORITIES - 3},
-	{HTTPServer_Task, "HTTPServer",    1000,			 configMAX_PRIORITIES - 4}
+    /* Function,           Name,       Stack Size,  Priority,                       Handle*/
+	{Mode_Manager_Task, "MM_Task",	   100,			 configMAX_PRIORITIES - 5,     &Mode_Manager_Handle},
+    {Lock_Control_Task, "Lock Ctrl",   100,		     configMAX_PRIORITIES - 4,     &Lock_Control_Handle},
+	{HTTPServer_Task, "HTTPServer",    1000,		 configMAX_PRIORITIES - 3,     &HTTPServer_Handle},
+	{Prox_Estimation_Task, "Prox Est", 1000,         configMAX_PRIORITIES - 2,     &Prox_Estimation_Handle},
 };
 
 static struct netif fsl_netif;
@@ -139,9 +146,13 @@ void Init_OS_Tasks(void)
 
 static void Prox_Estimation_Task(void *pvParameters)
 {
+	struct dhcp *dhcp;
     while(1)
     {
+    	if (netif_is_up(&fsl_netif) && DHCP_STATE_BOUND == dhcp->state)
+    	{
         Run_Proximity_Estimation();
+    	}
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
@@ -172,3 +183,11 @@ static void HTTPServer_Task(void *pvParameters)
 	}
 }
 
+static void Mode_Manager_Task(void *pvParameters)
+{
+	while(1)
+	{
+		Run_Mode_Manager();
+		vTaskDelay(pdMS_TO_TICKS(1500));
+	}
+}

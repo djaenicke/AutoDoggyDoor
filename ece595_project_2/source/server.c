@@ -68,7 +68,6 @@ static bool cgi_get_varval(char *var_str, char *var_name, char *var_val, uint32_
 /*******************************************************************************
 * Variables
 ******************************************************************************/
-static struct netif fsl_netif0;
 /* FS data.*/
 extern const HTTPSRV_FS_DIR_ENTRY httpsrv_fs_data[];
 

@@ -133,4 +133,16 @@ void PORTA_IRQHandler(void)
     	}
     }
     PORT_ClearPinsInterruptFlags(PORTA, 0xFFFFFFFF);
+
+}
+
+uint8_t Get_Lock_Method(void)
+{
+	NVIC_DisableIRQ(PORTA_IRQn);
+	NVIC_DisableIRQ(PORTC_IRQn);
+	uint8_t ret_val;
+	ret_val = Lock_Method;
+	NVIC_EnableIRQ(PORTA_IRQn);
+	NVIC_EnableIRQ(PORTC_IRQn);
+	return(ret_val);
 }
