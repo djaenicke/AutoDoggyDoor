@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 
 #include "http_client_app.h"
 #include "lwip/apps/http_client.h"

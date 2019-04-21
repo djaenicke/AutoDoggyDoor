@@ -66,7 +66,7 @@ void Init_Xbee_Interface(void)
         /* Default to lowest power mode */
         Change_Xbee_Power_Level_Blocking(LOWEST);
     }
-    printf("\r\nDone!");
+    printf("\r\nDone!\n\r");
 }
 
 uint8_t Extract_Remote_RSSI(void)

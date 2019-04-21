@@ -30,6 +30,6 @@
 * Prototypes
 ******************************************************************************/
 extern void Init_Network_If(struct netif * net_if);
-extern void Print_DHCP_State(void *arg);
+extern void Print_DHCP_State(struct netif *netif);
 
 #endif /* TCPIP_APP_IFACE_H_ */
