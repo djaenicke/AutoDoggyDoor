@@ -24,3 +24,9 @@ input.time_input {
 input.day_select {
     vertical-align:middle;
 }
+
+div.rtc_data
+{
+   font-size: 50;
+   font-weight: bolder;
+}

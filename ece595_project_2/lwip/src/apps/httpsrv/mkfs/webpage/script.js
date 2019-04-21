@@ -3,6 +3,42 @@ var days = ["m", "t", "w", "th", "f", "sat", "sun", "all"];
 var intervals = [];
 var id_cntr = 0;
 
+var rtc_value = new Array(3);
+var data_received = 0;
+
+window.onload = loop;
+
+function parse_vars(data)
+{
+   const element = document.getElementById("rtc_time");
+   element.innerHTML = data;
+}
+
+function loop()
+{
+   if (!data_received)
+   {
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() { alertContents(xmlhttp); };
+      xmlhttp.open('GET', "rtcdata.cgi", true);
+      xmlhttp.send(null);
+   }
+   
+   setTimeout("loop()", 1000);
+}
+
+function alertContents(http_request)
+{
+   if (http_request.readyState == 4)
+    {
+      if (http_request.status == 200)
+        {
+            parse_vars(http_request.responseText);
+        }
+        data_received = 0;
+    }
+}
+
 function add_time_interval()
 {
    if (num_valid_intervals() < max_intervals)

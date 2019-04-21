@@ -5,5 +5,6 @@
 
 extern void Start_RTC(rtc_datetime_t * datetime);
 extern void Print_Datetime(void);
+extern void Get_RTC_Time(rtc_datetime_t * datetime);
 
 #endif /* TIME_SCHEDULE_H_ */

@@ -39,6 +39,7 @@
 #include "fsl_device_registers.h"
 #include "pin_mux.h"
 #include "clock_config.h"
+#include "time_schedule.h"
 
 /*******************************************************************************
  * Definitions
@@ -91,13 +92,10 @@ const HTTPSRV_SSI_LINK_STRUCT ssi_lnk_tbl[] = {{"date_time", ssi_date_time}, {0,
  ******************************************************************************/
 static int cgi_rtc_data(HTTPSRV_CGI_REQ_STRUCT *param)
 {
-#define BUFF_SIZE sizeof("00\n00\n00\n")
-    HTTPSRV_CGI_RES_STRUCT response;
-    uint32_t time;
-    uint32_t min;
-    uint32_t hour;
-    uint32_t sec;
+    #define BUFF_SIZE sizeof("00:00:00")
 
+    HTTPSRV_CGI_RES_STRUCT response;
+    rtc_datetime_t datetime;
     char str[BUFF_SIZE];
     uint32_t length = 0;
 
@@ -106,17 +104,12 @@ static int cgi_rtc_data(HTTPSRV_CGI_REQ_STRUCT *param)
         return (0);
     }
 
-    time = sys_now();
-
-    sec = time / 1000;
-    min = sec / 60;
-    hour = min / 60;
-    min %= 60;
-    sec %= 60;
+    Get_RTC_Time(&datetime);
 
     response.ses_handle = param->ses_handle;
     response.content_type = HTTPSRV_CONTENT_TYPE_PLAIN;
     response.status_code = HTTPSRV_CODE_OK;
+
     /*
     ** When the keep-alive is used we have to calculate a correct content length
     ** so the receiver knows when to ACK the data and continue with a next request.
@@ -124,10 +117,11 @@ static int cgi_rtc_data(HTTPSRV_CGI_REQ_STRUCT *param)
     */
 
     /* Calculate content length while saving it to buffer */
-    length = snprintf(str, BUFF_SIZE, "%ld\n%ld\n%ld\n", hour, min, sec);
+    length = snprintf(str, BUFF_SIZE, "%02d:%02d:%02d", datetime.hour, datetime.minute, datetime.second);
     response.data = str;
     response.data_length = length;
     response.content_length = response.data_length;
+
     /* Send response */
     HTTPSRV_cgi_write(&response);
     return (response.content_length);
