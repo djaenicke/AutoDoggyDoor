@@ -8,8 +8,9 @@
 /*******************************************************************************
  * Includes
  ******************************************************************************/
+#include <stdio.h>
+
 /* FreeRTOS kernel includes. */
-#include <http_server_app.h>
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
