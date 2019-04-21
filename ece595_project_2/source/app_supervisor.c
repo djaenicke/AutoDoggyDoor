@@ -43,6 +43,7 @@ typedef struct Task_Cfg_Tag
     const char name[configMAX_TASK_NAME_LEN];
     const configSTACK_DEPTH_TYPE stack_size;
     UBaseType_t priority;
+    TaskHandle_t handle;
 } Task_Cfg_T;
 
 /*******************************************************************************
@@ -56,20 +57,19 @@ static void HTTP_Client_Task(void *pvParameters);
 static void Lock_Control_Task(void *pvParameters);
 
 /* Task Configurations */
-#define NUM_TASKS (3)
+#define NUM_TASKS (2)
 #define SUPERVISOR_PRIORITY configMAX_PRIORITIES-4
 
-const Task_Cfg_T Task_Cfg_Table[NUM_TASKS] =
+Task_Cfg_T Periodic_Tasks_Table[NUM_TASKS] =
 {
     /* Function,           Name,          Stack Size,  Priority */
-    {Prox_Estimation_Task, "Prox Est",    1000,        configMAX_PRIORITIES - 1},
-    {Lock_Control_Task,    "Lock Ctrl",   100,         configMAX_PRIORITIES - 2},
-    {HTTP_Client_Task,     "HTTP_Client", 1000,        configMAX_PRIORITIES - 3}
+    {Lock_Control_Task,    "Lock Ctrl",   100,         configMAX_PRIORITIES - 3, NULL},
+    {HTTP_Client_Task,     "HTTP_Client", 1000,        configMAX_PRIORITIES - 2, NULL}
 };
 
 
 /* Local functions */
-//static void Init_OS_Tasks(void);
+static void Create_Periodic_OS_Tasks(void);
 
 /*******************************************************************************
 * Variables
@@ -87,9 +87,9 @@ void Start_App_Supervisor(void)
 #ifdef XBEE
     Init_Xbee_Interface();
 #endif
-
     Init_Network_If(&FSL_NetIf);
 
+    Create_Periodic_OS_Tasks();
     xTaskCreate(Supervisor_Task, "Supervisor", 500, NULL, SUPERVISOR_PRIORITY, NULL);
     vTaskStartScheduler();
 }
@@ -126,16 +126,14 @@ static void Supervisor_Task(void *pvParameters)
         if ((AUTO == lock_method) && (CONFIG == App_Mode))
         {
             /* Switching from config to normal */
-            // TODO - Stop HTTP server
-            // TODO - Start other tasks
             App_Mode = NORMAL;
             printf("The lock is now being controlled automatically.\n\r");
+
+            /* Start the proximity estimation task now */
+            xTaskCreate(Prox_Estimation_Task, "Prox Est", 1000, NULL, configMAX_PRIORITIES - 1, NULL);
         }
         else if ((MANUAL == lock_method) && (NORMAL == App_Mode))
         {
-            /* Switching from normal to config */
-            // TODO - Stop other tasks
-            // TODO - Start HTTP server
             App_Mode = CONFIG;
             printf("The lock is now being controlled manually.\n\r");
         }
@@ -155,7 +153,16 @@ static void Prox_Estimation_Task(void *pvParameters)
 #ifdef XBEE
         Run_Proximity_Estimation();
 #endif
-        vTaskDelay(pdMS_TO_TICKS(1000));
+
+        if (NORMAL == App_Mode)
+        {
+            vTaskDelay(pdMS_TO_TICKS(2000));
+        }
+        else
+        {
+            /* Kill the proximity estimation task so that the HTTP server isn't starved */
+            vTaskDelete(NULL);
+        }
     }
 }
 
@@ -181,25 +188,22 @@ static void HTTP_Client_Task(void *pvParameters)
             Run_HTTP_Client();
         }
 
-        vTaskDelay(pdMS_TO_TICKS(60000));
+        vTaskDelay(pdMS_TO_TICKS(20000));
     }
 }
 
-/*
-void Init_OS_Tasks(void)
+
+void Create_Periodic_OS_Tasks(void)
 {
     uint8_t i;
-
-    printf("Initializing OS Tasks...\r\n");
-
     for (i=0; i<NUM_TASKS; i++)
     {
-        if (xTaskCreate(Task_Cfg_Table[i].func, Task_Cfg_Table[i].name,
-                        Task_Cfg_Table[i].stack_size, NULL, Task_Cfg_Table[i].priority, NULL) != pdPASS)
+        if (xTaskCreate(Periodic_Tasks_Table[i].func, Periodic_Tasks_Table[i].name, \
+                        Periodic_Tasks_Table[i].stack_size, NULL, Periodic_Tasks_Table[i].priority, \
+                        &Periodic_Tasks_Table[i].handle) != pdPASS)
         {
             printf("Task number %d creation failed!.\r\n", i);
             assert(false);
         }
     }
 }
-*/
