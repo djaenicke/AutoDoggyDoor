@@ -214,13 +214,26 @@ function add_time_interval()
 
  function post_intervals()
  {
-     console.log(JSON.stringify(intervals));
+    console.log(JSON.stringify(intervals));
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", "/ts");
+    xmlhttp.setRequestHeader("Content-Type", "application/json");
+    xmlhttp.send(JSON.stringify(intervals));
+
+    xmlhttp.onreadystatechange = function()
+    {
+        if (this.readyState == 4 && this.status == 200)
+        {
+            console.log(this.responseText);
+        }
+    };
  }
 
  function get_interval_idx(ele_id_str)
  {
      var temp_str = String(ele_id_str);
-     var start = temp_str.indexOf("_")+1;
+     var start = temp_str.indexOf("_") + 1;
      var end = temp_str.length;
 
      return(temp_str.substring(start, end));
