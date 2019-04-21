@@ -1,76 +1,55 @@
-<!DOCTYPE HTML SYSTEM>
-<html>
+<!doctype html>
+
+<html lang="en">
 <head>
-    <title>KSDK HTTP Server Example</title>
-
-    <style type="text/css">
-    <!--
-    @import"httpsrv.css";
-    -->
-    </style>
-
-    <script type="text/javascript" src="request.js"></script>
-
-    <script type="text/javascript">
-
-        function content_load(newUrl)
-        {
-            var objectEl = document.getElementById('content_frame');
-            objectEl.outerHTML = objectEl.outerHTML.replace(/src="(.+?)"/, 'src="' + newUrl + '"');
-        }
-		function autoResize(obj){
-			var newheight;
-			newheight=obj.contentWindow.document.body.scrollHeight+30;
-			if(newheight < 250) /* Control minimum height*/
-			{
-				newheight = 250;
-			}
-			obj.style.height= (newheight) + "px";
-		}
-		function heightReset(obj){
-			obj.style.height= "50%";
-		}
-    </script>
-
+    <meta charset="utf-8">
+    <title>Pet Door User Configuration</title>
+    <link rel="stylesheet" href="style_sheet.css">
+    <script src="script.js" type="text/javascript"></script>
 </head>
-
-<body>
-
-    <div id="page_main" style="text-align: center;">
-
-        <div id="page_header" class="gradient header_banner">
-            <div class="header_container">
-                <div class="logo">
-                    <a href="http://www.nxp.com" title="NXP"><img src="NXP_logo.png" alt="NXP Semiconductor" width="150px" height="54px"></a>
-                </div>
-                <div class="header_text">
-                    KSDK HTTP server
-                </div>
-            </div>
-        </div>
-
-        <div class="page_body">
-            <div class="menu">
-            	<ul id="lnv">
-                    <li><button type="button" name="main_b" class="menu_button" onclick="content_load('welcome.html')">Welcome page</button></li>
-                    <li><button type="button" name="cgi_b" class="menu_button" onclick="content_load('cgi.html')">CGI example</button></li>
-                    <li><button type="button" name="poll_b" class="menu_button" onclick="content_load('poll.html')">Polling example</button></li>
-                    <li><button type="button" name="ssi_b" class="menu_button" onclick="content_load('ssi.shtml')">SSI example</button></li>
-                    <li><button type="button" name="auth_b" class="menu_button" onclick="content_load('auth.html')">Authorization example</button></li>
-                   <li><button type="button" name="ws_b" class="menu_button" onclick="content_load('websocket.html')">WebSocket example</button></li>
-            	</ul>
-            </div>
-
-            <div id="p_content" class="page_content">
-                <iframe id="content_frame" src="welcome.html" width="600px" style="border:none" onload="heightReset(this); autoResize(this);">&nbsp;</iframe>
-            </div>
-        </div>
-
-        <div class="footer">
-            NXP Semiconductor, Inc. 2016. All Rights Reserved.
-        </div>
-
+    <p>Restricted Times</p>
+    <div class="row">
+        <div class="time">Start
+        </div><div class="time">End
+        </div><div class="day">M
+        </div><div class="day">T
+        </div><div class="day">W
+        </div><div class="day">Th
+        </div><div class="day">F
+        </div><div class="day">Sat
+        </div><div class="day">Sun
+        </div><div class="day">All</div>
     </div>
-
+    <div class="interval" id="intervals">
+    </div>
+    <script>
+    </script>
+    <div>
+        <button type="button" id="add_interval" onclick="add_time_interval()">Add</button>
+    </div>
+    <br>
+    <div>
+        <button type="button" id="update_sever" onclick="post_intervals()">Update Server</button>
+    </div>
+    <br>
+    RTC value:
+    <div id="rtc_time" class="rtc_data">
+        00:00:00
+    </div>
+    
+    <div>
+        <button type="button" id="refresh_rtc" onclick="refresh_rtc_value()">Refresh Time</button>
+    </div>
+    
+    <br>
+    <div id="weather_status">
+        Weather Status: Unknown
+    </div>
+    <br>
+    <div>
+        <button type="button" id="refresh_weather" onclick="refresh_weather_value()">Refresh Weather</button>
+    </div>
+    
+<body>
 </body>
-</html>		
+</html>

@@ -39,6 +39,8 @@
 #include "fsl_device_registers.h"
 #include "pin_mux.h"
 #include "clock_config.h"
+#include "time_schedule.h"
+#include "http_client_app.h"
 
 /*******************************************************************************
  * Definitions
@@ -50,7 +52,8 @@
 ******************************************************************************/
 static void cgi_urldecode(char *url);
 static int cgi_rtc_data(HTTPSRV_CGI_REQ_STRUCT *param);
-static int cgi_example(HTTPSRV_CGI_REQ_STRUCT *param);
+static int cgi_weather_status(HTTPSRV_CGI_REQ_STRUCT *param);
+static int cgi_process_time_schedule(HTTPSRV_CGI_REQ_STRUCT *param);
 static int ssi_date_time(HTTPSRV_SSI_PARAM_STRUCT *param);
 static bool cgi_get_varval(char *var_str, char *var_name, char *var_val, uint32_t length);
 
@@ -79,8 +82,8 @@ char cgi_data[CGI_DATA_LENGTH_MAX + 1];
 
 const HTTPSRV_CGI_LINK_STRUCT cgi_lnk_tbl[] = {
     {"rtcdata", cgi_rtc_data},
-    {"get", cgi_example},
-    {"post", cgi_example},
+    {"weatherdata", cgi_weather_status},
+    {"ts", cgi_process_time_schedule},
     {0, 0} // DO NOT REMOVE - last item - end of table
 };
 
@@ -91,13 +94,10 @@ const HTTPSRV_SSI_LINK_STRUCT ssi_lnk_tbl[] = {{"date_time", ssi_date_time}, {0,
  ******************************************************************************/
 static int cgi_rtc_data(HTTPSRV_CGI_REQ_STRUCT *param)
 {
-#define BUFF_SIZE sizeof("00\n00\n00\n")
-    HTTPSRV_CGI_RES_STRUCT response;
-    uint32_t time;
-    uint32_t min;
-    uint32_t hour;
-    uint32_t sec;
+    #define BUFF_SIZE sizeof("00:00:00")
 
+    HTTPSRV_CGI_RES_STRUCT response;
+    rtc_datetime_t datetime;
     char str[BUFF_SIZE];
     uint32_t length = 0;
 
@@ -106,17 +106,12 @@ static int cgi_rtc_data(HTTPSRV_CGI_REQ_STRUCT *param)
         return (0);
     }
 
-    time = sys_now();
-
-    sec = time / 1000;
-    min = sec / 60;
-    hour = min / 60;
-    min %= 60;
-    sec %= 60;
+    Get_RTC_Time(&datetime);
 
     response.ses_handle = param->ses_handle;
     response.content_type = HTTPSRV_CONTENT_TYPE_PLAIN;
     response.status_code = HTTPSRV_CODE_OK;
+
     /*
     ** When the keep-alive is used we have to calculate a correct content length
     ** so the receiver knows when to ACK the data and continue with a next request.
@@ -124,71 +119,81 @@ static int cgi_rtc_data(HTTPSRV_CGI_REQ_STRUCT *param)
     */
 
     /* Calculate content length while saving it to buffer */
-    length = snprintf(str, BUFF_SIZE, "%ld\n%ld\n%ld\n", hour, min, sec);
+    length = snprintf(str, BUFF_SIZE, "%02d:%02d:%02d", datetime.hour, datetime.minute, datetime.second);
     response.data = str;
     response.data_length = length;
     response.content_length = response.data_length;
+
+    /* Send response */
+    HTTPSRV_cgi_write(&response);
+    return (response.content_length);
+}
+
+static int cgi_weather_status(HTTPSRV_CGI_REQ_STRUCT *param)
+{
+    HTTPSRV_CGI_RES_STRUCT response;
+    Weather_Status_T w_status;
+    char str[sizeof("GOOD_WEATHER")];
+    uint32_t length = 0;
+
+    if (param->request_method != HTTPSRV_REQ_GET)
+    {
+        return (0);
+    }
+
+    w_status = Get_Weather_Status();
+
+    response.ses_handle = param->ses_handle;
+    response.content_type = HTTPSRV_CONTENT_TYPE_PLAIN;
+    response.status_code = HTTPSRV_CODE_OK;
+
+
+    /* Calculate content length while saving it to buffer */
+
+    if (GOOD_WEATHER == w_status)
+    {
+        sprintf(str, "GOOD_WEATHER");
+        length = sizeof("GOOD_WEATHER");
+    }
+    else
+    {
+        length = sprintf(str, "BAD_WEATHER");
+        length = sizeof("BAD_WEATHER");
+    }
+
+    response.data = str;
+    response.data_length = length;
+    response.content_length = response.data_length;
+
     /* Send response */
     HTTPSRV_cgi_write(&response);
     return (response.content_length);
 }
 
 /* Example Common Gateway Interface callback. */
-static int cgi_example(HTTPSRV_CGI_REQ_STRUCT *param)
+static int cgi_process_time_schedule(HTTPSRV_CGI_REQ_STRUCT *param)
 {
     HTTPSRV_CGI_RES_STRUCT response = {0};
+    char * buffer;
 
     response.ses_handle = param->ses_handle;
     response.status_code = HTTPSRV_CODE_OK;
 
-    if (param->request_method == HTTPSRV_REQ_GET)
+    if (param->request_method == HTTPSRV_REQ_POST)
     {
-        char *c;
+        buffer = malloc(param->content_length);
 
-        /* Replace '+' with spaces. */
-        while ((c = strchr(cgi_data, '+')) != NULL)
+        if (NULL != buffer)
         {
-            *c = ' ';
+            HTTPSRV_cgi_read(param->ses_handle, buffer, param->content_length);
+            Update_Restricted_Intervals(buffer);
+            free(buffer);
         }
-        response.content_type = HTTPSRV_CONTENT_TYPE_PLAIN;
-        response.data = cgi_data;
-        response.data_length = strlen(cgi_data);
-        response.content_length = response.data_length;
-        HTTPSRV_cgi_write(&response);
-    }
-    else if (param->request_method == HTTPSRV_REQ_POST)
-    {
-        uint32_t length = 0;
-        uint32_t read;
-        char buffer[sizeof("post_input = ") + CGI_DATA_LENGTH_MAX] = {0};
-
-        length = param->content_length;
-        read = HTTPSRV_cgi_read(param->ses_handle, buffer, (length > sizeof(buffer)) ? sizeof(buffer) : length);
-
-        if (read > 0)
-        {
-            cgi_get_varval(buffer, "post_input", cgi_data, sizeof(cgi_data));
-            cgi_urldecode(cgi_data);
-        }
-
-        /* Write the response using chunked transmission coding. */
-        response.content_type = HTTPSRV_CONTENT_TYPE_HTML;
-        /* Set content length to -1 to indicate unknown content length. */
-        response.content_length = -1;
-        response.data = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">";
-        response.data_length = strlen(response.data);
-        HTTPSRV_cgi_write(&response);
-        response.data = "<html><head><title>POST successfull!</title>";
-        response.data_length = strlen(response.data);
-        HTTPSRV_cgi_write(&response);
-        response.data = "<meta http-equiv=\"refresh\" content=\"0; url=cgi.html\"></head><body></body></html>";
-        response.data_length = strlen(response.data);
-        HTTPSRV_cgi_write(&response);
-        response.data_length = 0;
-        HTTPSRV_cgi_write(&response);
     }
 
-    return (response.content_length);
+    HTTPSRV_cgi_write(&response);
+
+    return(0);
 }
 
 static bool cgi_get_varval(char *src, char *var_name, char *dst, uint32_t length)
@@ -294,9 +299,6 @@ void HTTP_Server_Socket_Init(void)
     params.auth_table = auth_realms;
     params.cgi_lnk_tbl = cgi_lnk_tbl;
     params.ssi_lnk_tbl = ssi_lnk_tbl;
-#if HTTPSRV_CFG_WEBSOCKET_ENABLED
-    params.ws_tbl = ws_tbl;
-#endif
 
     /* Init HTTP Server.*/
     httpsrv_handle = HTTPSRV_init(&params);
