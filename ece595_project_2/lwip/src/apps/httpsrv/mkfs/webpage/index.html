@@ -32,11 +32,24 @@
         <button type="button" id="update_sever" onclick="post_intervals()">Update Server</button>
     </div>
     <br>
-    <br>
-    <p>Current system RTC value:</p>
+    RTC value:
     <div id="rtc_time" class="rtc_data">
         00:00:00
     </div>
+    
+    <div>
+        <button type="button" id="refresh_rtc" onclick="refresh_rtc_value()">Refresh Time</button>
+    </div>
+    
+    <br>
+    <div id="weather_status">
+        Weather Status: Unknown
+    </div>
+    <br>
+    <div>
+        <button type="button" id="refresh_weather" onclick="refresh_weather_value()">Refresh Weather</button>
+    </div>
+    
 <body>
 </body>
 </html>

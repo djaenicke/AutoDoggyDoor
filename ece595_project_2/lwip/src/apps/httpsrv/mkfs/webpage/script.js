@@ -3,40 +3,44 @@ var days = ["m", "t", "w", "th", "f", "sat", "sun", "all"];
 var intervals = [];
 var id_cntr = 0;
 
-var rtc_value = new Array(3);
-var data_received = 0;
-
-window.onload = loop;
-
-function parse_vars(data)
+function refresh_rtc_value()
 {
-   const element = document.getElementById("rtc_time");
-   element.innerHTML = data;
+   var xmlhttp = new XMLHttpRequest();
+   xmlhttp.onreadystatechange = function() { rtc_data_rxed(xmlhttp); };
+   xmlhttp.open('GET', "rtcdata.cgi", true);
+   xmlhttp.send(null);
 }
 
-function loop()
+function rtc_data_rxed(http_request)
 {
-   if (!data_received)
+   if (http_request.readyState == 4)
    {
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.onreadystatechange = function() { alertContents(xmlhttp); };
-      xmlhttp.open('GET', "rtcdata.cgi", true);
-      xmlhttp.send(null);
+      if (http_request.status == 200)
+      {
+         const element = document.getElementById("rtc_time");
+         element.innerHTML = http_request.responseText;
+      }
    }
-   
-   setTimeout("loop()", 1000);
 }
 
-function alertContents(http_request)
+function refresh_weather_value()
+{
+   var xmlhttp = new XMLHttpRequest();
+   xmlhttp.onreadystatechange = function() { weather_data_rxed(xmlhttp); };
+   xmlhttp.open('GET', "weatherdata.cgi", true);
+   xmlhttp.send(null);
+}
+
+function weather_data_rxed(http_request)
 {
    if (http_request.readyState == 4)
     {
       if (http_request.status == 200)
-        {
-            parse_vars(http_request.responseText);
-        }
-        data_received = 0;
-    }
+      {
+         const element = document.getElementById("weather_status");
+         element.innerHTML = "Weather Status: " + http_request.responseText;
+      }
+   }
 }
 
 function add_time_interval()
@@ -114,6 +118,10 @@ function add_time_interval()
       interval.stop_time = "";
       intervals.push(interval);
       id_cntr += 1;
+   }
+   else
+   {
+      alert("Only 5 restricted intervals are allowed.");
    }
 }
 
@@ -360,7 +368,7 @@ function post_intervals()
    console.log(JSON.stringify(valid_intervals));
 
    var xmlhttp = new XMLHttpRequest();
-   xmlhttp.open("POST", "post.cgi");
+   xmlhttp.open("POST", "ts.cgi");
    xmlhttp.setRequestHeader("Content-Type", "application/json");
    xmlhttp.send(JSON.stringify(valid_intervals));
 
