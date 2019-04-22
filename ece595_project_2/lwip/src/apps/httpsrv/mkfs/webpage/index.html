@@ -36,9 +36,9 @@
     <div id="rtc_time" class="rtc_data">
         00:00:00
     </div>
-    
+    <br>
     <div>
-        <button type="button" id="refresh_rtc" onclick="refresh_rtc_value()">Refresh Time</button>
+        <button type="button" id="refresh_rtc" onclick="refresh_rtc_value()">Refresh</button>
     </div>
     
     <br>
@@ -47,7 +47,16 @@
     </div>
     <br>
     <div>
-        <button type="button" id="refresh_weather" onclick="refresh_weather_value()">Refresh Weather</button>
+        <button type="button" id="refresh_weather" onclick="refresh_weather_value()">Refresh</button>
+    </div>
+    
+    <br>
+    <div id="ts_status">
+        Time Schedule Status: Unknown
+    </div>
+    <br>
+    <div>
+        <button type="button" id="refresh_weather" onclick="refresh_time_schedule_status()">Refresh</button>
     </div>
     
 <body>

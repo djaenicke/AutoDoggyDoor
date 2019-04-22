@@ -43,6 +43,26 @@ function weather_data_rxed(http_request)
    }
 }
 
+function refresh_time_schedule_status()
+{
+   var xmlhttp = new XMLHttpRequest();
+   xmlhttp.onreadystatechange = function() { time_schedule_data_rxed(xmlhttp); };
+   xmlhttp.open('GET', "ts_status.cgi", true);
+   xmlhttp.send(null);
+}
+
+function time_schedule_data_rxed(http_request)
+{
+   if (http_request.readyState == 4)
+   {
+      if (http_request.status == 200)
+      {
+         const element = document.getElementById("ts_status");
+         element.innerHTML = "Time Schedule Status: " + http_request.responseText;
+      }
+   }
+}
+
 function add_time_interval()
 {
    if (num_valid_intervals() < max_intervals)
@@ -358,9 +378,9 @@ function post_intervals()
       var temp = new Object();
       
       temp.id = -1;
-      temp.days = -1;
-      temp.start_time = "";
-      temp.stop_time = "";
+      temp.days = 0;
+      temp.start_time = "NULL";
+      temp.stop_time = "NULL";
       
       valid_intervals.push(temp);
    }

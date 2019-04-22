@@ -4,20 +4,44 @@
 #include "cJSON.h"
 
 #define NUM_INTERVALS 5
+#define NOT_SET -1
+
+typedef enum {
+    eSUNDAY = 0,
+    eMONDAY,
+    eTUESDAY,
+    eWEDNESDAY,
+    eTHURSDAY,
+    eFRIDAY,
+    eSATURDAY,
+    eUNKNOWN_DAY
+} Day_T;
 
 typedef struct {
     int id;
-    int days;
+    uint8_t days;
     rtc_datetime_t start;
     rtc_datetime_t end;
 } Restricted_Interval_T;
 
 static uint8_t RTC_Init_Complete = 0;
-static Restricted_Interval_T Restricted_Intervals[NUM_INTERVALS];
+static Day_T Day = eUNKNOWN_DAY;
+static Restricted_Interval_T Restricted_Intervals[NUM_INTERVALS] =
+{
+    {NOT_SET, 0, {0}, {0}},
+    {NOT_SET, 0, {0}, {0}},
+    {NOT_SET, 0, {0}, {0}},
+    {NOT_SET, 0, {0}, {0}},
+    {NOT_SET, 0, {0}, {0}},
+};
 
-void Start_RTC(rtc_datetime_t * datetime)
+static uint8_t Is_Day_Restricted(uint8_t encoded_days);
+
+void Start_RTC(rtc_datetime_t * datetime, int8_t day)
 {
     rtc_config_t cfg;
+
+    Day = day;
 
     RTC_GetDefaultConfig(&cfg);
     RTC_Init(RTC, &cfg);
@@ -105,4 +129,119 @@ void Get_RTC_Time(rtc_datetime_t * datetime)
     }
 }
 
+Time_Schedule_Status_T Get_Time_Schedule_Status(void)
+{
+    Time_Schedule_Status_T status = UNKNOWN;
+    rtc_datetime_t current_time;
+    uint8_t i;
+
+    /* Make sure RTC data is available*/
+    if (RTC_Init_Complete)
+    {
+        RTC_GetDatetime(RTC, &current_time);
+
+        for (i=0; i<NUM_INTERVALS; i++)
+        {
+            /* Make sure the current interval has been set */
+            if (NOT_SET != Restricted_Intervals[i].id)
+            {
+                if (1 == Is_Day_Restricted(Restricted_Intervals[i].days))
+                {
+                    /* Are we inside an interval? */
+                    if (current_time.hour >= Restricted_Intervals[i].start.hour && \
+                        current_time.hour <= Restricted_Intervals[i].end.hour)
+                    {
+                        /* Is the interval less than an hour? */
+                        if (Restricted_Intervals[i].end.hour == Restricted_Intervals[i].start.hour)
+                        {
+                            if (current_time.minute >= Restricted_Intervals[i].start.minute && \
+                                current_time.minute <= Restricted_Intervals[i].end.minute)
+                            {
+                                status = RESTRICTED;
+                                break;
+                            }
+                        }
+                        /* Do we need to check the start minutes ? */
+                        else if (current_time.hour == Restricted_Intervals[i].start.hour)
+                        {
+                            if (current_time.minute >= Restricted_Intervals[i].start.minute)
+                            {
+                                status = RESTRICTED;
+                                break;
+                            }
+                        }
+                        /* Do we need to check the end minutes ? */
+                        else if (current_time.hour == Restricted_Intervals[i].end.hour)
+                        {
+                            if (current_time.minute < Restricted_Intervals[i].end.minute)
+                            {
+                                status = RESTRICTED;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            status = NOT_RESTRICTED;
+                        }
+                    }
+                }
+                else
+                {
+                    status = NOT_RESTRICTED;
+                }
+            }
+        }
+    }
+
+    return (status);
+}
+
+uint8_t Is_Day_Restricted(uint8_t encoded_days)
+{
+    uint8_t is_restricted = 0;
+
+    if (0xFF == (encoded_days & 0xFF))
+    {
+        is_restricted = 1;
+    }
+
+    if (!is_restricted)
+    {
+        switch (Day)
+        {
+            case eSUNDAY:
+                if (0x40 == (encoded_days & 0x40))
+                    is_restricted = 1;
+                break;
+            case eMONDAY:
+                if (0x01 == (encoded_days & 0x01))
+                    is_restricted = 1;
+                break;
+            case eTUESDAY:
+                if (0x02 == (encoded_days & 0x02))
+                    is_restricted = 1;
+                break;
+            case eWEDNESDAY:
+                if (0x04 == (encoded_days & 0x04))
+                    is_restricted = 1;
+                break;
+            case eTHURSDAY:
+                if (0x08 == (encoded_days & 0x08))
+                    is_restricted = 1;
+                break;
+            case eFRIDAY:
+                if (0x10 == (encoded_days & 0x10))
+                    is_restricted = 1;
+                break;
+            case eSATURDAY:
+                if (0x20 == (encoded_days & 0x20))
+                    is_restricted = 1;
+                break;
+            default:
+                break;
+        }
+    }
+
+    return is_restricted;
+}
 
