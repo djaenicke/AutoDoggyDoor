@@ -154,7 +154,7 @@ function num_valid_intervals()
         i++;
      }
    })
-   
+
    return i;
 }
 
@@ -170,12 +170,12 @@ function invalidate_interval(e)
 function set_start_time(e)
 {
    var idx = get_interval_idx(e.srcElement.id);
-   
+
    if (intervals[idx].stop_time != "")
    {
       var start = String(e.srcElement.value).split(':');
       var stop  = intervals[idx].stop_time.split(':');
-      
+
       if (start[0] > stop[0])
       {
          alert("Start time cannot be after stop time!");
@@ -202,7 +202,7 @@ function set_start_time(e)
    {
       intervals[idx].start_time = e.srcElement.value;
    }
-   
+
    console.log(idx);
    console.log(intervals[idx].start_time);
 }
@@ -210,12 +210,12 @@ function set_start_time(e)
 function set_stop_time(e)
 {
    var idx = get_interval_idx(e.srcElement.id);
-   
+
    if (intervals[idx].start_time != "")
    {
       var start = intervals[idx].start_time.split(':');
       var stop  = String(e.srcElement.value).split(':');
-      
+
       if (start[0] > stop[0])
       {
          alert("Stop time cannot be before start time!");
@@ -242,7 +242,7 @@ function set_stop_time(e)
    {
       intervals[idx].stop_time = e.srcElement.value;
    }
-   
+
    console.log(idx);
    console.log(intervals[idx].stop_time);
 }
@@ -355,36 +355,36 @@ function set_day(e)
 }
 
 function post_intervals()
-{   
+{
    var valid_intervals = [];
 
    intervals.forEach(interval => {
       if (!interval.invalidate)
       {
          var temp = new Object();
-         
+
          temp.id = interval.id;
          temp.days = interval.days;
          temp.start_time = interval.start_time;
          temp.stop_time = interval.stop_time;
-         
+
          valid_intervals.push(temp);
       }
    })
-   
+
    // Always send 5 intervals
    for (var i=valid_intervals.length; i<max_intervals; i++)
    {
       var temp = new Object();
-      
+
       temp.id = -1;
       temp.days = 0;
       temp.start_time = "NULL";
       temp.stop_time = "NULL";
-      
+
       valid_intervals.push(temp);
    }
-   
+
    console.log(JSON.stringify(valid_intervals));
 
    var xmlhttp = new XMLHttpRequest();
@@ -399,6 +399,38 @@ function post_intervals()
          console.log(this.responseText);
       }
    };
+}
+
+function post_zip()
+{
+   const element = document.getElementById("zip");
+
+   var isnum = /^\d+$/.test(element.value);
+
+   if (!isnum || element.value.length != 5)
+   {
+       alert("Invalid ZIP code. Please input 5 digits.");
+   }
+   else
+   {
+       var obj = new Object();
+       obj.zip = element.value;
+       console.log(JSON.stringify(obj));
+
+       var xmlhttp = new XMLHttpRequest();
+       xmlhttp.open("POST", "zip.cgi");
+       xmlhttp.setRequestHeader("Content-Type", "application/json");
+       xmlhttp.send(JSON.stringify(obj));
+
+       xmlhttp.onreadystatechange = function()
+       {
+          if (this.readyState == 4 && this.status == 200)
+          {
+             console.log(this.responseText);
+          }
+       };
+
+   }
 }
 
 function get_interval_idx(ele_id_str)

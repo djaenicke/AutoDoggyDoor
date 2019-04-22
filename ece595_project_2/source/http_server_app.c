@@ -54,6 +54,8 @@ static int cgi_rtc_data(HTTPSRV_CGI_REQ_STRUCT *param);
 static int cgi_weather_status(HTTPSRV_CGI_REQ_STRUCT *param);
 static int cgi_time_schedule_status(HTTPSRV_CGI_REQ_STRUCT *param);
 static int cgi_process_time_schedule(HTTPSRV_CGI_REQ_STRUCT *param);
+static int cgi_process_zip_code(HTTPSRV_CGI_REQ_STRUCT *param);
+static int ssi_zip(HTTPSRV_SSI_PARAM_STRUCT *param);
 
 /*******************************************************************************
 * Variables
@@ -81,10 +83,11 @@ const HTTPSRV_CGI_LINK_STRUCT cgi_lnk_tbl[] = {
     {"weatherdata", cgi_weather_status},
     {"ts_status",   cgi_time_schedule_status},
     {"ts",          cgi_process_time_schedule},
+    {"zip",         cgi_process_zip_code},
     {0, 0} // DO NOT REMOVE - last item - end of table
 };
 
-const HTTPSRV_SSI_LINK_STRUCT ssi_lnk_tbl[] = {{0, 0}};
+const HTTPSRV_SSI_LINK_STRUCT ssi_lnk_tbl[] = {{"zip", ssi_zip}, {0, 0}};
 
 /*******************************************************************************
  * Code
@@ -235,6 +238,44 @@ static int cgi_process_time_schedule(HTTPSRV_CGI_REQ_STRUCT *param)
     HTTPSRV_cgi_write(&response);
 
     return(0);
+}
+
+static int cgi_process_zip_code(HTTPSRV_CGI_REQ_STRUCT *param)
+{
+    HTTPSRV_CGI_RES_STRUCT response = {0};
+    char * buffer;
+
+    response.ses_handle = param->ses_handle;
+    response.status_code = HTTPSRV_CODE_OK;
+
+    if (param->request_method == HTTPSRV_REQ_POST)
+    {
+        buffer = malloc(param->content_length);
+
+        if (NULL != buffer)
+        {
+            HTTPSRV_cgi_read(param->ses_handle, buffer, param->content_length);
+            Set_Zip_Code(buffer);
+            free(buffer);
+        }
+    }
+
+    HTTPSRV_cgi_write(&response);
+
+    return(0);
+}
+
+static int ssi_zip(HTTPSRV_SSI_PARAM_STRUCT *param)
+{
+	char buf[20] = {0};
+
+    if (strcmp(param->com_param, "ZIP") == 0)
+    {
+    	sprintf(buf, "%s", Get_Zip_Code());
+        HTTPSRV_ssi_write(param->ses_handle, buf, sizeof(buf));
+    }
+
+    return (0);
 }
 
 /*!

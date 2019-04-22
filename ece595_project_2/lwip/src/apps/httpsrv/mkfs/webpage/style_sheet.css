@@ -14,7 +14,7 @@ div.day {
 }
 
 div.delete_button {
-    font-size: 0.5em;
+    font-size:0.5em;
 }
 
 input.time_input {
@@ -27,6 +27,11 @@ input.day_select {
 
 div.rtc_data
 {
-   font-size: 50;
-   font-weight: bolder;
+   font-size:50;
+   font-weight:bolder;
+}
+
+div.zip
+{
+    width:25px;
 }
