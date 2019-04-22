@@ -141,11 +141,13 @@ err_t Weather_API_Callback(void *arg, struct altcp_pcb *tpcb, struct pbuf *p, er
 
 err_t Time_API_Callback(void *arg, struct altcp_pcb *tpcb, struct pbuf *p, err_t err)
 {
-    rtc_datetime_t datetime;
+    rtc_datetime_t datetime = {0};
+    int8_t day = -1;
     char * current_ptr = NULL;
     char * next_ptr = NULL;
 
     const cJSON *datetime_str = NULL;
+    const cJSON *day_of_week = NULL;
     cJSON *json = cJSON_Parse(p->payload);
 
     if (json == NULL)
@@ -179,7 +181,14 @@ err_t Time_API_Callback(void *arg, struct altcp_pcb *tpcb, struct pbuf *p, err_t
         datetime.second = (uint8_t) strtoul(current_ptr, &next_ptr, 10);
     }
 
-    Start_RTC(&datetime);
+    day_of_week = cJSON_GetObjectItemCaseSensitive(json, "day_of_week");
+
+    if (cJSON_IsNumber(day_of_week))
+    {
+        day = day_of_week->valueint;
+    }
+
+    Start_RTC(&datetime, day);
     Print_Datetime();
 
     Waiting = FALSE;

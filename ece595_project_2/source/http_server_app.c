@@ -45,17 +45,15 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define CGI_DATA_LENGTH_MAX (96)
+
 
 /*******************************************************************************
 * Prototypes
 ******************************************************************************/
-static void cgi_urldecode(char *url);
 static int cgi_rtc_data(HTTPSRV_CGI_REQ_STRUCT *param);
 static int cgi_weather_status(HTTPSRV_CGI_REQ_STRUCT *param);
+static int cgi_time_schedule_status(HTTPSRV_CGI_REQ_STRUCT *param);
 static int cgi_process_time_schedule(HTTPSRV_CGI_REQ_STRUCT *param);
-static int ssi_date_time(HTTPSRV_SSI_PARAM_STRUCT *param);
-static bool cgi_get_varval(char *var_str, char *var_name, char *var_val, uint32_t length);
 
 /*******************************************************************************
 * Variables
@@ -78,16 +76,15 @@ static const HTTPSRV_AUTH_REALM_STRUCT auth_realms[] = {
     {NULL, NULL, HTTPSRV_AUTH_INVALID, NULL} /* Array terminator */
 };
 
-char cgi_data[CGI_DATA_LENGTH_MAX + 1];
-
 const HTTPSRV_CGI_LINK_STRUCT cgi_lnk_tbl[] = {
-    {"rtcdata", cgi_rtc_data},
+    {"rtcdata",     cgi_rtc_data},
     {"weatherdata", cgi_weather_status},
-    {"ts", cgi_process_time_schedule},
+    {"ts_status",   cgi_time_schedule_status},
+    {"ts",          cgi_process_time_schedule},
     {0, 0} // DO NOT REMOVE - last item - end of table
 };
 
-const HTTPSRV_SSI_LINK_STRUCT ssi_lnk_tbl[] = {{"date_time", ssi_date_time}, {0, 0}};
+const HTTPSRV_SSI_LINK_STRUCT ssi_lnk_tbl[] = {{0, 0}};
 
 /*******************************************************************************
  * Code
@@ -170,7 +167,51 @@ static int cgi_weather_status(HTTPSRV_CGI_REQ_STRUCT *param)
     return (response.content_length);
 }
 
-/* Example Common Gateway Interface callback. */
+static int cgi_time_schedule_status(HTTPSRV_CGI_REQ_STRUCT *param)
+{
+    HTTPSRV_CGI_RES_STRUCT response;
+    Time_Schedule_Status_T ts_status;
+    char str[sizeof("NOT_RESTRICTED")];
+    uint32_t length = 0;
+
+    if (param->request_method != HTTPSRV_REQ_GET)
+    {
+        return (0);
+    }
+
+    ts_status = Get_Time_Schedule_Status();
+
+    response.ses_handle = param->ses_handle;
+    response.content_type = HTTPSRV_CONTENT_TYPE_PLAIN;
+    response.status_code = HTTPSRV_CODE_OK;
+
+    /* Calculate content length while saving it to buffer */
+
+    if (NOT_RESTRICTED == ts_status)
+    {
+        sprintf(str, "NOT_RESTRICTED");
+        length = sizeof("NOT_RESTRICTED");
+    }
+    else if (RESTRICTED == ts_status)
+    {
+        length = sprintf(str, "RESTRICTED");
+        length = sizeof("RESTRICTED");
+    }
+    else
+    {
+        length = sprintf(str, "UNKNOWN");
+        length = sizeof("UNKNOWN");
+    }
+
+    response.data = str;
+    response.data_length = length;
+    response.content_length = response.data_length;
+
+    /* Send response */
+    HTTPSRV_cgi_write(&response);
+    return (response.content_length);
+}
+
 static int cgi_process_time_schedule(HTTPSRV_CGI_REQ_STRUCT *param)
 {
     HTTPSRV_CGI_RES_STRUCT response = {0};
@@ -195,83 +236,6 @@ static int cgi_process_time_schedule(HTTPSRV_CGI_REQ_STRUCT *param)
 
     return(0);
 }
-
-static bool cgi_get_varval(char *src, char *var_name, char *dst, uint32_t length)
-{
-    char *name;
-    bool result;
-    uint32_t index;
-    uint32_t n_length;
-
-    result = false;
-    dst[0] = 0;
-    name = src;
-
-    n_length = strlen(var_name);
-
-    while ((name = strstr(name, var_name)) != 0)
-    {
-        if (name[n_length] == '=')
-        {
-            name += n_length + 1;
-
-            index = strcspn(name, "&");
-            if (index >= length)
-            {
-                index = length - 1;
-            }
-            strncpy(dst, name, index);
-            dst[index] = '\0';
-            result = true;
-            break;
-        }
-        else
-        {
-            name = strchr(name, '&');
-        }
-    }
-
-    return (result);
-}
-
-/* Example Server Side Include callback. */
-static int ssi_date_time(HTTPSRV_SSI_PARAM_STRUCT *param)
-{
-    if (strcmp(param->com_param, "time") == 0)
-    {
-        HTTPSRV_ssi_write(param->ses_handle, __TIME__, strlen(__TIME__));
-    }
-    else if (strcmp(param->com_param, "date") == 0)
-    {
-        HTTPSRV_ssi_write(param->ses_handle, __DATE__, strlen(__DATE__));
-    }
-    return (0);
-}
-
-/* Decode URL encoded string in place. */
-static void cgi_urldecode(char *url)
-{
-    char *src = url;
-    char *dst = url;
-
-    while (*src != '\0')
-    {
-        if ((*src == '%') && (isxdigit((int)*(src + 1))) && (isxdigit((int)*(src + 2))))
-        {
-            *src = *(src + 1);
-            *(src + 1) = *(src + 2);
-            *(src + 2) = '\0';
-            *dst++ = strtol(src, NULL, 16);
-            src += 3;
-        }
-        else
-        {
-            *dst++ = *src++;
-        }
-    }
-    *dst = '\0';
-}
-
 
 /*!
  * @brief Callback function to generate TXT mDNS record for HTTP service.
