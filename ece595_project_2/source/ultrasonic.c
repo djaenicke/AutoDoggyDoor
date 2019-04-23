@@ -60,7 +60,7 @@ void Detect_Pet(void)
 
 		FTM_StopTimer(FTM1);
 
-		if ((stop_time - start_time) < 3000)
+		if ((stop_time - start_time) < 1500)
 		{
 			dog_counter++;
 		}
