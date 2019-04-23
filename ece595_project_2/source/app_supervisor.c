@@ -22,6 +22,7 @@
 #include "http_client_app.h"
 #include "proximity_estimation.h"
 #include "lock.h"
+#include "ultrasonic.h"
 
 /*******************************************************************************
  * Definitions
@@ -56,16 +57,18 @@ static void Supervisor_Task(void *pvParameters);
 static void Prox_Estimation_Task(void *pvParameters);
 static void HTTP_Client_Task(void *pvParameters);
 static void Lock_Control_Task(void *pvParameters);
+static void Detect_Pet_Task(void *pvParameters);
 
 /* Task Configurations */
-#define NUM_TASKS (2)
-#define SUPERVISOR_PRIORITY configMAX_PRIORITIES-4
+#define NUM_TASKS (3)
+#define SUPERVISOR_PRIORITY configMAX_PRIORITIES-5
 
 Task_Cfg_T Periodic_Tasks_Table[NUM_TASKS] =
 {
     /* Function,           Name,          Stack Size,  Priority */
-    {Lock_Control_Task,    "Lock Ctrl",   100,         configMAX_PRIORITIES - 3, NULL},
-    {HTTP_Client_Task,     "HTTP_Client", 1000,        configMAX_PRIORITIES - 2, NULL}
+    {Lock_Control_Task,    "Lock Ctrl",   100,         configMAX_PRIORITIES - 4, NULL},
+    {HTTP_Client_Task,     "HTTP_Client", 1000,        configMAX_PRIORITIES - 3, NULL},
+    {Detect_Pet_Task,	   "Detect_Pet",  100,         configMAX_PRIORITIES - 2, NULL}
 };
 
 
@@ -207,4 +210,10 @@ void Create_Periodic_OS_Tasks(void)
             assert(false);
         }
     }
+}
+
+static void Detect_Pet_Task(void *pvParameters)
+{
+	Detect_Pet();
+	vTaskDelay(pdMS_TO_TICKS(1000));
 }
