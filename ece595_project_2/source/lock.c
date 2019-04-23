@@ -21,9 +21,9 @@
 
 
 /* Variables */
-static uint8_t Prox_Status;
-static uint8_t Time_Status;
-static uint8_t Weather_Status;
+static Proximity_Status_T Prox_Status;
+static Time_Schedule_Status_T Time_Status;
+static Weather_Status_T Weather_Status;
 static volatile uint8_t Lock_Status = LOCKED;
 static volatile uint8_t Lock_Method = MANUAL;
 static uint8_t Dog_Status=0; /*TODO WILL COME FROM ULTRASONIC TO KNOW IF DOG IS OUT*/

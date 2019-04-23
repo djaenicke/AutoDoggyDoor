@@ -14,7 +14,7 @@
 #include "assert.h"
 
 #define EXPECTED_RESPONSE_SIZE (22)
-#define THRESHOLD -47
+#define THRESHOLD 47
 
 Xbee_Serial_T Xbee_Serial_Port = {UART2, 9600};
 static uint8_t Xbee_AT_Resp[RESP_BUF_SIZE];
