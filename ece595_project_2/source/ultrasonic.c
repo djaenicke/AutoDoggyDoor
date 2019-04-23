@@ -17,7 +17,7 @@
 
 /* Get source clock for FTM driver */
 #define FTM_SOURCE_CLOCK (CLOCK_GetFreq(kCLOCK_BusClk)/1)
-#define DOGCOUNT 4
+#define DETECTION_COUNT 4
 
 static Proximity_Status_T Prox_Status;
 static Time_Schedule_Status_T Time_Status;
@@ -46,12 +46,12 @@ void Detect_Pet(void)
 		FTM_StartTimer(FTM1, kFTM_SystemClock);
 		//Triggers the ultrasonic sensor and starts the timer
 		start_time = FTM_GetCurrentTimerCount(FTM1);
-		GPIO_PinWrite(GPIOB,2,1);
+		Set_GPIO(USS_TRIGGER,1);
 
 		//While the time is less than 1500 usec continue to see if PTB3 has received the echo signal, if it has record the stop time. comes out to about 2.5 ft
 		do
 		{
-			if(GPIO_PinRead(GPIOB,3)==1)
+			if(Read_GPIO(USS_ECHO)==1)
 			{
 				stop_time = FTM_GetCurrentTimerCount(FTM1);
 				break;
@@ -69,7 +69,7 @@ void Detect_Pet(void)
 			dog_counter=0;
 		}
 
-		if(dog_counter > DOGCOUNT)
+		if(dog_counter > DETECTION_COUNT)
 		{
 			if (dog_status == INSIDE)
 			{
