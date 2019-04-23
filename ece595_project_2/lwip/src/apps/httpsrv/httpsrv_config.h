@@ -16,7 +16,7 @@
 
 /* Listener task stack size */
 #ifndef HTTPSRV_CFG_SERVER_STACK_SIZE
-#define HTTPSRV_CFG_SERVER_STACK_SIZE (4500 / sizeof(uint32_t))
+#define HTTPSRV_CFG_SERVER_STACK_SIZE (8500 / sizeof(uint32_t))
 #endif
 
 /* HTTP task stack size.*/

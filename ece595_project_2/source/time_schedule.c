@@ -3,7 +3,6 @@
 #include "time_schedule.h"
 #include "cJSON.h"
 
-#define NUM_INTERVALS 5
 #define NOT_SET -1
 
 typedef enum {
@@ -16,13 +15,6 @@ typedef enum {
     eSATURDAY,
     eUNKNOWN_DAY
 } Day_T;
-
-typedef struct {
-    int id;
-    uint8_t days;
-    rtc_datetime_t start;
-    rtc_datetime_t end;
-} Restricted_Interval_T;
 
 static uint8_t RTC_Init_Complete = 0;
 static Day_T Day = eUNKNOWN_DAY;
@@ -243,5 +235,13 @@ uint8_t Is_Day_Restricted(uint8_t encoded_days)
     }
 
     return is_restricted;
+}
+
+void Get_Restricted_Intervals(void * intervals)
+{
+    if (NULL != intervals)
+    {
+        memcpy(intervals, &Restricted_Intervals, sizeof(Restricted_Intervals));
+    }
 }
 
