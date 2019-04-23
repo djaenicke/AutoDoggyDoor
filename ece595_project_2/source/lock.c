@@ -7,21 +7,23 @@
 #include "io_abstraction.h"
 #include "fsl_uart.h"
 #include "fsl_clock.h"
+#include "time_schedule.h"
+#include "http_client_app.h"
+#include "proximity_estimation.h"
 
 /* Macros */
-#define LOCKED (0)
-#define OPEN (1)
-#define FAR (0)
-#define NEAR (1)
-#define INSIDE (0)
-#define OUTSIDE (1)
-#define INCLIMATE (0)
-#define GOOD (1)
+#define LOCKED 0
+#define OPEN 1
+
+#define OTHER 2
+#define INSIDE 1
+#define OUTSIDE 0
+
 
 /* Variables */
-static uint8_t Prox_Status; /*TODO WILL COME FROM XBEE*/
-static uint8_t Time_Status; /*TODO WILL COME FROM RTC*/
-static uint8_t Weather_Status; /*TODO WILL COME FROM WEATHER API*/
+static Proximity_Status_T Prox_Status;
+static Time_Schedule_Status_T Time_Status;
+static Weather_Status_T Weather_Status;
 static volatile uint8_t Lock_Status = LOCKED;
 static volatile uint8_t Lock_Method = MANUAL;
 static uint8_t Dog_Status=0; /*TODO WILL COME FROM ULTRASONIC TO KNOW IF DOG IS OUT*/
@@ -30,50 +32,53 @@ static uint8_t Dog_Status_Flag=0;
 
 void Run_Lock_Control(void)
 {
-	if(Prox_Status == NEAR)
+	Time_Status = Get_Time_Schedule_Status();
+	Weather_Status = Get_Weather_Status();
+	Prox_Status = Get_Proximity_Status();
+	if(Prox_Status == CLOSE)
 	{
-		if(Time_Status == OPEN||Dog_Status == OUTSIDE)
+		if(Time_Status == NOT_RESTRICTED||Dog_Status == OUTSIDE)
 		{
-			if((Weather_Status == GOOD||Dog_Status == OUTSIDE) && (Dog_Lock_Flag == 0))
+			if((Weather_Status == GOOD_WEATHER||Dog_Status == OUTSIDE) && (Dog_Lock_Flag == LOCKED))
 			{
 				printf("Door unlocking.\n\r");
 				Set_GPIO(ACTUATOR,HIGH);
 				Lock_Status = OPEN;
-				Dog_Lock_Flag = 1;
+				Dog_Lock_Flag = OPEN;
 			}
-			else if(Dog_Lock_Flag == 1)
+			else if(Dog_Lock_Flag == OPEN)
 			{
 				printf("Weather Conflict.\n\r");
 				Set_GPIO(ACTUATOR,LOW);
 				Lock_Status = LOCKED;
-				Dog_Lock_Flag = 0;
+				Dog_Lock_Flag = LOCKED;
 			}
 		}
-		else if (Dog_Lock_Flag == 1)
+		else if (Dog_Lock_Flag == OPEN)
 		{
 		printf("Timing Conflict.\n\r");
 		Set_GPIO(ACTUATOR,LOW);
 		Lock_Status = LOCKED;
-		Dog_Lock_Flag = 0;
+		Dog_Lock_Flag = LOCKED;
 		}
 	}
-	else if (Dog_Lock_Flag == 1)
+	else if (Dog_Lock_Flag == OPEN)
 	{
 		printf("Proximity Conflict.\n\r");
 		Set_GPIO(ACTUATOR,LOW);
 		Lock_Status = LOCKED;
-		Dog_Lock_Flag = 0;
+		Dog_Lock_Flag = LOCKED;
 	}
 
-	if(Time_Status == OPEN && Weather_Status == GOOD)
+	if(Time_Status == NOT_RESTRICTED && Weather_Status == GOOD_WEATHER)
 	{
-		if (Dog_Status == OUTSIDE && Dog_Status_Flag != 0)
+		if (Dog_Status == OUTSIDE && Dog_Status_Flag != LOCKED)
 		{
 			Set_GPIO(GREEN_LED,HIGH);
 			Set_GPIO(RED_LED, HIGH);
 			Set_GPIO(BLUE_LED, LOW);
 			printf("Dog is currently outside.\n\r");
-			Dog_Status_Flag = 0;
+			Dog_Status_Flag = OUTSIDE;
 		}
 		else if (Dog_Status_Flag != 1)
 		{
@@ -81,7 +86,7 @@ void Run_Lock_Control(void)
 			Set_GPIO(RED_LED, HIGH);
 			Set_GPIO(BLUE_LED, HIGH);
 			printf("Dog is currently inside.\n\r");
-			Dog_Status_Flag = 1;
+			Dog_Status_Flag = INSIDE;
 		}
 	}
 	else if (Dog_Status_Flag != 2)
@@ -90,7 +95,7 @@ void Run_Lock_Control(void)
 		Set_GPIO(RED_LED, LOW);
 		Set_GPIO(BLUE_LED, HIGH);
 		printf("The dog is inside due to weather conditions or time schedule.\n\r");
-		Dog_Status_Flag = 2;
+		Dog_Status_Flag = OTHER;
 	}
 }
 

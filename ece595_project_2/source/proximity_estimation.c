@@ -14,6 +14,7 @@
 #include "assert.h"
 
 #define EXPECTED_RESPONSE_SIZE (22)
+#define THRESHOLD 47
 
 Xbee_Serial_T Xbee_Serial_Port = {UART2, 9600};
 static uint8_t Xbee_AT_Resp[RESP_BUF_SIZE];
@@ -80,3 +81,12 @@ uint8_t Extract_Remote_RSSI(void)
     return((uint8_t)temp);
 }
 
+Proximity_Status_T Get_Proximity_Status(void)
+{
+	Proximity_Status_T prox_status = FAR;
+	if(Remote_RSSI > THRESHOLD )
+	{
+		prox_status = CLOSE;
+	}
+	return(prox_status);
+}
