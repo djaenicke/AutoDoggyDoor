@@ -211,5 +211,8 @@ Weather_Status_T Get_Weather_Status(void)
     return(status);
 }
 
+void Run_IoT_Task(void *pvParameters)
+{
 
+}
 

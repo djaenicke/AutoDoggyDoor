@@ -10,6 +10,7 @@
 #include "time_schedule.h"
 #include "http_client_app.h"
 #include "proximity_estimation.h"
+#include "ultrasonic.h"
 
 /* Macros */
 #define LOCKED 0
@@ -26,7 +27,7 @@ static Time_Schedule_Status_T Time_Status;
 static Weather_Status_T Weather_Status;
 static volatile uint8_t Lock_Status = LOCKED;
 static volatile uint8_t Lock_Method = MANUAL;
-static uint8_t Dog_Status=0; /*TODO WILL COME FROM ULTRASONIC TO KNOW IF DOG IS OUT*/
+static Dog_Status_T Dog_Status=0; /*TODO WILL COME FROM ULTRASONIC TO KNOW IF DOG IS OUT*/
 static uint8_t Dog_Lock_Flag=0;
 static uint8_t Dog_Status_Flag=0;
 
@@ -35,6 +36,7 @@ void Run_Lock_Control(void)
 	Time_Status = Get_Time_Schedule_Status();
 	Weather_Status = Get_Weather_Status();
 	Prox_Status = Get_Proximity_Status();
+	Dog_Status = Get_Dog_Status();
 	if(Prox_Status == CLOSE)
 	{
 		if(Time_Status == NOT_RESTRICTED||Dog_Status == OUTSIDE)

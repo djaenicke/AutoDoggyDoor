@@ -33,6 +33,8 @@ typedef enum
 	ACTUATOR,
 	RED_LED,
 	GREEN_LED,
+	USS_TRIGGER,
+	USS_ECHO,
     NUM_IO /* !!! Make sure this is last */
 } IO_Map_T;
 
