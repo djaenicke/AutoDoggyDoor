@@ -245,8 +245,9 @@ void Set_Zip_Code(const char* str)
 uint32_t Get_Zip_Code(void)
 {
 	return(User_Zip);
+}
 
-void Run_IoT_Task(void *pvParameters)
+void Run_IoT_Logging(void)
 {
 
 }

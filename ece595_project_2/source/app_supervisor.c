@@ -222,6 +222,6 @@ static void Detect_Pet_Task(void *pvParameters)
 
 static void IoT_Task(void *pvParameters)
 {
-	Run_IoT_Task;
+    Run_IoT_Logging();
 	vTaskDelay(pdMS_TO_TICKS(3000));
 }
