@@ -12,9 +12,8 @@ typedef enum
 {
 	INSIDE = 0,
 	OUTSIDE
-}Dog_Status_T;
+} Dog_Status_T;
 
-extern void Init_USS_Timer(void);
 extern void Detect_Pet(void);
 extern Dog_Status_T Get_Dog_Status(void);
 

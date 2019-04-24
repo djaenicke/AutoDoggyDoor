@@ -27,7 +27,7 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define XBEE
+//#define XBEE
 
 #define DETECT_PET_PRIO    2
 #define SUPERVISOR_PRIO    12
@@ -82,7 +82,6 @@ void Start_App_Supervisor(void)
 #ifdef XBEE
     Init_Xbee_Interface();
 #endif
-    Init_USS_Timer();
     Init_Network_If(&FSL_NetIf);
 
     xTaskCreate(HTTP_Client_Task,  "HTTP_Client", 1000, NULL, HTTP_CLIENT_PRIO, NULL);
@@ -207,7 +206,7 @@ static void Detect_Pet_Task(void *pvParameters)
 
         if (NORMAL == App_Mode)
         {
-            vTaskDelay(pdMS_TO_TICKS(200));
+            vTaskDelay(pdMS_TO_TICKS(100));
         }
         else
         {
