@@ -3,22 +3,18 @@ div.row > div {
 }
 
 div.time {
-    width:75px;
+    width:125px;
     font-size:1em;
 }
 
 div.day {
     text-align:center;
     width:50px;
-    font-size:0.75em;
-}
-
-div.delete_button {
-    font-size: 0.5em;
+    font-size:1.0em;
 }
 
 input.time_input {
-    font-size:0.75em;
+    font-size:1.0em;
 }
 
 input.day_select {
@@ -27,6 +23,11 @@ input.day_select {
 
 div.rtc_data
 {
-   font-size: 50;
-   font-weight: bolder;
+   font-size:1.0em;
+   font-weight:bolder;
+}
+
+div.zip
+{
+    width:25px;
 }

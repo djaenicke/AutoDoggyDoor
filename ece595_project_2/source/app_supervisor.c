@@ -238,16 +238,6 @@ static void Detect_Pet_Task(void *pvParameters)
 
 static void IoT_Task(void *pvParameters)
 {
-    struct dhcp *dhcp;
-
-    while(1)
-    {
-        dhcp = netif_dhcp_data(&FSL_NetIf);
-        if (netif_is_up(&FSL_NetIf) && DHCP_STATE_BOUND == dhcp->state)
-        {
-        	//Run_IoT_Task();
-        }
-
-		vTaskDelay(pdMS_TO_TICKS(20000));
-    }
+    Run_IoT_Logging();
+    vTaskDelay(pdMS_TO_TICKS(3000));
 }

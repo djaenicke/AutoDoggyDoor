@@ -41,6 +41,7 @@
 #include "clock_config.h"
 #include "time_schedule.h"
 #include "http_client_app.h"
+#include "cJSON.h"
 
 /*******************************************************************************
  * Definitions
@@ -54,6 +55,8 @@ static int cgi_rtc_data(HTTPSRV_CGI_REQ_STRUCT *param);
 static int cgi_weather_status(HTTPSRV_CGI_REQ_STRUCT *param);
 static int cgi_time_schedule_status(HTTPSRV_CGI_REQ_STRUCT *param);
 static int cgi_process_time_schedule(HTTPSRV_CGI_REQ_STRUCT *param);
+static int cgi_process_zip_code(HTTPSRV_CGI_REQ_STRUCT *param);
+static int cgi_load_data(HTTPSRV_CGI_REQ_STRUCT *param);
 
 /*******************************************************************************
 * Variables
@@ -81,10 +84,15 @@ const HTTPSRV_CGI_LINK_STRUCT cgi_lnk_tbl[] = {
     {"weatherdata", cgi_weather_status},
     {"ts_status",   cgi_time_schedule_status},
     {"ts",          cgi_process_time_schedule},
+    {"zip",         cgi_process_zip_code},
+    {"load_data",    cgi_load_data},
     {0, 0} // DO NOT REMOVE - last item - end of table
 };
 
 const HTTPSRV_SSI_LINK_STRUCT ssi_lnk_tbl[] = {{0, 0}};
+
+char Working_Buffer[100];
+Restricted_Interval_T R_Intervals[NUM_INTERVALS] = {0};
 
 /*******************************************************************************
  * Code
@@ -235,6 +243,143 @@ static int cgi_process_time_schedule(HTTPSRV_CGI_REQ_STRUCT *param)
     HTTPSRV_cgi_write(&response);
 
     return(0);
+}
+
+static int cgi_process_zip_code(HTTPSRV_CGI_REQ_STRUCT *param)
+{
+    HTTPSRV_CGI_RES_STRUCT response = {0};
+    char * buffer;
+
+    response.ses_handle = param->ses_handle;
+    response.status_code = HTTPSRV_CODE_OK;
+
+    if (param->request_method == HTTPSRV_REQ_POST)
+    {
+        buffer = malloc(param->content_length);
+
+        if (NULL != buffer)
+        {
+            HTTPSRV_cgi_read(param->ses_handle, buffer, param->content_length);
+            Set_Zip_Code(buffer);
+            free(buffer);
+        }
+    }
+
+    HTTPSRV_cgi_write(&response);
+
+    return(0);
+}
+
+static int cgi_load_data(HTTPSRV_CGI_REQ_STRUCT *param)
+{
+    HTTPSRV_CGI_RES_STRUCT response = {0};
+    uint8_t i;
+    char *string = NULL;
+    cJSON *zip = NULL;
+    cJSON *intervals  = NULL;
+    cJSON *interval   = NULL;
+    cJSON *id         = NULL;
+    cJSON *days       = NULL;
+    cJSON *start_time = NULL;
+    cJSON *stop_time  = NULL;
+
+    response.ses_handle = param->ses_handle;
+    response.status_code = HTTPSRV_CODE_OK;
+
+    cJSON *json = cJSON_CreateObject();
+    uint32_t zip_code = Get_Zip_Code();
+
+    Get_Restricted_Intervals(R_Intervals);
+
+    if (NULL != json)
+    {
+        sprintf(Working_Buffer, "%d", zip_code);
+        zip = cJSON_CreateString(Working_Buffer);
+
+        if (NULL != zip)
+        {
+            cJSON_AddItemToObject(json, "zip", zip);
+        }
+
+        intervals = cJSON_CreateArray();
+        if (NULL != intervals)
+        {
+            cJSON_AddItemToObject(json, "intervals", intervals);
+            for (i = 0; i < NUM_INTERVALS; i++)
+            {
+                interval = cJSON_CreateObject();
+                if (NULL != interval)
+                {
+                    cJSON_AddItemToArray(intervals, interval);
+
+                    /*** ID ***/
+                    if (-1 == R_Intervals[i].id)
+                    {
+                        sprintf(Working_Buffer, "-1");
+                    }
+                    else
+                    {
+                        sprintf(Working_Buffer, "%d", R_Intervals[i].id);
+                    }
+                    id = cJSON_CreateString(Working_Buffer);
+                    if (NULL == id)
+                        break;
+                    cJSON_AddItemToObject(interval, "id", id);
+
+                    /*** Days ***/
+                    sprintf(Working_Buffer, "%d", R_Intervals[i].days);
+                    days = cJSON_CreateString(Working_Buffer);
+                    if (NULL == days)
+                        break;
+                    cJSON_AddItemToObject(interval, "days", days);
+
+                    /*** Start Time ***/
+                    if (-1 == R_Intervals[i].id)
+                    {
+                        sprintf(Working_Buffer, "");
+                    }
+                    else
+                    {
+                        sprintf(Working_Buffer, "%02d:%02d", R_Intervals[i].start.hour, R_Intervals[i].start.minute);
+                    }
+
+                    start_time = cJSON_CreateString(Working_Buffer);
+                    if (NULL == start_time)
+                        break;
+                    cJSON_AddItemToObject(interval, "start_time", start_time);
+
+                    /*** End Time ***/
+                    if (-1 == R_Intervals[i].id)
+                    {
+                        sprintf(Working_Buffer, "");
+                    }
+                    else
+                    {
+                        sprintf(Working_Buffer, "%02d:%02d", R_Intervals[i].end.hour, R_Intervals[i].end.minute);
+                    }
+
+                    stop_time = cJSON_CreateString(Working_Buffer);
+                    if (NULL == stop_time)
+                        break;
+                    cJSON_AddItemToObject(interval, "stop_time", stop_time);
+                }
+            }
+        }
+
+        string = cJSON_Print(json);
+
+        if (string != NULL)
+        {
+            response.content_type = HTTPSRV_CONTENT_TYPE_JSON;
+            response.data = string;
+            response.data_length = strlen(string);
+            response.content_length = response.data_length;
+            HTTPSRV_cgi_write(&response);
+        }
+    }
+
+    cJSON_Delete(json);
+    return (response.content_length);
 }
 
 /*!
