@@ -77,9 +77,9 @@ void Detect_Pet(void)
 		{
 			dog_counter++;
 		}
-		else
+		else if (dog_counter > 0)
 		{
-			dog_counter=0;
+			dog_counter--;
 		}
 
 		if (dog_counter > DETECTION_COUNT)
@@ -87,10 +87,12 @@ void Detect_Pet(void)
 			if (dog_status == INSIDE)
 			{
 				dog_status = OUTSIDE;
+				dog_counter = 0;
 			}
 			else
 			{
 				dog_status = INSIDE;
+				dog_counter = 0;
 			}
 		}
 	}

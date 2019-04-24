@@ -20,7 +20,7 @@ Xbee_Serial_T Xbee_Serial_Port = {UART2, 9600};
 static uint8_t Xbee_AT_Resp[RESP_BUF_SIZE];
 static uint8_t Xbee_API_Resp[EXPECTED_RESPONSE_SIZE];
 static uint8_t Local_RSSI;
-static uint8_t Remote_RSSI;
+static uint8_t Remote_RSSI = THRESHOLD;
 
 static uint8_t Extract_Remote_RSSI(void);
 
@@ -83,7 +83,7 @@ uint8_t Extract_Remote_RSSI(void)
 
 Proximity_Status_T Get_Proximity_Status(void)
 {
-	Proximity_Status_T prox_status = FAR;
+	volatile Proximity_Status_T prox_status = FAR;
 	if (Remote_RSSI < THRESHOLD)
 	{
 		prox_status = CLOSE;

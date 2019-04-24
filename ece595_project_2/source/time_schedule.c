@@ -135,6 +135,8 @@ Time_Schedule_Status_T Get_Time_Schedule_Status(void)
     /* Make sure RTC data is available*/
     if (RTC_Init_Complete)
     {
+        status = NOT_RESTRICTED;
+
         RTC_GetDatetime(RTC, &current_time);
 
         for (i=0; i<NUM_INTERVALS; i++)
@@ -176,15 +178,7 @@ Time_Schedule_Status_T Get_Time_Schedule_Status(void)
                                 break;
                             }
                         }
-                        else
-                        {
-                            status = NOT_RESTRICTED;
-                        }
                     }
-                }
-                else
-                {
-                    status = NOT_RESTRICTED;
                 }
             }
         }
