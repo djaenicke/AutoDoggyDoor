@@ -47,7 +47,7 @@ typedef struct {
 
 static Weather_Info_T Weather_Info = {UNKNOWN_ID, NO_RAIN_AMOUNT_DATA};
 static uint8_t Callback_Arg;
-static uint32_t User_Zip = 46062;
+static uint32_t User_Zip = 0;
 static uint8_t Waiting = 0;
 
 httpc_state_t * HTTP_State;
@@ -65,10 +65,13 @@ void Run_HTTP_Client(void)
     {
         if (WEATHER == Current_API)
         {
-            sprintf(uri, "%s%d%s%s", URI_BASE, User_Zip, URI_END, API_KEY);
-            httpc_get_file_dns(WEATHER_ENDPOINT, PORT, uri, \
-                               &Settings, &Weather_API_Callback, &Callback_Arg, &HTTP_State);
-            Waiting = TRUE;
+        	if (User_Zip)
+        	{
+				sprintf(uri, "%s%d%s%s", URI_BASE, User_Zip, URI_END, API_KEY);
+				httpc_get_file_dns(WEATHER_ENDPOINT, PORT, uri, \
+								   &Settings, &Weather_API_Callback, &Callback_Arg, &HTTP_State);
+				Waiting = TRUE;
+        	}
         }
         else if (TIME == Current_API)
         {
@@ -158,40 +161,42 @@ err_t Time_API_Callback(void *arg, struct altcp_pcb *tpcb, struct pbuf *p, err_t
             printf(error_ptr);
         }
     }
-
-    datetime_str = cJSON_GetObjectItemCaseSensitive(json, "datetime");
-
-    if (cJSON_IsString(datetime_str) && (datetime_str->valuestring != NULL))
+    else
     {
-        datetime.year = (uint16_t) strtoul(datetime_str->valuestring, &next_ptr, 10);
-        current_ptr = next_ptr + 1;
+		datetime_str = cJSON_GetObjectItemCaseSensitive(json, "datetime");
 
-        datetime.month = (uint8_t) strtoul(current_ptr, &next_ptr, 10);
-        current_ptr = next_ptr + 1;
+		if (cJSON_IsString(datetime_str) && (datetime_str->valuestring != NULL))
+		{
+			datetime.year = (uint16_t) strtoul(datetime_str->valuestring, &next_ptr, 10);
+			current_ptr = next_ptr + 1;
 
-        datetime.day = (uint8_t) strtoul(current_ptr, &next_ptr, 10);
-        current_ptr = next_ptr + 1;
+			datetime.month = (uint8_t) strtoul(current_ptr, &next_ptr, 10);
+			current_ptr = next_ptr + 1;
 
-        datetime.hour = (uint8_t) strtoul(current_ptr, &next_ptr, 10);
-        current_ptr = next_ptr + 1;
+			datetime.day = (uint8_t) strtoul(current_ptr, &next_ptr, 10);
+			current_ptr = next_ptr + 1;
 
-        datetime.minute = (uint8_t) strtoul(current_ptr, &next_ptr, 10);
-        current_ptr = next_ptr + 1;
+			datetime.hour = (uint8_t) strtoul(current_ptr, &next_ptr, 10);
+			current_ptr = next_ptr + 1;
 
-        datetime.second = (uint8_t) strtoul(current_ptr, &next_ptr, 10);
+			datetime.minute = (uint8_t) strtoul(current_ptr, &next_ptr, 10);
+			current_ptr = next_ptr + 1;
+
+			datetime.second = (uint8_t) strtoul(current_ptr, &next_ptr, 10);
+		}
+
+		day_of_week = cJSON_GetObjectItemCaseSensitive(json, "day_of_week");
+
+		if (cJSON_IsNumber(day_of_week))
+		{
+			day = day_of_week->valueint;
+		}
+
+		Start_RTC(&datetime, day);
+		Print_Datetime();
+
+		Waiting = FALSE;
     }
-
-    day_of_week = cJSON_GetObjectItemCaseSensitive(json, "day_of_week");
-
-    if (cJSON_IsNumber(day_of_week))
-    {
-        day = day_of_week->valueint;
-    }
-
-    Start_RTC(&datetime, day);
-    Print_Datetime();
-
-    Waiting = FALSE;
 
     cJSON_Delete(json);
 
@@ -211,8 +216,37 @@ Weather_Status_T Get_Weather_Status(void)
     return(status);
 }
 
+void Set_Zip_Code(const char* str)
+{
+    const cJSON *zip = NULL;
+    cJSON *json = cJSON_Parse(str);
+
+    if (json == NULL)
+    {
+        const char *error_ptr = cJSON_GetErrorPtr();
+        if (error_ptr != NULL)
+        {
+            printf(error_ptr);
+        }
+    }
+    else
+    {
+		zip = cJSON_GetObjectItemCaseSensitive(json, "zip");
+
+		if (cJSON_IsNumber(zip))
+		{
+			User_Zip = zip->valueint;
+		}
+    }
+
+	cJSON_Delete(json);
+}
+
+uint32_t Get_Zip_Code(void)
+{
+	return(User_Zip);
+
 void Run_IoT_Task(void *pvParameters)
 {
 
 }
-

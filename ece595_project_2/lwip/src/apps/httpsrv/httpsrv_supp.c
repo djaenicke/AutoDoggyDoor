@@ -59,6 +59,7 @@ static const HTTPSRV_TABLE_ROW content_type[] = {{HTTPSRV_CONTENT_TYPE_PLAIN, "t
                                                  {HTTPSRV_CONTENT_TYPE_ZIP, "application/zip"},
                                                  {HTTPSRV_CONTENT_TYPE_PDF, "application/pdf"},
                                                  {HTTPSRV_CONTENT_TYPE_OCTETSTREAM, "application/octet-stream"},
+                                                 {HTTPSRV_CONTENT_TYPE_JSON, "application/json"},
                                                  {0, 0}};
 
 /*
