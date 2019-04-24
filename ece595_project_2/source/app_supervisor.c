@@ -29,6 +29,13 @@
  ******************************************************************************/
 #define XBEE
 
+#define DETECT_PET_PRIO    2
+#define SUPERVISOR_PRIO    12
+#define LOCK_CONTROL_PRIO  13
+#define PROX_EST_PRIO      14
+#define HTTP_CLIENT_PRIO   15
+#define IOT_PRIO           16
+
 typedef enum {
     NOT_CONNECTED,
     CONNECTED
@@ -53,29 +60,11 @@ typedef struct Task_Cfg_Tag
 ******************************************************************************/
 /* Task function declarations */
 static void Supervisor_Task(void *pvParameters);
-
 static void Prox_Estimation_Task(void *pvParameters);
 static void HTTP_Client_Task(void *pvParameters);
 static void Lock_Control_Task(void *pvParameters);
 static void Detect_Pet_Task(void *pvParameters);
 static void IoT_Task(void *pvParameters);
-
-/* Task Configurations */
-#define NUM_TASKS (4)
-#define SUPERVISOR_PRIORITY configMAX_PRIORITIES-6
-
-Task_Cfg_T Periodic_Tasks_Table[NUM_TASKS] =
-{
-    /* Function,           Name,          Stack Size,  Priority */
-	{IoT_Task,			   "IoT",         1000,         configMAX_PRIORITIES - 2, NULL},
-	{Detect_Pet_Task,	   "Detect_Pet",  1000,         2, NULL},
-    {Lock_Control_Task,    "Lock_Ctrl",   1000,         configMAX_PRIORITIES - 5, NULL},
-    {HTTP_Client_Task,     "HTTP_Client", 1000,         configMAX_PRIORITIES - 3, NULL},
-};
-
-
-/* Local functions */
-static void Create_Periodic_OS_Tasks(void);
 
 /*******************************************************************************
 * Variables
@@ -93,10 +82,11 @@ void Start_App_Supervisor(void)
 #ifdef XBEE
     Init_Xbee_Interface();
 #endif
+    Init_USS_Timer();
     Init_Network_If(&FSL_NetIf);
 
-    Create_Periodic_OS_Tasks();
-    xTaskCreate(Supervisor_Task, "Supervisor", 500, NULL, SUPERVISOR_PRIORITY, NULL);
+    xTaskCreate(HTTP_Client_Task,  "HTTP_Client", 1000, NULL, HTTP_CLIENT_PRIO, NULL);
+    xTaskCreate(Supervisor_Task,   "Supervisor",  500,  NULL, SUPERVISOR_PRIO,  NULL);
     vTaskStartScheduler();
 }
 
@@ -136,7 +126,10 @@ static void Supervisor_Task(void *pvParameters)
             printf("The lock is now being controlled automatically.\n\r");
 
             /* Start the proximity estimation task now */
-            xTaskCreate(Prox_Estimation_Task, "Prox Est", 1000, NULL, configMAX_PRIORITIES - 4, NULL);
+            xTaskCreate(Prox_Estimation_Task,  "Prox Est",    1000, NULL, PROX_EST_PRIO,     NULL);
+            xTaskCreate(IoT_Task,              "IoT",          100, NULL, IOT_PRIO,          NULL);
+            xTaskCreate(Detect_Pet_Task,       "Detect_Pet",  2000, NULL, DETECT_PET_PRIO,   NULL);
+            xTaskCreate(Lock_Control_Task,     "Lock_Ctrl",   2000, NULL, LOCK_CONTROL_PRIO, NULL);
         }
         else if ((MANUAL == lock_method) && (NORMAL == App_Mode))
         {
@@ -159,7 +152,6 @@ static void Prox_Estimation_Task(void *pvParameters)
 #ifdef XBEE
         Run_Proximity_Estimation();
 #endif
-
         if (NORMAL == App_Mode)
         {
             vTaskDelay(pdMS_TO_TICKS(2000));
@@ -174,17 +166,19 @@ static void Prox_Estimation_Task(void *pvParameters)
 
 static void Lock_Control_Task(void *pvParameters)
 {
-	struct dhcp *dhcp;
-
     while(1)
     {
-    	dhcp = netif_dhcp_data(&FSL_NetIf);
+        Run_Lock_Control();
 
-    	if (netif_is_up(&FSL_NetIf) && DHCP_STATE_BOUND == dhcp->state)
-    	{
-    		Run_Lock_Control();
-    	}
-        vTaskDelay(pdMS_TO_TICKS(500));
+        if (NORMAL == App_Mode)
+        {
+            vTaskDelay(pdMS_TO_TICKS(500));
+        }
+        else
+        {
+            /* Kill the lock control task so that the HTTP server isn't starved */
+            vTaskDelete(NULL);
+        }
     }
 }
 
@@ -205,39 +199,45 @@ static void HTTP_Client_Task(void *pvParameters)
     }
 }
 
-
-void Create_Periodic_OS_Tasks(void)
-{
-    uint8_t i;
-    for (i=0; i<NUM_TASKS; i++)
-    {
-        if (xTaskCreate(Periodic_Tasks_Table[i].func, Periodic_Tasks_Table[i].name, \
-                        Periodic_Tasks_Table[i].stack_size, NULL, Periodic_Tasks_Table[i].priority, \
-                        &Periodic_Tasks_Table[i].handle) != pdPASS)
-        {
-            printf("Task number %d creation failed!.\r\n", i);
-            assert(false);
-        }
-    }
-}
-
 static void Detect_Pet_Task(void *pvParameters)
 {
-	struct dhcp *dhcp;
-
 	while(1)
 	{
-		dhcp = netif_dhcp_data(&FSL_NetIf);
-		if (netif_is_up(&FSL_NetIf) && DHCP_STATE_BOUND == dhcp->state)
-		{
-			Detect_Pet();
-		}
-		vTaskDelay(pdMS_TO_TICKS(200));
+        Detect_Pet();
+
+        if (NORMAL == App_Mode)
+        {
+            vTaskDelay(pdMS_TO_TICKS(200));
+        }
+        else
+        {
+            /* Kill the detect pet task so that the HTTP server isn't starved */
+            vTaskDelete(NULL);
+        }
 	}
 }
 
 static void IoT_Task(void *pvParameters)
 {
-    Run_IoT_Logging();
-    vTaskDelay(pdMS_TO_TICKS(3000));
+    struct dhcp *dhcp;
+
+    while(1)
+    {
+        if (NORMAL == App_Mode)
+        {
+            dhcp = netif_dhcp_data(&FSL_NetIf);
+
+            if (netif_is_up(&FSL_NetIf) && DHCP_STATE_BOUND == dhcp->state)
+            {
+                Run_IoT_Logging();
+            }
+        }
+        else
+        {
+            /* Kill the IoT task so that the HTTP server isn't starved */
+            vTaskDelete(NULL);
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(3000));
+    }
 }

@@ -84,7 +84,7 @@ uint8_t Extract_Remote_RSSI(void)
 Proximity_Status_T Get_Proximity_Status(void)
 {
 	Proximity_Status_T prox_status = FAR;
-	if(Remote_RSSI > THRESHOLD )
+	if (Remote_RSSI < THRESHOLD)
 	{
 		prox_status = CLOSE;
 	}

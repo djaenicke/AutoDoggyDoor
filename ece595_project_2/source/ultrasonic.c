@@ -4,6 +4,9 @@
  *  Created on: Apr 6, 2019
  *      Author: Lacy
  */
+
+#include <stdio.h>
+
 #include "fsl_ftm.h"
 #include "clock_config.h"
 #include "fsl_port.h"
@@ -40,7 +43,8 @@ void Detect_Pet(void)
 	Time_Status = Get_Time_Schedule_Status();
 	Weather_Status = Get_Weather_Status();
 	Prox_Status = Get_Proximity_Status();
-	if(Time_Status == NOT_RESTRICTED && Weather_Status == GOOD_WEATHER && Prox_Status == CLOSE)
+
+	if (Time_Status == NOT_RESTRICTED && Weather_Status == GOOD_WEATHER && Prox_Status == CLOSE)
 	{
 		uint32_t start_time, stop_time;
 		FTM_StartTimer(FTM1, kFTM_SystemClock);
@@ -51,7 +55,7 @@ void Detect_Pet(void)
 		//While the time is less than 1500 usec continue to see if PTB3 has received the echo signal, if it has record the stop time. comes out to about 2.5 ft
 		do
 		{
-			if(Read_GPIO(USS_ECHO)==1)
+			if (Read_GPIO(USS_ECHO)==1)
 			{
 				stop_time = FTM_GetCurrentTimerCount(FTM1);
 				break;
@@ -59,6 +63,8 @@ void Detect_Pet(void)
 		} while ((FTM_GetCurrentTimerCount(FTM1) - start_time) < 1500);
 
 		FTM_StopTimer(FTM1);
+
+		printf("Distance = %d\n\r", (uint16_t)((stop_time-start_time)*10^-6*343/100));
 
 		if ((stop_time - start_time) < 1500)
 		{
@@ -69,7 +75,7 @@ void Detect_Pet(void)
 			dog_counter=0;
 		}
 
-		if(dog_counter > DETECTION_COUNT)
+		if (dog_counter > DETECTION_COUNT)
 		{
 			if (dog_status == INSIDE)
 			{
