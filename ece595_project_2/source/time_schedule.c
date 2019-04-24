@@ -178,6 +178,11 @@ Time_Schedule_Status_T Get_Time_Schedule_Status(void)
                                 break;
                             }
                         }
+                        else
+                        {
+                            status = RESTRICTED;
+                            break;
+                        }
                     }
                 }
             }
