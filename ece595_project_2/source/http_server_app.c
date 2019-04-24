@@ -334,14 +334,30 @@ static int cgi_load_data(HTTPSRV_CGI_REQ_STRUCT *param)
                     cJSON_AddItemToObject(interval, "days", days);
 
                     /*** Start Time ***/
-                    sprintf(Working_Buffer, "%02d:%02d", R_Intervals[i].start.hour, R_Intervals[i].start.minute);
+                    if (-1 == R_Intervals[i].id)
+                    {
+                        sprintf(Working_Buffer, "");
+                    }
+                    else
+                    {
+                        sprintf(Working_Buffer, "%02d:%02d", R_Intervals[i].start.hour, R_Intervals[i].start.minute);
+                    }
+
                     start_time = cJSON_CreateString(Working_Buffer);
                     if (NULL == start_time)
                         break;
                     cJSON_AddItemToObject(interval, "start_time", start_time);
 
                     /*** End Time ***/
-                    sprintf(Working_Buffer, "%02d:%02d", R_Intervals[i].end.hour, R_Intervals[i].end.minute);
+                    if (-1 == R_Intervals[i].id)
+                    {
+                        sprintf(Working_Buffer, "");
+                    }
+                    else
+                    {
+                        sprintf(Working_Buffer, "%02d:%02d", R_Intervals[i].end.hour, R_Intervals[i].end.minute);
+                    }
+
                     stop_time = cJSON_CreateString(Working_Buffer);
                     if (NULL == stop_time)
                         break;

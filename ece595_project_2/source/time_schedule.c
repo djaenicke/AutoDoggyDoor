@@ -92,6 +92,11 @@ void Update_Restricted_Intervals(const char *json_data)
             }
         }
 
+        if (0 == memcmp(&(Restricted_Intervals[i].start), &(Restricted_Intervals[i].end), sizeof(rtc_datetime_t)))
+        {
+            Restricted_Intervals[i].id = -1;
+        }
+
         i++;
     }
 
