@@ -16,6 +16,8 @@
 #define LOCKED 0
 #define OPEN 1
 
+#define LOCK_THRESH 11
+
 #define OTHER 2
 #define INSIDE 1
 #define OUTSIDE 0
@@ -30,6 +32,7 @@ static volatile uint8_t Lock_Method = MANUAL;
 static Dog_Status_T Dog_Status=0; /*TODO WILL COME FROM ULTRASONIC TO KNOW IF DOG IS OUT*/
 static uint8_t Dog_Lock_Flag=0;
 static uint8_t Dog_Status_Flag=0;
+static uint8_t Lock_Counter=0;
 
 void Run_Lock_Control(void)
 {
@@ -47,11 +50,13 @@ void Run_Lock_Control(void)
 				Set_GPIO(ACTUATOR,HIGH);
 				Lock_Status = OPEN;
 				Dog_Lock_Flag = OPEN;
+				Lock_Counter = 0;
 			}
 			else if(Dog_Lock_Flag == OPEN)
 			{
 				printf("Weather Conflict.\n\r");
-				Set_GPIO(ACTUATOR,LOW);
+				//Set_GPIO(ACTUATOR,LOW);
+				Lock_Counter++;
 				Lock_Status = LOCKED;
 				Dog_Lock_Flag = LOCKED;
 			}
@@ -59,7 +64,8 @@ void Run_Lock_Control(void)
 		else if (Dog_Lock_Flag == OPEN)
 		{
 		printf("Timing Conflict.\n\r");
-		Set_GPIO(ACTUATOR,LOW);
+		//Set_GPIO(ACTUATOR,LOW);
+		Lock_Counter++;
 		Lock_Status = LOCKED;
 		Dog_Lock_Flag = LOCKED;
 		}
@@ -67,9 +73,20 @@ void Run_Lock_Control(void)
 	else if (Dog_Lock_Flag == OPEN)
 	{
 		printf("Proximity Conflict.\n\r");
-		Set_GPIO(ACTUATOR,LOW);
+		//Set_GPIO(ACTUATOR,LOW);
+		Lock_Counter++;
 		Lock_Status = LOCKED;
 		Dog_Lock_Flag = LOCKED;
+	}
+
+	if(0 < Lock_Counter)
+	{
+		Lock_Counter++;
+		if (LOCK_THRESH == Lock_Counter)
+		{
+		Set_GPIO(ACTUATOR,LOW);
+		Lock_Counter = 0;
+		}
 	}
 
 	if(Time_Status == NOT_RESTRICTED && Weather_Status == GOOD_WEATHER)

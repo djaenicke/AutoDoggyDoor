@@ -62,15 +62,15 @@ static void IoT_Task(void *pvParameters);
 
 /* Task Configurations */
 #define NUM_TASKS (4)
-#define SUPERVISOR_PRIORITY configMAX_PRIORITIES-5
+#define SUPERVISOR_PRIORITY configMAX_PRIORITIES-6
 
 Task_Cfg_T Periodic_Tasks_Table[NUM_TASKS] =
 {
     /* Function,           Name,          Stack Size,  Priority */
-	{IoT_Task,			   "IoT",         100,         configMAX_PRIORITIES - 5, NULL},
-	{Detect_Pet_Task,	   "Detect_Pet",  100,         configMAX_PRIORITIES - 4, NULL},
-    {Lock_Control_Task,    "Lock Ctrl",   100,         configMAX_PRIORITIES - 3, NULL},
-    {HTTP_Client_Task,     "HTTP_Client", 1000,        configMAX_PRIORITIES - 2, NULL},
+	{IoT_Task,			   "IoT",         1000,         configMAX_PRIORITIES - 2, NULL},
+	{Detect_Pet_Task,	   "Detect_Pet",  1000,         2, NULL},
+    {Lock_Control_Task,    "Lock_Ctrl",   1000,         configMAX_PRIORITIES - 5, NULL},
+    {HTTP_Client_Task,     "HTTP_Client", 1000,         configMAX_PRIORITIES - 3, NULL},
 };
 
 
@@ -136,7 +136,7 @@ static void Supervisor_Task(void *pvParameters)
             printf("The lock is now being controlled automatically.\n\r");
 
             /* Start the proximity estimation task now */
-            xTaskCreate(Prox_Estimation_Task, "Prox Est", 1000, NULL, configMAX_PRIORITIES - 1, NULL);
+            xTaskCreate(Prox_Estimation_Task, "Prox Est", 1000, NULL, configMAX_PRIORITIES - 4, NULL);
         }
         else if ((MANUAL == lock_method) && (NORMAL == App_Mode))
         {
@@ -174,10 +174,17 @@ static void Prox_Estimation_Task(void *pvParameters)
 
 static void Lock_Control_Task(void *pvParameters)
 {
+	struct dhcp *dhcp;
+
     while(1)
     {
-        Run_Lock_Control();
-        vTaskDelay(pdMS_TO_TICKS(1500));
+    	dhcp = netif_dhcp_data(&FSL_NetIf);
+
+    	if (netif_is_up(&FSL_NetIf) && DHCP_STATE_BOUND == dhcp->state)
+    	{
+    		Run_Lock_Control();
+    	}
+        vTaskDelay(pdMS_TO_TICKS(500));
     }
 }
 
@@ -216,12 +223,21 @@ void Create_Periodic_OS_Tasks(void)
 
 static void Detect_Pet_Task(void *pvParameters)
 {
-	Detect_Pet();
-	vTaskDelay(pdMS_TO_TICKS(200));
+	struct dhcp *dhcp;
+
+	while(1)
+	{
+		dhcp = netif_dhcp_data(&FSL_NetIf);
+		if (netif_is_up(&FSL_NetIf) && DHCP_STATE_BOUND == dhcp->state)
+		{
+			Detect_Pet();
+		}
+		vTaskDelay(pdMS_TO_TICKS(200));
+	}
 }
 
 static void IoT_Task(void *pvParameters)
 {
     Run_IoT_Logging();
-	vTaskDelay(pdMS_TO_TICKS(3000));
+    vTaskDelay(pdMS_TO_TICKS(3000));
 }
