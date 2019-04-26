@@ -4,6 +4,9 @@
  *  Created on: Apr 6, 2019
  *      Author: Lacy
  */
+
+#include <stdio.h>
+
 #include "fsl_ftm.h"
 #include "clock_config.h"
 #include "fsl_port.h"
@@ -16,8 +19,8 @@
 #include "ultrasonic.h"
 
 /* Get source clock for FTM driver */
-#define FTM_SOURCE_CLOCK (CLOCK_GetFreq(kCLOCK_BusClk)/1)
-#define DETECTION_COUNT 4
+#define FTM_SOURCE_CLOCK (CLOCK_GetFreq(kCLOCK_BusClk)/4)
+#define DETECTION_COUNT 10
 
 static Proximity_Status_T Prox_Status;
 static Time_Schedule_Status_T Time_Status;
@@ -25,62 +28,76 @@ static Weather_Status_T Weather_Status;
 static volatile Dog_Status_T dog_status;
 static uint8_t dog_counter;
 
-void Init_USS_Timer(void)
-{
-    ftm_config_t ftm_info;
-    FTM_GetDefaultConfig(&ftm_info);
-    /* Divide FTM clock by 4 */
-    ftm_info.prescale = kFTM_Prescale_Divide_4;
-    FTM_Init(FTM1, &ftm_info);
-    FTM_SetTimerPeriod(FTM1, USEC_TO_COUNT(1U, FTM_SOURCE_CLOCK));
-}
-
 void Detect_Pet(void)
 {
+    ftm_config_t ftm_info;
+    float dist = 0;
+
+    FTM_GetDefaultConfig(&ftm_info);
+
+    /* Divide FTM clock by 4 */
+    ftm_info.prescale = kFTM_Prescale_Divide_4;
+
+    FTM_Init(FTM1, &ftm_info);
+    FTM_SetTimerPeriod(FTM1, UINT16_MAX);
+
 	Time_Status = Get_Time_Schedule_Status();
 	Weather_Status = Get_Weather_Status();
 	Prox_Status = Get_Proximity_Status();
-	if(Time_Status == NOT_RESTRICTED && Weather_Status == GOOD_WEATHER && Prox_Status == CLOSE)
-	{
-		uint32_t start_time, stop_time;
-		FTM_StartTimer(FTM1, kFTM_SystemClock);
-		//Triggers the ultrasonic sensor and starts the timer
-		start_time = FTM_GetCurrentTimerCount(FTM1);
-		Set_GPIO(USS_TRIGGER,1);
 
-		//While the time is less than 1500 usec continue to see if PTB3 has received the echo signal, if it has record the stop time. comes out to about 2.5 ft
-		do
-		{
-			if(Read_GPIO(USS_ECHO)==1)
-			{
-				stop_time = FTM_GetCurrentTimerCount(FTM1);
-				break;
-			}
-		} while ((FTM_GetCurrentTimerCount(FTM1) - start_time) < 1500);
+    if (Time_Status == NOT_RESTRICTED && Weather_Status == GOOD_WEATHER && Prox_Status == CLOSE)
+	{
+		uint32_t start_cnt, stop_cnt;
+		FTM_StartTimer(FTM1, kFTM_SystemClock);
+
+		//Triggers the ultrasonic sensor and starts the timer
+		start_cnt = FTM_GetCurrentTimerCount(FTM1);
+		Set_GPIO(USS_TRIGGER, 1);
+		while(COUNT_TO_USEC(FTM_GetCurrentTimerCount(FTM1)-start_cnt, FTM_SOURCE_CLOCK)<=15);
+		Set_GPIO(USS_TRIGGER, 0);
+
+		/* Wait for the echo line to go HIGH */
+		while(LOW == Read_GPIO(USS_ECHO)); /* Might need a timeout here */
+		start_cnt = FTM_GetCurrentTimerCount(FTM1);
+		while(HIGH == Read_GPIO(USS_ECHO)); /* Might need a timeout here */
+		stop_cnt = FTM_GetCurrentTimerCount(FTM1);
 
 		FTM_StopTimer(FTM1);
 
-		if ((stop_time - start_time) < 1500)
+		if (stop_cnt > start_cnt)
 		{
-			dog_counter++;
+		    dist = (stop_cnt - start_cnt)*(1.0f/15000000)*343/2*100;
 		}
 		else
 		{
-			dog_counter=0;
+		    dist = ((UINT16_MAX - start_cnt) + stop_cnt)*(1.0f/15000000)*343/2*100;
 		}
 
-		if(dog_counter > DETECTION_COUNT)
+		if (dist < 30)
+		{
+			dog_counter++;
+		}
+		else if (dog_counter > 0)
+		{
+			dog_counter--;
+		}
+
+		if (dog_counter > DETECTION_COUNT)
 		{
 			if (dog_status == INSIDE)
 			{
 				dog_status = OUTSIDE;
+				dog_counter = 0;
 			}
 			else
 			{
 				dog_status = INSIDE;
+				dog_counter = 0;
 			}
 		}
 	}
+
+    FTM_Deinit(FTM1);
 }
 
 Dog_Status_T Get_Dog_Status(void)
